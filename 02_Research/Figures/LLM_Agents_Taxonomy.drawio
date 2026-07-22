@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net" modified="2026-07-22T00:00:00.000Z" agent="5.0" version="24.7.17">
+  <diagram id="llm-agents-taxonomy" name="LLM Agents Taxonomy">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="2" value="LLM Agents" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontStyle=1;fillColor=#D9EAF7;strokeColor=#4F81BD;" vertex="1" parent="1">
+          <mxGeometry x="470" y="20" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="Memory" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="120" y="150" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="Generative Agents" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="110" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="Survey 2023" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="170" y="240" width="90" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="Autonomous Agents Survey" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="280" y="240" width="140" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="Planning" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="460" y="150" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" value="ReAct" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="420" y="240" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" value="AutoGen" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="510" y="240" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" value="MetaGPT" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="600" y="240" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="Reasoning" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="760" y="150" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="12" value="ReAct" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="700" y="240" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" value="MedAgents" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="790" y="240" width="80" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="14" value="MedRAG" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="890" y="240" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="15" value="Tool Use" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="120" y="360" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="16" value="Toolformer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="40" y="450" width="90" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" value="AutoGen" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="150" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="18" value="ReAct" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="240" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="19" value="Multi-Agent" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="460" y="360" width="110" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="20" value="CAMEL" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="380" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="21" value="AutoGen" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="470" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="22" value="MetaGPT" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="560" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="23" value="MedAgents" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="650" y="450" width="80" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="24" value="Agent Hospital" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="750" y="450" width="100" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="25" value="Healthcare" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#EAF2F8;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="760" y="360" width="110" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="26" value="MedRAG" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="720" y="450" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="27" value="Med-PaLM" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="820" y="450" width="80" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="28" value="Clinical Camel" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="920" y="450" width="100" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="29" value="Agent Hospital" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="450" width="100" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="30" value="Med-PaLM M" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="450" width="90" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="31" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="32" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="33" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="34" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="15">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="35" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="19">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="36" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="2" target="25">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
