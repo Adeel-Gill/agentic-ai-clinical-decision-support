@@ -1,0 +1,31 @@
+# No patient data may ever be committed. See README.md.
+# MIMIC-IV is credentialed data under the PhysioNet DUA; extracts and
+# derived files stay in the secured environment, never in version control.
+
+# Raw and compressed tabular data
+*.csv
+*.csv.gz
+*.tsv
+*.tsv.gz
+
+# Columnar / binary data formats
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.npy
+*.npz
+
+# Working data directories (extracts, features, vector store, embeddings)
+data/
+Data/
+raw/
+interim/
+processed/
+
+# Notes and note-derived artifacts (MIMIC-IV-Note)
+notes/
+embeddings/
+*.faiss

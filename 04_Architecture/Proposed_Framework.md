@@ -379,6 +379,6 @@ The proposed framework contributes to intelligent healthcare by:
 
 # 15. Figure
 
-**Figure 4.1:** Proposed Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support using the MIMIC-IV Dataset.
+**Figure 3.1:** Proposed Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support using the MIMIC-IV Dataset.
 
 ![alt text](image.png)

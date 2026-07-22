@@ -1,0 +1,38 @@
+# Local development stack: app + Postgres with the pgvector extension.
+# Research prototype only — do not expose these defaults publicly.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: acdss
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: acdss
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # TODO: mount an init script that runs `CREATE EXTENSION IF NOT EXISTS vector;`
+      # and (optionally) loads the de-identified MIMIC-IV schema.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U acdss -d acdss"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Override individual values here or supply an env_file.
+      DB_URL: postgresql://acdss:changeme@db:5432/acdss
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

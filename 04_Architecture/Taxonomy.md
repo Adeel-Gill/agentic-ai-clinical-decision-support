@@ -225,7 +225,7 @@ Specifically:
 - Multi-Agent research motivated the coordinator-based agent architecture.
 - Healthcare studies validated the applicability of autonomous agents in clinical environments.
 
-Together, these categories provide the theoretical foundation for the proposed architecture presented in Chapter 4.
+Together, these categories provide the theoretical foundation for the proposed architecture presented in Chapter 3.
 
 ---
 

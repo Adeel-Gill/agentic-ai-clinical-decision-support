@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acdss"
+version = "0.1.0"
+description = "Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support (research prototype)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "MS Thesis" }]
+keywords = ["clinical-decision-support", "agentic-ai", "langgraph", "rag", "mimic-iv"]
+
+# NOTE: versions are left unpinned in this scaffold; pin exact versions in a
+# lockfile before any reproducible run.
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "langgraph",
+    "langchain-core",
+    "pydantic",
+    "pydantic-settings",
+    "psycopg[binary]",
+    "pgvector",
+    "anthropic",
+    "sentence-transformers",
+    "ragas",
+    "python-dotenv",
+    "mcp",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "mypy",
+]
+
+[project.scripts]
+acdss-mcp = "acdss.mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
