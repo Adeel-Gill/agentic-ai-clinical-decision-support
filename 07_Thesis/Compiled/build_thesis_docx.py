@@ -25,7 +25,7 @@ certificates for the student to complete.
 import re
 import os
 from docx import Document
-from docx.shared import Pt, Inches, RGBColor
+from docx.shared import Pt, Inches, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
@@ -45,13 +45,21 @@ DEGREE_FULL = "MASTER OF SCIENCE"
 SUBJECT     = "ARTIFICIAL INTELLIGENCE"      # <-- verify with your program (e.g., COMPUTER SCIENCE)
 STUDENT     = "Adeel Gill"
 ROLL_NUMBER = "SU92-MSAIW-S25-011"
-SESSION     = "[Session e.g., 2023-2025]"
+SESSION     = "2025-2026"
 SUPERVISOR  = "Dr. Fawad Nasim"
 DEPARTMENT  = "DEPARTMENT OF COMPUTER SCIENCE"
 FACULTY     = "FACULTY OF COMPUTER SCIENCE AND INFORMATION TECHNOLOGY"
 UNIVERSITY  = "THE SUPERIOR UNIVERSITY, LAHORE"
 
 FONT = "Times New Roman"
+
+# Superior University logo shown on the title page (vertical/stacked lockup).
+# Per the DOPS template the mark is placed at 5 cm x 7.43 cm. The source PNG is
+# pre-padded to the same 5:7.43 aspect ratio (see Images/make_vertical_logo.py)
+# so fixing both dimensions here scales the artwork uniformly, without distortion.
+LOGO_PATH   = os.path.join(ROOT, "07_Thesis", "Images", "superior_logo_vertical.png")
+LOGO_WIDTH  = Cm(5)
+LOGO_HEIGHT = Cm(7.43)
 
 # --------------------------------------------------------------------------
 # IEEE reference strings keyed by bibtex key (derived from References.bib).
@@ -107,15 +115,15 @@ IEEE = {
 }
 
 ABSTRACT = (
- "Clinical teams in intensive care generate vast, heterogeneous data—vital signs, laboratory "
- "results, medications, and free-text notes—yet turning this stream into timely, trustworthy "
+ "Clinical teams in intensive care generate vast, heterogeneous data, including vital signs, laboratory "
+ "results, medications, and free-text notes, yet turning this stream into timely, trustworthy "
  "decisions remains difficult. Large language models (LLMs) answer medical questions well but "
  "behave as passive responders: they lack persistent patient memory, autonomous planning, and "
  "verifiable grounding, and they are typically evaluated on static examination-style questions "
  "rather than on the longitudinal record of a real patient. This thesis designs an Agentic AI "
  "framework for intelligent patient monitoring and clinical decision support that addresses these "
- "limitations. The framework organizes specialized LLM agents—monitoring, diagnosis, risk "
- "prediction, treatment recommendation, explanation, and a verification gate—under a coordinator "
+ "limitations. The framework organizes specialized LLM agents for monitoring, diagnosis, risk "
+ "prediction, treatment recommendation, explanation, and a verification gate under a coordinator "
  "that routes tasks by patient condition and resolves conflicting recommendations. It couples the "
  "ReAct reasoning paradigm with retrieval-augmented generation (RAG) that grounds every "
  "recommendation in both the patient’s own electronic health record timeline and external clinical "
@@ -185,18 +193,37 @@ def para(doc, text="", align=WD_ALIGN_PARAGRAPH.JUSTIFY, size=12, bold=False,
     return p
 
 def heading_block(doc, label, title):
-    """Chapter heading: two centered ALL-CAPS 16pt bold lines."""
-    para(doc, label, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
-         before=0, after=0, caps=True)
-    para(doc, title, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
-         before=0, after=12, caps=True)
+    """Chapter heading: two centered ALL-CAPS 16pt bold lines.
 
-def mandatory_title(doc, text):
-    para(doc, text, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
-         before=0, after=18, caps=True)
+    The label line carries outline level 0 so the chapter appears as a top-level
+    entry in the auto Table of Contents; its section headings nest beneath it."""
+    p1 = para(doc, label, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
+              before=0, after=0, caps=True)
+    set_outline(p1, 0)
+    if title:
+        para(doc, title, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
+             before=0, after=12, caps=True)
+
+def mandatory_title(doc, text, outline=True):
+    p = para(doc, text, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, bold=True,
+             before=0, after=18, caps=True)
+    if outline:
+        set_outline(p, 0)
+    return p
 
 def new_page(doc):
     doc.add_page_break()
+
+def set_outline(p, level):
+    """Tag a paragraph with a Word outline level (0-based) so the TOC field
+    collects it even though we style headings with direct run formatting rather
+    than the built-in Heading styles."""
+    pPr = p._p.get_or_add_pPr()
+    for old in pPr.findall(qn('w:outlineLvl')):
+        pPr.remove(old)
+    el = OxmlElement('w:outlineLvl')
+    el.set(qn('w:val'), str(level))
+    pPr.append(el)
 
 # ---- page numbering (section-level) --------------------------------------
 def set_pgnum(section, fmt=None, start=None):
@@ -239,6 +266,22 @@ def add_toc(doc):
     run._r.append(b); run._r.append(instr); run._r.append(sep); run._r.append(t); run._r.append(e)
     _run_font(run, size=12)
 
+def add_tof(doc, label):
+    """Automatic List of Figures / List of Tables built from Word caption SEQ
+    fields. Populates once the student inserts captioned figures/tables via
+    Word's References -> Insert Caption; right-click -> Update Field to refresh."""
+    p = doc.add_paragraph()
+    run = p.add_run()
+    b = OxmlElement('w:fldChar'); b.set(qn('w:fldCharType'), 'begin')
+    instr = OxmlElement('w:instrText'); instr.set(qn('xml:space'), 'preserve')
+    instr.text = 'TOC \\h \\z \\c "%s"' % label          # \c collects one SEQ label
+    sep = OxmlElement('w:fldChar'); sep.set(qn('w:fldCharType'), 'separate')
+    t = OxmlElement('w:t')
+    t.text = "Right-click and choose “Update Field” after inserting captioned %ss." % label.lower()
+    e = OxmlElement('w:fldChar'); e.set(qn('w:fldCharType'), 'end')
+    run._r.append(b); run._r.append(instr); run._r.append(sep); run._r.append(t); run._r.append(e)
+    _run_font(run, size=12)
+
 # --------------------------------------------------------------------------
 # Citation handling + inline runs
 # --------------------------------------------------------------------------
@@ -264,7 +307,7 @@ def add_inline(p, text):
         r = p.add_run(seg)
         _run_font(r, size=12, bold=(i % 2 == 1))
 
-def body_para(doc, text, cite_map, order, bullet=False):
+def body_para(doc, text, cite_map, order, bullet=False, indent=False):
     text = substitute_citations(text, cite_map, order)
     if bullet:
         p = doc.add_paragraph(style="List Bullet")
@@ -276,10 +319,20 @@ def body_para(doc, text, cite_map, order, bullet=False):
     pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
     pf.line_spacing = 1.5
     pf.space_after = Pt(6)
+    if indent and not bullet:
+        pf.first_line_indent = Inches(0.5)
     add_inline(p, text)
     return p
 
-def section_heading(doc, text):
+# Section-heading sizing by depth (brief: L1=14 bold, L2=12 bold, L3=12 bold italic).
+_HEADING_STYLE = {
+    1: dict(size=14, bold=True, italic=False),   # x.y     (markdown "## ")
+    2: dict(size=12, bold=True, italic=False),   # x.y.z   (markdown "### ")
+    3: dict(size=12, bold=True, italic=True),    # x.y.z.w (markdown "#### ")
+}
+
+def section_heading(doc, text, level=1):
+    style = _HEADING_STYLE.get(level, _HEADING_STYLE[3])
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     pf = p.paragraph_format
@@ -287,8 +340,11 @@ def section_heading(doc, text):
     pf.line_spacing = 1.5
     pf.space_before = Pt(12)
     pf.space_after = Pt(6)
+    pf.keep_with_next = True          # avoid orphan headings at page bottom
     r = p.add_run(text)
-    _run_font(r, size=12, bold=True)
+    _run_font(r, size=style["size"], bold=style["bold"], italic=style["italic"])
+    set_outline(p, level)             # level 1->outlineLvl 1, etc. (TOC \o "1-3")
+    return p
 
 def table_placeholder(doc, text):
     p = para(doc, text, align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True, after=6)
@@ -304,7 +360,7 @@ def render_chapter(doc, path, cite_map, order):
     para_buf = []
     def flush():
         if para_buf:
-            body_para(doc, " ".join(para_buf).strip(), cite_map, order)
+            body_para(doc, " ".join(para_buf).strip(), cite_map, order, indent=True)
             para_buf.clear()
 
     for raw in lines:
@@ -324,15 +380,17 @@ def render_chapter(doc, path, cite_map, order):
                 label, title = head, ""
             heading_block(doc, label.strip(), title.strip())
             continue
+        if s.startswith("#### "):
+            flush(); section_heading(doc, s[5:].strip(), level=3); continue
         if s.startswith("### "):
-            flush(); section_heading(doc, s[4:].strip()); continue
+            flush(); section_heading(doc, s[4:].strip(), level=2); continue
         if s.startswith("## "):
-            flush(); section_heading(doc, s[3:].strip()); continue
+            flush(); section_heading(doc, s[3:].strip(), level=1); continue
         if s.startswith("[TABLE:"):
             flush()
             inner = s[1:-1] if s.endswith("]") else s[1:]
             inner = inner.replace("TABLE:", "").strip()
-            table_placeholder(doc, "[" + inner + " — insert table here]")
+            table_placeholder(doc, "[" + inner + " (insert table here)]")
             continue
         if s.startswith("- ") or s.startswith("* "):
             flush(); body_para(doc, s[2:].strip(), cite_map, order, bullet=True); continue
@@ -342,10 +400,23 @@ def render_chapter(doc, path, cite_map, order):
 # --------------------------------------------------------------------------
 # Front matter
 # --------------------------------------------------------------------------
+def add_logo(doc):
+    """Center the Superior University logo, falling back to a placeholder
+    note if the image file is unavailable so the build never breaks."""
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(24)
+    if os.path.exists(LOGO_PATH):
+        p.add_run().add_picture(LOGO_PATH, width=LOGO_WIDTH, height=LOGO_HEIGHT)
+    else:
+        r = p.add_run("[Insert Superior University logo here]")
+        _run_font(r, size=12, italic=True)
+    return p
+
 def build_title_page(doc):
     para(doc, TITLE, align=WD_ALIGN_PARAGRAPH.CENTER, size=16, before=24, after=24)
-    para(doc, "[Insert Superior University logo here — 5 cm × 7.43 cm]",
-         align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True, after=24)
+    add_logo(doc)
     para(doc, "A Thesis submitted in partial fulfillment", align=WD_ALIGN_PARAGRAPH.CENTER, size=12, after=0)
     para(doc, "of the requirements for the degree of", align=WD_ALIGN_PARAGRAPH.CENTER, size=12, after=12)
     para(doc, DEGREE_FULL, align=WD_ALIGN_PARAGRAPH.CENTER, size=14, after=0, caps=True)
@@ -439,7 +510,7 @@ def build_approval(doc):
 
 def build_dedication(doc):
     mandatory_title(doc, "Dedication")
-    para(doc, "To [dedication text — begins with the word “To”].",
+    para(doc, "To [dedication text, begins with the word “To”].",
          align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True)
 
 def build_acknowledgements(doc):
@@ -449,13 +520,10 @@ def build_acknowledgements(doc):
 
 def build_lists(doc):
     mandatory_title(doc, "List of Figures")
-    body_para(doc, ("(Insert figure captions here after placing figures in the document. In Word: "
-                    "References → Insert Table of Figures. Example: Fig 3.1: Proposed Agentic AI "
-                    "framework.)"), {}, [])
+    add_tof(doc, "Figure")
     new_page(doc)
     mandatory_title(doc, "List of Tables")
-    body_para(doc, ("(Insert table captions here. Example: Table 2.1: Comparative analysis of reviewed "
-                    "agent frameworks.)"), {}, [])
+    add_tof(doc, "Table")
     new_page(doc)
     mandatory_title(doc, "List of Abbreviations and Acronyms")
     tbl = doc.add_table(rows=0, cols=2)
@@ -509,7 +577,7 @@ def main():
     build_approval(doc);      new_page(doc)
     build_dedication(doc);    new_page(doc)
     build_acknowledgements(doc); new_page(doc)
-    mandatory_title(doc, "Table of Contents"); add_toc(doc); new_page(doc)
+    mandatory_title(doc, "Table of Contents", outline=False); add_toc(doc); new_page(doc)
     build_lists(doc)
 
     # ---- Section 2: body (decimal, restart at 1) ----

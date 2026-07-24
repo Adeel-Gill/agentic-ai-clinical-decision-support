@@ -70,7 +70,7 @@ Beyond these, several general-agent systems fill in specific capabilities the cl
 
 A comparative view makes the pattern plain. When these frameworks are scored on general capabilities, reasoning, communication, role-based collaboration, workflow control, and healthcare orientation, they distribute their strengths unevenly and none covers the full set required for supervised longitudinal monitoring.
 
-[TABLE: Table 2.1 — Comparative analysis of reviewed frameworks]
+[TABLE: Table 2.1: Comparative analysis of reviewed frameworks]
 
 The shared shortcoming is decisive for this thesis. Existing frameworks target general-purpose task completion, not healthcare-specific decision support, and they provide limited long-term patient memory, weak integration with real clinical datasets, no continuous monitoring, limited explainability of autonomous decisions, and no built-in human-in-the-loop clinical validation. The proposed research responds by integrating MIMIC-IV data, patient memory management, Retrieval-Augmented Generation, clinical reasoning agents, multi-agent collaboration, trustworthy-AI mechanisms, and human validation into a single framework, bridging the distance between general-purpose LLM agents and reliable healthcare decision support.
 
@@ -164,7 +164,7 @@ The third and most under-served shortcoming is trustworthiness, specifically ver
 
 A comparative view makes this concrete. When systems are scored on general capabilities, memory, planning, reasoning, multi-agent collaboration, healthcare focus, and trustworthiness, the rows for ReAct, AutoGen, MetaGPT, MedAgents, Agent Hospital, and MedRAG collapse into nearly identical marks, which is precisely why an integration-based claim to novelty is weak. When the same systems are scored on five differentiating dimensions, patient-timeline RAG grounded in the EHR, a dedicated verification gate, longitudinal per-patient memory, evaluation on real ICU data such as MIMIC-IV, and a faithful audit trail, no prior system carries more than a single mark, and most carry none [tang2024medagents][li2024agenthospital][zhao2025medrag][shi2024ehragent][schmidgall2024agentclinic][johnson2023mimic]. Each prior system misses at least one of these dimensions, so the gap is real rather than rhetorical.
 
-[TABLE: Table 2.2 — Research gap matrix]
+[TABLE: Table 2.2: Research gap matrix]
 
 These observations point to the need for an Agentic AI framework that grounds retrieval in the patient's own longitudinal EHR timeline, coordinates specialized clinical agents, and treats verification and faithful auditability as evaluated components rather than aspirations, supporting intelligent monitoring while providing transparent, evidence-based recommendations that assist clinicians without replacing their judgment. The proposed research addresses these gaps by designing such a framework using the MIMIC-IV dataset [johnson2023mimic], combining longitudinal patient memory, ReAct-based reasoning [yao2023react], patient-timeline Retrieval-Augmented Generation over EHR data and medical literature, coordinated specialized agents, a dedicated verification gate, and human-in-the-loop validation to improve the quality, transparency, and reliability of AI-assisted clinical decision making. The architecture that realizes these components is presented in detail in Chapter 3.
 
