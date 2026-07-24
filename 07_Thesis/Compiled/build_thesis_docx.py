@@ -42,7 +42,7 @@ OUT = os.path.join(ROOT, "07_Thesis", "Thesis_Ch1_Ch2.docx")
 # --------------------------------------------------------------------------
 TITLE       = "An Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support"
 DEGREE_FULL = "MASTER OF SCIENCE"
-SUBJECT     = "ARTIFICIAL INTELLIGENCE"      # <-- verify with your program (e.g., COMPUTER SCIENCE)
+SUBJECT     = "ARTIFICIAL INTELLIGENCE"      # confirmed: MS Artificial Intelligence (roll no. MSAIW)
 STUDENT     = "Adeel Gill"
 ROLL_NUMBER = "SU92-MSAIW-S25-011"
 SESSION     = "2025-2026"
@@ -96,7 +96,7 @@ IEEE = {
  "jin2021medqa": 'D. Jin, E. Pan, N. Oufattole, W.-H. Weng, H. Fang, and P. Szolovits, "What disease does this patient have? A large-scale open domain question answering dataset from medical exams," Appl. Sci., vol. 11, no. 14, p. 6421, 2021.',
  "shi2024ehragent": 'W. Shi et al., "EHRAgent: Code empowers large language models for few-shot complex tabular reasoning on electronic health records," in Proc. EMNLP, 2024.',
  "schmidgall2024agentclinic": 'S. Schmidgall, R. Ziaei, C. Harris, E. Reis, J. Jopling, and M. Moor, "AgentClinic: A multimodal agent benchmark to evaluate AI in simulated clinical environments," arXiv:2405.07960, 2024.',
- "tu2025amie": 'T. Tu et al., "Towards conversational diagnostic AI," Nature, 2025. [venue to verify]',
+ "tu2025amie": 'T. Tu et al., "Towards conversational diagnostic AI," Nature, 2025.',
  "johnson2023mimic": 'A. E. W. Johnson et al., "MIMIC-IV, a freely accessible electronic health record dataset," Sci. Data, vol. 10, no. 1, p. 1, 2023.',
  "goldberger2000physiobank": 'A. L. Goldberger et al., "PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals," Circulation, vol. 101, no. 23, pp. e215–e220, 2000.',
  "rasheed2022explainable": 'K. Rasheed, A. Qayyum, M. Ghaly, A. Al-Fuqaha, A. Razi, and J. Qadir, "Explainable, trustworthy, and ethical machine learning for healthcare: A survey," Comput. Biol. Med., vol. 149, p. 106043, 2022.',
@@ -510,13 +510,18 @@ def build_approval(doc):
 
 def build_dedication(doc):
     mandatory_title(doc, "Dedication")
-    para(doc, "To [dedication text, begins with the word “To”].",
+    para(doc, "To my parents and family.",
          align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True)
 
 def build_acknowledgements(doc):
     mandatory_title(doc, "Acknowledgements")
-    body_para(doc, ("[Acknowledge your supervisor, collaborators, department, family, and any funding "
-                    "source here. This page is optional and can be personalized before submission.]"), {}, [])
+    body_para(doc, ("I am deeply grateful to my supervisor, %s, for the invaluable guidance, "
+                    "encouragement, and continuous support provided throughout this research, which "
+                    "shaped both the direction and the rigor of this work." % SUPERVISOR), {}, [])
+    body_para(doc, ("I also thank the faculty and staff of the Department of Computer Science, The "
+                    "Superior University, Lahore, for the academic environment and resources that made "
+                    "this study possible. Finally, I thank my family for their patience and unwavering "
+                    "support throughout my studies."), {}, [])
 
 def build_lists(doc):
     mandatory_title(doc, "List of Figures")
@@ -606,6 +611,14 @@ def main():
     # body: decimal restart at 1
     footer_page_field(secs[2], align=WD_ALIGN_PARAGRAPH.RIGHT, show=True)
     set_pgnum(secs[2], fmt="decimal", start=1)
+
+    # ask Word to refresh field-based content (TOC, List of Figures/Tables) on open,
+    # so the reader does not have to press F9 manually
+    _settings = doc.settings.element
+    for _el in _settings.findall(qn('w:updateFields')):
+        _settings.remove(_el)
+    _uf = OxmlElement('w:updateFields'); _uf.set(qn('w:val'), 'true')
+    _settings.insert(0, _uf)
 
     doc.save(OUT)
     print("Saved:", OUT)
