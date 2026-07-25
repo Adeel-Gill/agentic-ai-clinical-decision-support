@@ -1,0 +1,9 @@
+# Problem Statement
+
+Healthcare organizations generate massive volumes of structured and unstructured clinical data through Electronic Health Records (EHRs), laboratory reports, medication histories, physiological measurements, and clinical notes. Clinicians must interpret this information quickly to make accurate decisions regarding diagnosis, treatment, and patient management. The increasing complexity and volume of healthcare data make this process both challenging and time-consuming.
+
+Although Large Language Models (LLMs) have demonstrated strong capabilities in medical language understanding and clinical question answering, most existing systems operate as passive assistants that respond only to user prompts. They typically lack autonomous planning, persistent memory, structured reasoning, continuous patient monitoring, and collaboration with specialized intelligent agents. Furthermore, many healthcare AI systems are designed to solve isolated tasks rather than supporting comprehensive clinical workflows.
+
+Current clinical decision support systems also face limitations in integrating external medical knowledge, maintaining long-term patient context, providing explainable recommendations, and ensuring trustworthy decision making under physician supervision.
+
+Therefore, there is a need for an integrated Agentic AI framework that combines memory management, reasoning, planning, Retrieval-Augmented Generation (RAG), multi-agent collaboration, and trustworthy AI principles to support intelligent patient monitoring and clinical decision support using real-world healthcare data such as the MIMIC-IV dataset.
