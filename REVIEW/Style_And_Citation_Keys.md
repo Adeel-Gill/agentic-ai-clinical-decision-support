@@ -63,6 +63,35 @@ If a claim needs a source not listed here, write `[CITATION NEEDED]` — never i
 | rasheed2022explainable | Explainable/Trustworthy ML for Healthcare |
 | jimenez2023trustworthy | Toward Trustworthy AI in Healthcare (verify) |
 
+### 2025–2026 literature update keys (P021–P045, added 2026-08-05)
+| Key | Short name |
+|---|---|
+| wang2025baymax | Survey of LLM Agents in Medicine (Baymax) |
+| jiang2025medagentbench | MedAgentBench (virtual EHR benchmark) |
+| gao2025txagent | TxAgent (therapeutic reasoning) |
+| feng2025doctoragent | DoctorAgent-RL |
+| palepu2025disease | AMIE disease management |
+| saab2025multimodal | AMIE multimodal diagnosis |
+| liu2025riskagent | RiskAgent (risk prediction tools) |
+| arora2025healthbench | HealthBench (OpenAI) |
+| wu2025memory | Survey of LLM memory mechanisms |
+| ehtesham2025protocols | Agent interoperability protocols (MCP/A2A/ACP/ANP) |
+| singh2025agenticrag | Agentic RAG survey |
+| tran2025collaboration | Multi-agent collaboration mechanisms survey |
+| liu2025foundationagents | Foundation agents survey |
+| yehudai2025evaluation | Survey on evaluation of LLM agents |
+| yu2025trustagent | Trustworthy LLM agents survey (TrustAgent) |
+| fallahpour2025medrax | MedRAX (chest X-ray agent) |
+| kim2025hallucinations | Medical hallucinations study |
+| atf2025uncertainty | Uncertainty quantification in medical LLMs |
+| lovon2025mimic | MIMIC-IV LLM benchmark revisit |
+| shashikumar2025sepsis | COMPOSER-LLM prospective sepsis prediction |
+| ke2025ragfitness | Guideline RAG across 10 LLMs (npj) |
+| chen2025medsentry | MedSentry (multi-agent safety) |
+| weissman2025unregulated | Unregulated LLM device-like output |
+| tan2026undcs | UNDCS regulation of agentic clinical AI |
+| wang2026collaboration | Human–LLM collaboration meta-analysis |
+
 ## Paper-ID reconciliation (fix in Literature_Matrix + Notes)
 - Use `Pnn` consistently (P001–P020); drop the stray `P003s`.
 - **P016 and P017 are the SAME paper** ("Towards Generalist Biomedical AI") → keep one (P016), delete/repurpose the other.

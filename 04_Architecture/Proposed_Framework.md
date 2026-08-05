@@ -382,3 +382,57 @@ The proposed framework contributes to intelligent healthcare by:
 **Figure 3.1:** Proposed Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support using the MIMIC-IV Dataset.
 
 ![alt text](image.png)
+---
+
+# 16. Refinements from the 2025-2026 Literature Update
+
+The August 2026 review of P021-P045 confirms the core idea of the framework and motivates five
+bounded refinements. None changes the layered architecture or the thesis claim; each hardens a
+layer against a failure mode the newest literature has now documented.
+
+## 16.1 Standardized Tool and Agent Interfaces
+
+The Data Layer and Agent Orchestration Layer should expose tools through the Model Context
+Protocol (MCP) and reserve an Agent-to-Agent (A2A) style channel for inter-agent messages, rather
+than bespoke APIs. Interoperability protocols have consolidated quickly [ehtesham2025protocols],
+and adopting them keeps the prototype composable with hospital-side tooling. This is an interface
+decision only; agent responsibilities are unchanged.
+
+## 16.2 Memory Layer Terminology and Operations
+
+The Memory Layer keeps its four stores (short-term, long-term patient memory, vector database,
+clinical context memory) but adopts the construction / management / retrieval operation taxonomy
+from the memory survey [wu2025memory]. Concretely: memory writes are explicit construction events
+linked to source evidence; management includes decay and conflict-resolution rules for revised
+lab values; retrieval is always timestamp-aware. This sharpens the framework's central novelty -
+the patient timeline as a first-class retrieval corpus - in the vocabulary the field now uses.
+
+## 16.3 Verification Agent: Hallucination and Uncertainty Checks
+
+The Verification Agent gains two concrete check types drawn from the new safety literature:
+(a) recommendation-level grounding checks against the medical hallucination taxonomy
+[kim2025hallucinations], and (b) a calibrated confidence estimate attached to every
+recommendation, following the uncertainty-quantification argument that a clinical system must
+communicate how sure it is [atf2025uncertainty]. Both checks write their outcomes to the audit
+trail so that verification quality is itself measurable.
+
+## 16.4 Orchestration Topology Hardening
+
+MedSentry shows that multi-agent topology materially affects how far a compromised or erroneous
+agent can propagate influence [chen2025medsentry]. The Coordinator Agent therefore enforces a
+hub-and-spoke message topology (no direct agent-to-agent side channels), applies input screening
+on retrieved external content, and can quarantine an agent whose outputs repeatedly fail
+verification. TrustAgent's intrinsic/extrinsic threat split [yu2025trustagent] is used as the
+checklist for the security review in Chapter 4.
+
+## 16.5 Evaluation and Regulatory Alignment
+
+The Chapter 4 evaluation adds comparators that did not exist at proposal time: MedAgentBench-style
+task success in a FHIR-shaped environment [jiang2025medagentbench], HealthBench-style rubric
+grading of recommendation quality [arora2025healthbench], and the revisited MIMIC-IV prediction
+baselines [lovon2025mimic]. The Trustworthy AI Layer documents how the framework's guardrails,
+human oversight, and audit trail map onto the safeguards prescribed for unconfined
+non-deterministic clinical software [tan2026undcs], acknowledging that LLM-based decision support
+can constitute regulated medical-device output [weissman2025unregulated]. The human-in-the-loop
+design cites the collaboration meta-analysis as motivation for structured rather than free-form
+clinician review [wang2026collaboration].

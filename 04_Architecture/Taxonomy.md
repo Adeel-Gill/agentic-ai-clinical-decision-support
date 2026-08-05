@@ -246,6 +246,26 @@ These capabilities collectively shape the proposed framework for intelligent pat
 
 ---
 
+# 7. Recent Advances Mapped to the Taxonomy (2025–2026)
+
+The August 2026 literature update (P021–P045; see `02_Research/Literature_Matrix/Taxonomy.md` for the full mapping) confirms the six categories above and populates them with substantially stronger exemplars.
+
+**Memory.** A dedicated survey now taxonomizes agent memory into construction, management, and retrieval [wu2025memory], and the foundation-agents survey treats memory and world models as core cognitive modules [liu2025foundationagents]. AMIE's management extension tracks patient context across visits [palepu2025disease], the closest published analogue to this framework's long-term patient memory — though on scripted cases rather than real records.
+
+**Planning.** Therapeutic planning across tool chains (TxAgent [gao2025txagent]) and learned consultation policies (DoctorAgent-RL [feng2025doctoragent]) extend planning beyond prompt-level decomposition.
+
+**Reasoning.** Tool-verified reasoning (RiskAgent [liu2025riskagent]) and training-free ReAct-style orchestration in radiology (MedRAX [fallahpour2025medrax]) show clinical reasoning increasingly delegated to auditable external steps rather than free-form generation.
+
+**Tool Use.** The Model Context Protocol and related standards (A2A, ACP, ANP) turn tool access into shared infrastructure [ehtesham2025protocols]; TxAgent demonstrates scale with 211 biomedical tools [gao2025txagent].
+
+**Multi-Agent Collaboration.** Collaboration mechanisms now have a formal taxonomy [tran2025collaboration], and MedSentry shows the topology of a medical multi-agent system materially affects its safety under adversarial influence [chen2025medsentry] — a design constraint this framework's orchestration layer must respect.
+
+**Healthcare Intelligence.** The field gained realistic evaluation instruments (MedAgentBench's FHIR virtual EHR [jiang2025medagentbench]; HealthBench's physician rubrics [arora2025healthbench]) and one prospectively deployed early-warning system (COMPOSER-LLM [shashikumar2025sepsis]). Trustworthiness acquired regulatory teeth: unregulated LLMs demonstrably emit medical-device-like output [weissman2025unregulated], and proposed UNDCS rules prescribe guardrails, moderation, and retrieval grounding for agentic clinical software [tan2026undcs].
+
+The taxonomy itself required no structural change — evidence that the six-capability decomposition remains a sound organizing frame — but each capability now has 2025–2026 exemplars, and the gaps the framework targets (patient-timeline retrieval, longitudinal evaluation on real records, measured verification) remain visible precisely because the rest of the stack has matured around them.
+
+---
+
 # Figure
 
 **Figure 2.X:** Taxonomy of Large Language Model (LLM)-Based Agents.

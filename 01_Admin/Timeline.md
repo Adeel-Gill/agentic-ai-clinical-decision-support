@@ -6,7 +6,7 @@ absorbed by trimming the prototype scope, not the writing.
 
 | Month | Window | Milestone | Key deliverables | Depends on |
 |---|---|---|---|---|
-| Month 1 | 2026-07 | Literature + Ch. 1–2 locked | De-AI'd Ch. 1 & Ch. 2 with citations; taxonomy final; references verified; paper-ID reconciliation done | Style guide, References.bib |
+| Month 1 | 2026-07 | Literature + Ch. 1–2 locked | De-AI'd Ch. 1 & Ch. 2 with citations; taxonomy final; references verified; paper-ID reconciliation done. *2026-08-05: 2025–2026 literature update (P021–P045) landed — Section 2.11, matrix, taxonomy, bib.* | Style guide, References.bib |
 | Month 2 | 2026-08 | Framework + data ready | Ch. 3 finalized (architecture, agents, HITL); MIMIC-IV cohort extracted; data dictionary confirmed | Ch. 2 gap; PhysioNet access |
 | Month 3 | 2026-09 | Prototype + experiments | Bounded prototype runs; Ch. 4 evaluation executed (baselines, ablations, metrics); results tables | Ch. 3, cohort data |
 | Month 4a | 2026-10 | Full draft | Ch. 4 write-up; Ch. 5 conclusions + RQ answers; front matter; internal review + revisions | Ch. 4 results |

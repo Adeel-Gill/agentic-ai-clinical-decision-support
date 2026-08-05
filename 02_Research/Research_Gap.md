@@ -63,3 +63,49 @@ These three gaps yield three concrete questions this thesis answers:
 
 Answering these questions is the contribution. It requires building the framework, but the novelty
 lies in closing the specific evaluation and grounding gaps above, not in the act of integration.
+
+## Status after the 2025–2026 literature update (P021–P045)
+
+The 25 papers added in August 2026 sharpen rather than close the three gaps. Sorting the newest
+work into solved, partially solved, and open problems makes the position of this thesis explicit.
+
+**Effectively solved.** Tool-augmented medical reasoning is no longer a gap: TxAgent, RiskAgent,
+and MedRAX show that routing clinical questions through validated external tools is feasible and
+measurably reduces unsupported output [gao2025txagent; liu2025riskagent; fallahpour2025medrax].
+Agent infrastructure is likewise settled ground — interoperability protocols (MCP, A2A, ACP, ANP)
+and collaboration taxonomies mean the thesis can adopt standard plumbing instead of defending
+bespoke choices [ehtesham2025protocols; tran2025collaboration]. Guideline-grounded RAG has strong
+empirical support, including a ten-model npj Digital Medicine evaluation with zero observed
+hallucinations in its best configuration [ke2025ragfitness].
+
+**Partially solved.** Realistic evaluation moved closer to practice but stopped short of it.
+MedAgentBench grades agents inside a FHIR-based virtual EHR and HealthBench grades conversations
+against physician rubrics [jiang2025medagentbench; arora2025healthbench], yet both remain
+synthetic instruments; the revisited MIMIC-IV benchmark evaluates real records but frames the task
+as one-shot prediction, not longitudinal tracking [lovon2025mimic]. Longitudinal reasoning exists
+in AMIE's management extension, but on scripted multi-visit scenarios rather than real
+admissions [palepu2025disease]. Prospective deployment exists for exactly one narrow task —
+COMPOSER-LLM's sepsis alerting — and even there the LLM adjudicates alerts produced by a
+conventional model rather than maintaining patient state itself [shashikumar2025sepsis]. Safety
+became measurable (hallucination taxonomies, multi-agent stress tests, uncertainty framing)
+[kim2025hallucinations; chen2025medsentry; atf2025uncertainty], but what is measured is the
+model's general propensity to err, not whether a specific recommendation is entailed by a
+specific patient's evidence.
+
+**Still open — and claimed by this thesis.** (1) No 2025–2026 system retrieves from the
+patient's own timeline as a first-class corpus; retrieval targets remain guidelines and
+literature [singh2025agenticrag; ke2025ragfitness]. (2) No benchmark scores an agent on
+maintaining a grounded, evidence-linked model of one patient across days of real ICU
+observations; MedAgentBench's tasks are discrete and its records synthetic
+[jiang2025medagentbench]. (3) No system pairs a recommendation-level verification gate with a
+*measured* audit trail; the regulatory literature now demands precisely this combination of
+guardrails and inspectability without supplying an evaluated implementation
+[tan2026undcs; weissman2025unregulated]. The human-in-the-loop evidence base also stays thin: the
+only meta-analysis of clinician–LLM collaboration finds fragile gains and clinically significant
+error rates, which argues for the structured, verification-backed oversight this framework
+proposes rather than free-form review [wang2026collaboration].
+
+The novelty claim therefore survives the update in a stronger form: the field spent 2025–2026
+building better agents and better instruments, and in doing so documented — in its own benchmarks
+and surveys — that patient-timeline grounding, longitudinal evaluation on real records, and
+measured verification remain unoccupied territory.
