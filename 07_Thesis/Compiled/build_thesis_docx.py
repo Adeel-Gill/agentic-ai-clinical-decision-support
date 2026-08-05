@@ -43,9 +43,9 @@ OUT = os.path.join(ROOT, "07_Thesis", "Thesis_Ch1_Ch2.docx")
 TITLE       = "An Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support"
 DEGREE_FULL = "MASTER OF SCIENCE"
 SUBJECT     = "ARTIFICIAL INTELLIGENCE"      # confirmed: MS Artificial Intelligence (roll no. MSAIW)
-STUDENT     = "Adeel Gill"
+STUDENT     = "Adeel Masih"
 ROLL_NUMBER = "SU92-MSAIW-S25-011"
-SESSION     = "2025-2026"
+SESSION     = "2025-2027"
 SUPERVISOR  = "Dr. Fawad Nasim"
 DEPARTMENT  = "DEPARTMENT OF COMPUTER SCIENCE"
 FACULTY     = "FACULTY OF COMPUTER SCIENCE AND INFORMATION TECHNOLOGY"
@@ -510,7 +510,7 @@ def build_approval(doc):
 
 def build_dedication(doc):
     mandatory_title(doc, "Dedication")
-    para(doc, "To my parents and family.",
+    para(doc, "To my family.",
          align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True)
 
 def build_acknowledgements(doc):
