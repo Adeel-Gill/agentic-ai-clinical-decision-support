@@ -17,9 +17,15 @@ clinicians, using the **MIMIC-IV** critical-care database as the data source.
 | `06_Experiments/` | Experimental design, baselines, ablations, metrics, results |
 | `07_Thesis/` | Chapters 1–5, images, references |
 | `08_Presentation/` | Defense slides / outline |
+| `paper/` | W-category paper draft (introduction, related work, methodology, discussion) |
 | `REVIEW/` | External examiner report, prioritized TODO, viva questions, style guide |
+| `Reports/` | Generated progress reports (literature update report) |
 
-## Status (as of 2026-07-22)
+## Status (as of 2026-08-05)
+- Literature: 2025–2026 update complete — 25 new papers (P021–P045) with PDFs, notes
+  (`02_Research/Notes/`), matrix rows, taxonomy mapping, and BibTeX entries; Chapter 2 gained
+  Section 2.11 (Recent Advances 2025–2026).
+- W-category paper: first draft assembled in `paper/` (deadline 2026-08-10).
 - Chapters 1–2: drafted (under revision for citations + de-AI'd prose).
 - Chapter 3 (framework/methodology): drafted in `07_Thesis/Chapter_3/`.
 - Chapter 4 (experimental design): planned in `07_Thesis/Chapter_4/` + `06_Experiments/`.
