@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACDSS — Clinician Platform Prototype</title>
+<style>
+  :root{
+    --bg:#f6f8fa; --surface:#ffffff; --line:#e3e8ee;
+    --ink:#1a202c; --ink2:#5a6472; --ink3:#8a94a3;
+    --brand:#0f766e; --brand-soft:#e6f4f2;
+    --data:#0d9488; --data2:#b45309;
+    --good:#1a7f37; --good-bg:#e9f5ec;
+    --warn:#b45309; --warn-bg:#fdf3e7;
+    --crit:#b91c1c; --crit-bg:#fdecec;
+    --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font:14px/1.55 Inter,system-ui,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);display:flex;min-height:100vh}
+  /* ---------- shell ---------- */
+  nav{width:212px;background:#0c3934;color:#d7e6e3;padding:18px 0;flex-shrink:0;display:flex;flex-direction:column}
+  nav .logo{font-weight:700;font-size:16px;color:#fff;padding:0 20px 16px;letter-spacing:.3px}
+  nav .logo small{display:block;font-weight:400;font-size:10.5px;color:#8fb5ae;margin-top:2px}
+  nav a{display:flex;gap:10px;align-items:center;padding:9px 20px;color:#c3d7d3;text-decoration:none;font-size:13.5px;border-left:3px solid transparent}
+  nav a:hover{background:rgba(255,255,255,.06)}
+  nav a.active{background:rgba(255,255,255,.1);color:#fff;border-left-color:#2dd4bf}
+  nav .foot{margin-top:auto;padding:14px 20px;font-size:10.5px;color:#78a29b;border-top:1px solid rgba(255,255,255,.12)}
+  main{flex:1;min-width:0}
+  header{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:5;flex-wrap:wrap}
+  header h1{font-size:15px;font-weight:600}
+  .spacer{flex:1}
+  .badge{background:var(--crit);color:#fff;border-radius:10px;font-size:11px;padding:1px 8px;font-weight:600}
+  .who{font-size:12.5px;color:var(--ink2)}
+  section.view{display:none;padding:22px 24px;max-width:1440px}
+  section.view.on{display:block}
+  h2{font-size:16px;margin-bottom:4px}
+  .sub{color:var(--ink2);font-size:12.5px;margin-bottom:16px}
+  /* ---------- shared bits ---------- */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;border-radius:999px;padding:2px 9px}
+  .chip.good{background:var(--good-bg);color:var(--good)} .chip.warn{background:var(--warn-bg);color:var(--warn)}
+  .chip.crit{background:var(--crit-bg);color:var(--crit)} .chip.mut{background:#eef1f4;color:var(--ink2)}
+  .btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.danger{color:var(--crit);border-color:#f1c8c8}
+  .btn:hover{filter:brightness(.97)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid #eef1f4;vertical-align:top}
+  .mono{font-family:var(--mono);font-size:12px}
+  .muted{color:var(--ink2)} .small{font-size:12px}
+  svg text{font:10.5px Inter,system-ui,sans-serif;fill:var(--ink2)}
+  /* ---------- view 1 : unit ---------- */
+  .unit{display:grid;grid-template-columns:1fr 300px;gap:18px}
+  .beds{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:12px}
+  .bed{cursor:pointer;transition:box-shadow .12s}
+  .bed:hover{box-shadow:0 2px 10px rgba(15,60,55,.12)}
+  .bed .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+  .bed .id{font-weight:700} .bed .meta{font-size:11.5px;color:var(--ink2)}
+  .risk{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .riskbar{flex:1;height:6px;border-radius:4px;background:#edf0f3;overflow:hidden}
+  .riskbar i{display:block;height:100%;border-radius:4px;background:var(--data)}
+  .ci{font-size:10.5px;color:var(--ink3)}
+  .queue .item{border-bottom:1px solid #eef1f4;padding:10px 0}
+  .queue .item:last-child{border-bottom:0}
+  /* ---------- view 2 : timeline ---------- */
+  .pt-head{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .pt-head .kv{font-size:12px;color:var(--ink2)} .pt-head .kv b{display:block;font-size:14px;color:var(--ink)}
+  .lane{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;border-bottom:1px solid #eef1f4}
+  .lane:last-child{border-bottom:0}
+  .lane .lbl{font-size:11.5px;color:var(--ink2);padding:6px 8px 6px 2px;text-align:right}
+  .evtray{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .ev{border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:12px;background:var(--surface);cursor:pointer}
+  .ev:hover{border-color:var(--brand)}
+  .ev.hl{border-color:var(--brand);background:var(--brand-soft)}
+  .ev b{font-family:var(--mono);font-weight:600}
+  .nowrow{display:flex;align-items:center;gap:12px;margin:8px 0 4px;font-size:12px;color:var(--ink2)}
+  .nowrow input{flex:1;min-width:60px;accent-color:var(--brand)}
+  .nowrow{flex-wrap:wrap}
+  .tlgrid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+  /* ---------- view 3 : review ---------- */
+  .review{display:grid;grid-template-columns:1fr;max-width:980px;gap:16px}
+  .crumbs{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--ink2);flex-wrap:wrap}
+  .crumbs span{background:#eef1f4;border-radius:6px;padding:2px 8px}
+  .crumbs .ok{background:var(--good-bg);color:var(--good);font-weight:600}
+  .verif{display:flex;gap:10px;align-items:flex-start;background:var(--good-bg);border:1px solid #cde8d4;border-radius:10px;padding:12px 14px}
+  .verif .tick{color:var(--good);font-size:18px;line-height:1}
+  .evcols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .claim{border-bottom:2px dotted var(--brand);cursor:pointer}
+  .claim.on{background:var(--brand-soft)}
+  .conf{display:flex;align-items:center;gap:10px;margin:10px 0}
+  .confbar{position:relative;flex:1;height:8px;background:#edf0f3;border-radius:5px}
+  .confbar .rng{position:absolute;height:100%;background:#bcded9;border-radius:5px}
+  .confbar .pt{position:absolute;top:-3px;width:3px;height:14px;background:var(--brand);border-radius:2px}
+  .actions{display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:14px;flex-wrap:wrap}
+  .actions textarea{flex:1;min-width:240px;border:1px solid var(--line);border-radius:8px;padding:8px;font:inherit;font-size:12.5px;resize:vertical;min-height:38px}
+  /* ---------- view 4 : gate ---------- */
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .tabs button{border:0;background:none;padding:9px 16px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;border-bottom:2px solid transparent}
+  .tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+  .gate-grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start}
+  tr.blocked td{color:var(--ink3)}
+  .legend{display:flex;gap:14px;font-size:11.5px;color:var(--ink2);margin-top:6px}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+  /* ---------- view 5 : audit ---------- */
+  .filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .filters select,.filters input{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit;font-size:12.5px;background:var(--surface)}
+  details.audit{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+  details.audit summary{display:flex;gap:14px;align-items:center;padding:11px 14px;cursor:pointer;list-style:none;flex-wrap:wrap}
+  details.audit summary::-webkit-details-marker{display:none}
+  details.audit .body{border-top:1px solid var(--line);padding:13px 14px;font-size:12.5px}
+  .ref{font-family:var(--mono);font-size:11.5px;background:#f1f4f6;border-radius:5px;padding:1px 6px}
+  /* ---------- view 6 : agents ---------- */
+  .agents-grid{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+  .health{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .health .card b{font-size:19px;display:block}
+  .health .card span{font-size:11.5px;color:var(--ink2)}
+  #tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:11.5px;border-radius:6px;padding:5px 9px;opacity:0;transition:opacity .08s;z-index:50;max-width:240px}
+  .note{font-size:11px;color:var(--ink3);margin-top:10px}
+  .card:has(table),#lanes,details.audit .body{overflow-x:auto}
+  .pt-head{overflow-x:auto}
+  @media (max-width:960px){
+    .unit,.tlgrid,.gate-grid,.agents-grid,.evcols{grid-template-columns:1fr}
+    nav{width:64px} nav .logo small,nav a span.txt,nav .foot{display:none}
+    .health{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body data-palette="#0d9488,#b45309">
+<nav>
+  <div class="logo">ACDSS<small>Agentic Clinical Decision Support — prototype</small></div>
+  <a href="#" class="active" data-v="unit">▦ Unit Overview</a>
+  <a href="#" data-v="patient">∿ Patient Timeline</a>
+  <a href="#" data-v="review">✓ Recommendation Review</a>
+  <a href="#" data-v="alerts">⚑ Alerts &amp; Gate</a>
+  <a href="#" data-v="audit">≡ Audit Trail</a>
+  <a href="#" data-v="agents">◎ Agent Monitor</a>
+  <div class="foot">All data on this screen is <b>synthetic</b> (MIMIC-IV demo–shaped). Research prototype — not for clinical use.</div>
+</nav>
+<main>
+  <header>
+    <h1 id="viewtitle">Unit Overview — MICU A</h1>
+    <div class="spacer"></div>
+    <span class="chip crit">▲ 2 verified alerts <span class="badge">2</span></span>
+    <span class="who">Dr. A. Rehman · Day shift</span>
+  </header>
+
+  <!-- ================= VIEW 1 : UNIT ================= -->
+  <section class="view on" id="v-unit">
+    <div class="unit">
+      <div>
+        <h2>Beds</h2>
+        <p class="sub">Sorted by review priority. Risk score = cross-validated model output with 95% interval; chips reflect verification state, not raw risk.</p>
+        <div class="beds" id="beds"></div>
+      </div>
+      <aside>
+        <h2>Awaiting review</h2>
+        <p class="sub">Verified alerts only — the gate has already blocked 3 unsupported alerts today (see Alerts &amp; Gate).</p>
+        <div class="card queue">
+          <div class="item">
+            <span class="chip crit">▲ Critical</span> <b>Bed 04 · P-1043</b>
+            <div class="small muted">Rising lactate + hypotension + tachycardia (4 signals, 6 h). Sepsis risk ↑.</div>
+            <div class="small mono muted">12:42 · Verification: PASSED</div>
+          </div>
+          <div class="item">
+            <span class="chip warn">▲ Warning</span> <b>Bed 09 · P-1088</b>
+            <div class="small muted">SpO2 trend ↓ with rising resp. rate (3 signals, 6 h).</div>
+            <div class="small mono muted">12:17 · Verification: PASSED</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 2 : PATIENT ================= -->
+  <section class="view" id="v-patient">
+    <div class="pt-head card" style="padding:12px 16px">
+      <div class="kv">Patient<b>P-1043 <span class="muted small">(synthetic)</span></b></div>
+      <div class="kv">Bed<b>MICU A-04</b></div>
+      <div class="kv">Adm. diagnosis<b>Community-acquired pneumonia</b></div>
+      <div class="kv">Day of stay<b>2 (32 h)</b></div>
+      <div class="kv">Prior admissions<b>2 in timeline</b></div>
+      <div class="spacer"></div>
+      <div class="kv">Current risk<b>0.72 <span class="ci">(0.58–0.83)</span> <span class="chip crit">▲ review</span></b></div>
+    </div>
+    <div class="tlgrid" style="margin-top:14px">
+      <div class="card">
+        <div class="nowrow">
+          <span>Replay “what was knowable”</span>
+          <input type="range" min="0" max="32" value="32" id="nowcur">
+          <span class="mono" id="nowlbl">t = admission + 32 h (now)</span>
+        </div>
+        <div id="lanes"></div>
+        <p class="note">Timeline lanes are small multiples — one measure per lane, one axis each. Hover any point for value + provenance. Events after the cursor are hidden, mirroring the framework’s timestamp-aware retrieval.</p>
+      </div>
+      <aside>
+        <div class="card">
+          <h2 style="font-size:14px">Retrieved evidence <span class="chip mut">k = 8 · t = now</span></h2>
+          <p class="sub" style="margin-bottom:8px">What the agents actually saw. Click a chip to locate it on the timeline.</p>
+          <div class="evtray" id="evtray"></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2 style="font-size:14px">Current recommendation</h2>
+          <p class="small" style="margin:6px 0">Obtain blood cultures and reassess fluid status; consider early sepsis bundle. <span class="chip good">✓ verified</span></p>
+          <div class="small muted">Confidence 0.72 (0.58–0.83) · 4 concordant signals</div>
+          <button class="btn primary" style="margin-top:10px" onclick="go('review')">Open full review →</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 3 : REVIEW ================= -->
+  <section class="view" id="v-review">
+    <div class="review">
+      <div class="card">
+        <div class="crumbs">Agent chain:
+          <span>Monitoring</span>→<span>Risk Prediction</span>→<span>Treatment Rec.</span>→<span>Explanation</span>→<span class="ok">Verification ✓</span>
+        </div>
+        <h2 style="margin:12px 0 6px">Recommendation for P-1043 · Bed 04</h2>
+        <p style="font-size:14.5px">
+          <span class="claim" data-ev="e1,e2">Early sepsis risk is elevated</span>:
+          <span class="claim" data-ev="e1">serum lactate has risen from 1.4 to 3.1 mmol/L over 8 h</span>,
+          with <span class="claim" data-ev="e2">MAP trending below 65 mmHg</span> and
+          <span class="claim" data-ev="e3">heart rate persistently above 105 bpm</span>.
+          Recommend <span class="claim" data-ev="e4">blood cultures before antibiotic escalation</span>,
+          fluid-status reassessment, and initiation of the sepsis bundle per unit protocol.
+        </p>
+        <div class="conf">
+          <span class="small muted">Calibrated confidence</span>
+          <div class="confbar"><i class="rng" style="left:58%;width:25%"></i><i class="pt" style="left:72%"></i></div>
+          <span class="mono">0.72 (0.58–0.83)</span>
+        </div>
+        <div class="verif">
+          <div class="tick">✓</div>
+          <div>
+            <b>Verification: PASSED</b> — 4 distinct concordant signals within the last 6 h (threshold: ≥3).
+            <details class="small" style="margin-top:4px"><summary style="cursor:pointer;color:var(--brand)">Show gate detail</summary>
+              Signals: elevated lactate · MAP &lt; 65 · HR &gt; 100 · WBC 14.2. Guideline conflict check: none against active orders. Hallucination screen: all quantitative claims entailed by retrieved evidence.
+            </details>
+          </div>
+        </div>
+      </div>
+      <div class="evcols">
+        <div class="card">
+          <h2 style="font-size:14px">Patient evidence <span class="chip mut">timeline RAG</span></h2>
+          <table>
+            <tr><th>t</th><th>Item</th><th>Value</th></tr>
+            <tr id="e1"><td class="mono">11:50</td><td>Lactate</td><td><b>3.1</b> mmol/L <span class="chip crit">abn</span></td></tr>
+            <tr id="e2"><td class="mono">12:30</td><td>MAP (arterial)</td><td><b>62</b> mmHg <span class="chip crit">abn</span></td></tr>
+            <tr id="e3"><td class="mono">12:35</td><td>Heart rate</td><td><b>108</b> bpm <span class="chip warn">abn</span></td></tr>
+            <tr id="e4"><td class="mono">10:15</td><td>WBC</td><td><b>14.2</b> ×10⁹/L <span class="chip warn">abn</span></td></tr>
+          </table>
+          <p class="note">Every row carries provenance (source table + row id) into the audit trail.</p>
+        </div>
+        <div class="card">
+          <h2 style="font-size:14px">Knowledge evidence <span class="chip mut">guideline RAG</span></h2>
+          <p class="small" style="margin:8px 0"><b>Surviving Sepsis Campaign (2021), rec. 12:</b> “obtain cultures before initiating antimicrobials where no substantial delay results.”</p>
+          <p class="small" style="margin:8px 0"><b>Unit protocol MICU-SEP-03:</b> lactate &gt; 2 mmol/L with hypotension → bundle initiation + reassessment within 1 h.</p>
+          <p class="note">Sources are named and versioned; excerpts are retrieved, never generated.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="actions">
+          <button class="btn primary">✓ Approve</button>
+          <button class="btn">✎ Modify</button>
+          <button class="btn danger">✕ Reject</button>
+          <textarea placeholder="Reason (required for Modify / Reject) — recorded to audit trail"></textarea>
+        </div>
+        <p class="note">Nothing executes automatically. Your decision and reason are written to the audit trail and fed back to the monitoring loop as a supervision signal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 4 : ALERTS / GATE ================= -->
+  <section class="view" id="v-alerts">
+    <div class="tabs">
+      <button class="on" onclick="tab(this,'verified')">Verified — awaiting review (2)</button>
+      <button onclick="tab(this,'blocked')">Blocked by gate (3)</button>
+    </div>
+    <div class="gate-grid">
+      <div class="card">
+        <table id="t-verified">
+          <tr><th>Time</th><th>Patient</th><th>Risk</th><th>Type</th><th>Signals</th><th></th></tr>
+          <tr><td class="mono">12:42</td><td><b>P-1043</b> · Bed 04</td><td class="mono">0.72</td><td>Sepsis risk ↑</td><td><span class="chip good">4 / 3 required</span></td><td><button class="btn" onclick="go('review')">Review</button></td></tr>
+          <tr><td class="mono">12:17</td><td><b>P-1088</b> · Bed 09</td><td class="mono">0.61</td><td>Respiratory deterioration</td><td><span class="chip good">3 / 3 required</span></td><td><button class="btn">Review</button></td></tr>
+        </table>
+        <table id="t-blocked" style="display:none">
+          <tr><th>Time</th><th>Patient</th><th>Risk</th><th>Type</th><th>Block reason</th></tr>
+          <tr class="blocked"><td class="mono">11:58</td><td>P-1102 · Bed 02</td><td class="mono">0.57</td><td>Sepsis risk ↑</td><td>1 signal in last 6 h (≥3 required)</td></tr>
+          <tr class="blocked"><td class="mono">10:31</td><td>P-1067 · Bed 11</td><td class="mono">0.55</td><td>Renal deterioration</td><td>2 signals in last 6 h (≥3 required)</td></tr>
+          <tr class="blocked"><td class="mono">09:04</td><td>P-1029 · Bed 07</td><td class="mono">0.54</td><td>Sepsis risk ↑</td><td>0 signals in last 6 h (≥3 required)</td></tr>
+        </table>
+        <p class="note">Blocked alerts are auditable, never deleted — a clinician can open and override any of them.</p>
+      </div>
+      <aside class="card">
+        <h2 style="font-size:14px">Gate operating curve <span class="chip mut">admin</span></h2>
+        <p class="sub" style="margin-bottom:4px">Pilot data (MIMIC-IV demo, n=28 alerts): pass rate as the evidence requirement tightens. Current threshold: <b>≥3 signals</b>.</p>
+        <svg viewBox="0 0 300 190" width="100%" role="img" aria-label="Gate operating curve: pass rate for true and false alerts by required signal count" id="opcurve"></svg>
+        <div class="legend">
+          <span><i style="background:#0d9488"></i>True alerts (died)</span>
+          <span><i style="background:#b45309"></i>False alerts (survived)</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 5 : AUDIT ================= -->
+  <section class="view" id="v-audit">
+    <div class="filters">
+      <select><option>All patients</option><option>P-1043</option><option>P-1088</option></select>
+      <select><option>All agents</option><option>Verification</option><option>Treatment Rec.</option></select>
+      <select><option>All decisions</option><option>Approved</option><option>Modified</option><option>Rejected</option><option>Blocked</option></select>
+      <input type="date" value="2026-08-07">
+      <div class="spacer"></div>
+      <button class="btn">⇩ Export for review</button>
+    </div>
+    <details class="audit" open>
+      <summary><span class="mono muted">12:42:07</span><b>P-1043</b><span class="chip good">✓ verified · approved</span><span class="muted small">Sepsis bundle recommendation — approved by Dr. A. Rehman</span><span class="spacer"></span><span class="chip mut">resolvability ✓</span></summary>
+      <div class="body">
+        <p><b>Recommendation:</b> blood cultures, fluid reassessment, sepsis bundle initiation.</p>
+        <p style="margin-top:6px"><b>Verification:</b> PASSED — 4 distinct signals / ≥3 required · guideline conflicts: none · claims entailed: 5/5.</p>
+        <p style="margin-top:6px"><b>Evidence references:</b>
+          <span class="ref">hosp/labevents#48211 · 11:50 · lactate=3.1</span>
+          <span class="ref">icu/chartevents#193307 · 12:30 · map=62</span>
+          <span class="ref">icu/chartevents#193341 · 12:35 · hr=108</span>
+          <span class="ref">hosp/labevents#48160 · 10:15 · wbc=14.2</span>
+          — all 4 re-resolved against source tables ✓
+        </p>
+        <p style="margin-top:6px"><b>Clinician decision:</b> Approved, 12:47. Reason: “Consistent with bedside picture; cultures drawn.”</p>
+      </div>
+    </details>
+    <details class="audit">
+      <summary><span class="mono muted">11:58:22</span><b>P-1102</b><span class="chip warn">◼ blocked by gate</span><span class="muted small">Sepsis risk alert — insufficient recent evidence</span><span class="spacer"></span><span class="chip mut">resolvability ✓</span></summary>
+      <div class="body">
+        <p><b>Alert:</b> model risk 0.57 (top-quintile). <b>Gate:</b> BLOCKED — 1 distinct signal in the last 6 h (≥3 required).</p>
+        <p style="margin-top:6px"><b>Evidence references:</b> <span class="ref">icu/chartevents#188902 · 11:20 · hr=104</span> — re-resolved ✓</p>
+        <p style="margin-top:6px"><b>Status:</b> visible to clinicians under Alerts → Blocked; no notification sent.</p>
+      </div>
+    </details>
+    <details class="audit">
+      <summary><span class="mono muted">12:17:41</span><b>P-1088</b><span class="chip good">✓ verified · pending</span><span class="muted small">Respiratory deterioration — awaiting clinician review</span><span class="spacer"></span><span class="chip mut">resolvability ✓</span></summary>
+      <div class="body">
+        <p><b>Recommendation:</b> increase monitoring frequency; consider ABG and chest imaging review.</p>
+        <p style="margin-top:6px"><b>Verification:</b> PASSED — 3 distinct signals / ≥3 required (SpO2 89%, RR 26, temp 38.4 °C).</p>
+        <p style="margin-top:6px"><b>Evidence references:</b> <span class="ref">icu/chartevents#201115 · 11:45 · spo2=89</span> <span class="ref">icu/chartevents#201162 · 12:00 · rr=26</span> <span class="ref">icu/chartevents#201201 · 12:10 · temp_c=38.4</span> — re-resolved ✓</p>
+      </div>
+    </details>
+    <p class="note">Trail faithfulness is a measured system metric (pilot: 183/183 references re-resolved). Entries are append-only.</p>
+  </section>
+
+  <!-- ================= VIEW 6 : AGENTS ================= -->
+  <section class="view" id="v-agents">
+    <div class="agents-grid">
+      <div class="card">
+        <h2 style="font-size:14px">Orchestration topology <span class="chip mut">hub-and-spoke</span></h2>
+        <p class="sub">All inter-agent messages pass through the Coordinator — no side channels. Quarantine isolates an agent whose outputs repeatedly fail verification.</p>
+        <svg viewBox="0 0 640 380" width="100%" id="hub" role="img" aria-label="Hub and spoke diagram of agents around the coordinator"></svg>
+      </div>
+      <aside class="card" id="agentlog">
+        <h2 style="font-size:14px">Agent log — Verification</h2>
+        <table>
+          <tr><th>t</th><th>Event</th></tr>
+          <tr><td class="mono">12:42</td><td>P-1043 recommendation: PASS (4 signals, 0 conflicts)</td></tr>
+          <tr><td class="mono">12:17</td><td>P-1088 recommendation: PASS (3 signals)</td></tr>
+          <tr><td class="mono">11:58</td><td>P-1102 alert: BLOCK (1 signal &lt; 3)</td></tr>
+          <tr><td class="mono">10:31</td><td>P-1067 alert: BLOCK (2 signals &lt; 3)</td></tr>
+        </table>
+      </aside>
+    </div>
+    <div class="health">
+      <div class="card"><b>11.7 ms</b><span>retrieval latency (median, pilot)</span></div>
+      <div class="card"><b>50 %</b><span>gate pass rate today (14/28, pilot)</span></div>
+      <div class="card"><b>1.00</b><span>audit-trail resolvability (183/183)</span></div>
+      <div class="card"><b>0</b><span>agents quarantined</span></div>
+    </div>
+  </section>
+</main>
+<div id="tip"></div>
+
+<script>
+/* ---------- synthetic data (no real patient data) ---------- */
+const beds = [
+  {bed:"04", id:"P-1043", meta:"M · 67 · 32 h", risk:.72, lo:.58, hi:.83, st:"crit", label:"Verified alert — review", hr:[88,92,95,99,104,101,106,108]},
+  {bed:"09", id:"P-1088", meta:"F · 71 · 51 h", risk:.61, lo:.47, hi:.74, st:"crit", label:"Verified alert — review", hr:[78,80,84,88,92,96,99,103]},
+  {bed:"02", id:"P-1102", meta:"M · 54 · 18 h", risk:.57, lo:.41, hi:.70, st:"warn", label:"Watch — gate blocked", hr:[84,88,86,90,95,92,97,104]},
+  {bed:"11", id:"P-1067", meta:"F · 62 · 76 h", risk:.55, lo:.40, hi:.69, st:"warn", label:"Watch", hr:[90,87,85,88,86,89,91,90]},
+  {bed:"07", id:"P-1029", meta:"M · 48 · 12 h", risk:.54, lo:.38, hi:.68, st:"warn", label:"Watch", hr:[72,75,78,74,79,82,80,84]},
+  {bed:"01", id:"P-1010", meta:"F · 59 · 96 h", risk:.31, lo:.20, hi:.44, st:"good", label:"Stable", hr:[76,74,75,73,74,72,75,74]},
+  {bed:"03", id:"P-1051", meta:"M · 44 · 40 h", risk:.28, lo:.18, hi:.41, st:"good", label:"Stable", hr:[68,70,69,71,70,72,69,70]},
+  {bed:"05", id:"P-1076", meta:"F · 81 · 62 h", risk:.42, lo:.29, hi:.56, st:"warn", label:"Watch", hr:[82,84,81,86,84,88,85,87]},
+  {bed:"06", id:"P-1093", meta:"M · 73 · 29 h", risk:.26, lo:.16, hi:.39, st:"good", label:"Stable", hr:[74,73,75,72,74,73,72,74]},
+  {bed:"08", id:"P-1015", meta:"F · 66 · 84 h", risk:.35, lo:.23, hi:.49, st:"good", label:"Stable", hr:[70,72,71,73,72,74,73,72]},
+  {bed:"10", id:"P-1038", meta:"M · 57 · 22 h", risk:.24, lo:.15, hi:.36, st:"good", label:"Stable", hr:[66,68,67,69,68,70,69,68]},
+  {bed:"12", id:"P-1120", meta:"F · 52 · 8 h",  risk:.29, lo:.18, hi:.43, st:"good", label:"Stable", hr:[72,74,73,75,74,76,75,74]},
+];
+const tip = document.getElementById('tip');
+function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 12, innerWidth - 250) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; }
+function hideTip(){ tip.style.opacity = 0; }
+
+/* sparkline: single series, thin 2px line, no legend (title names it) */
+function spark(vals, w = 200, h = 36, color = '#0d9488'){
+  const mn = Math.min(...vals), mx = Math.max(...vals), pad = 2;
+  const x = i => pad + i * (w - 2 * pad) / (vals.length - 1);
+  const y = v => h - pad - (v - mn) / ((mx - mn) || 1) * (h - 2 * pad);
+  const d = vals.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" aria-label="heart-rate trend">
+    <path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="${x(vals.length-1)}" cy="${y(vals.at(-1))}" r="3.5" fill="${color}" stroke="#fff" stroke-width="2"/>
+  </svg>`;
+}
+const st2chip = {crit:'crit', warn:'warn', good:'good'};
+const st2ic = {crit:'▲', warn:'▲', good:'●'};
+document.getElementById('beds').innerHTML = beds.map(b => `
+  <div class="card bed" onclick="go('patient')" title="Open patient timeline">
+    <div class="top"><span class="id">Bed ${b.bed} · ${b.id}</span><span class="meta">${b.meta}</span></div>
+    <span class="chip ${st2chip[b.st]}">${st2ic[b.st]} ${b.label}</span>
+    ${spark(b.hr)}
+    <div class="risk"><span class="small muted">risk</span>
+      <div class="riskbar"><i style="width:${b.risk*100}%"></i></div>
+      <span class="mono">${b.risk.toFixed(2)}</span><span class="ci">(${b.lo.toFixed(2)}–${b.hi.toFixed(2)})</span></div>
+  </div>`).join('');
+
+/* ---------- patient timeline lanes ---------- */
+const H = 46, W = 720;
+const series = {
+  'Heart rate':  {type:'line', unit:'bpm',  pts:[[0,84],[4,88],[8,92],[12,95],[16,99],[20,104],[24,101],[28,106],[32,108]], abn:v=>v>100},
+  'MAP':         {type:'line', unit:'mmHg', pts:[[0,78],[4,76],[8,74],[12,72],[16,70],[20,68],[24,66],[28,64],[32,62]],   abn:v=>v<65},
+  'SpO2':        {type:'line', unit:'%',    pts:[[0,97],[4,96],[8,96],[12,95],[16,94],[20,94],[24,93],[28,93],[32,92]],   abn:v=>v<92},
+  'Labs':        {type:'dot',  unit:'',     pts:[[2,'WBC 11.8'],[6,'Lactate 1.4'],[10,'Creatinine 1.1'],[18,'WBC 14.2 ⚠'],[26,'Lactate 2.4 ⚠'],[30,'Lactate 3.1 ⚠']]},
+  'Medications': {type:'bar',  unit:'',     pts:[[1,14,'Ceftriaxone'],[3,32,'IV fluids'],[20,32,'Norepinephrine (low)']]},
+  'Prior adm.':  {type:'dot',  unit:'',     pts:[[-6,'2025-11 · COPD exac.'],[-3,'2026-03 · Pneumonia']]},
+};
+function laneSVG(name, s, tmax){
+  const x = t => 40 + Math.max(0,(t + 8)) / 40 * (W - 60);
+  let inner = `<line x1="40" y1="${H-12}" x2="${W-20}" y2="${H-12}" stroke="#e3e8ee"/>`;
+  if (s.type === 'line'){
+    const vs = s.pts.filter(p => p[0] <= tmax); if (!vs.length) return '';
+    const mn = Math.min(...s.pts.map(p=>p[1])), mx = Math.max(...s.pts.map(p=>p[1]));
+    const y = v => H - 14 - (v - mn) / ((mx - mn)||1) * (H - 22);
+    inner += `<path d="${vs.map((p,i)=>(i?'L':'M')+x(p[0])+' '+y(p[1])).join(' ')}" fill="none" stroke="#0d9488" stroke-width="2"/>`;
+    inner += vs.map(p => `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="${s.abn && s.abn(p[1]) ? 4 : 2.5}"
+        fill="${s.abn && s.abn(p[1]) ? '#b91c1c' : '#0d9488'}" stroke="#fff" stroke-width="1.5"
+        data-tip="${name} = ${p[1]} ${s.unit} · t=+${p[0]}h · icu/chartevents"/>`).join('');
+  } else if (s.type === 'dot'){
+    inner += s.pts.filter(p => p[0] <= tmax).map(p => {
+      const abn = String(p[1]).includes('⚠');
+      return `<circle cx="${x(p[0])}" cy="${H-24}" r="5" fill="${abn ? '#b91c1c' : '#5a6472'}" stroke="#fff" stroke-width="1.5"
+        data-tip="${p[1]} · t=${p[0]<0 ? p[0]+' (prior)' : '+'+p[0]+'h'} · hosp tables"/>`;
+    }).join('');
+  } else {
+    inner += s.pts.filter(p => p[0] <= tmax).map(p =>
+      `<rect x="${x(p[0])}" y="${H-30}" width="${Math.max(6,(x(Math.min(p[1],tmax))-x(p[0])))}" height="10" rx="4"
+        fill="#0d9488" opacity=".55" data-tip="${p[2]} · +${p[0]}h → +${Math.min(p[1],tmax)}h · hosp/prescriptions"/>`).join('');
+  }
+  inner += `<line x1="${x(tmax)}" y1="4" x2="${x(tmax)}" y2="${H-8}" stroke="#b45309" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+  return `<div class="lane"><div class="lbl">${name}</div><svg viewBox="0 0 ${W} ${H}" width="100%">${inner}</svg></div>`;
+}
+function drawLanes(tmax){
+  document.getElementById('lanes').innerHTML = Object.entries(series).map(([n,s]) => laneSVG(n,s,tmax)).join('');
+}
+drawLanes(32);
+document.getElementById('nowcur').addEventListener('input', e => {
+  const t = +e.target.value;
+  document.getElementById('nowlbl').textContent = 't = admission + ' + t + ' h' + (t == 32 ? ' (now)' : '');
+  drawLanes(t);
+});
+document.addEventListener('mousemove', e => {
+  const el = e.target.closest('[data-tip]');
+  el ? showTip(e, el.getAttribute('data-tip')) : hideTip();
+});
+
+/* evidence chips */
+const evd = [
+  ['11:50','Lactate 3.1 ⚠'], ['12:30','MAP 62 ⚠'], ['12:35','HR 108 ⚠'], ['10:15','WBC 14.2 ⚠'],
+  ['12:20','SpO2 93'], ['09:40','Norepinephrine start'], ['2026-03','Prior adm.: pneumonia'], ['08:05','Creatinine 1.1'],
+];
+document.getElementById('evtray').innerHTML =
+  evd.map(e => `<span class="ev" onclick="this.classList.toggle('hl')"><b>${e[0]}</b> ${e[1]}</span>`).join('');
+
+/* claim → evidence highlighting */
+document.querySelectorAll('.claim').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.claim').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('#v-review tr').forEach(r => r.style.background = '');
+  c.classList.add('on');
+  (c.dataset.ev || '').split(',').forEach(id => {
+    const r = document.getElementById(id); if (r) r.style.background = 'var(--brand-soft)';
+  });
+}));
+
+/* ---------- gate operating curve (2 series, legend + direct labels) ---------- */
+(function(){
+  const mm = [1,2,3,4,5,6];
+  const tp = [.57,.57,.57,.43,.43,.14], fp = [.90,.67,.48,.14,.10,.05];
+  const X = m => 34 + (m-1) * 48, Y = v => 150 - v * 130;
+  const path = a => a.map((v,i) => (i?'L':'M') + X(mm[i]) + ' ' + Y(v)).join(' ');
+  let s = '';
+  for (let g = 0; g <= 1; g += .25)
+    s += `<line x1="34" y1="${Y(g)}" x2="278" y2="${Y(g)}" stroke="#eef1f4"/><text x="6" y="${Y(g)+3}">${g.toFixed(2)}</text>`;
+  mm.forEach(m => s += `<text x="${X(m)-3}" y="168">${m}</text>`);
+  s += `<text x="110" y="184">required distinct signals</text>`;
+  s += `<rect x="${X(3)-10}" y="14" width="20" height="146" fill="#0f766e" opacity=".07"/>`;
+  s += `<path d="${path(tp)}" fill="none" stroke="#0d9488" stroke-width="2"/>`;
+  s += `<path d="${path(fp)}" fill="none" stroke="#b45309" stroke-width="2"/>`;
+  mm.forEach((m,i) => {
+    s += `<circle cx="${X(m)}" cy="${Y(tp[i])}" r="3.5" fill="#0d9488" stroke="#fff" stroke-width="1.5" data-tip="true alerts: pass ${(tp[i]*100).toFixed(0)}% at ≥${m}"/>`;
+    s += `<circle cx="${X(m)}" cy="${Y(fp[i])}" r="3.5" fill="#b45309" stroke="#fff" stroke-width="1.5" data-tip="false alerts: pass ${(fp[i]*100).toFixed(0)}% at ≥${m}"/>`;
+  });
+  s += `<text x="${X(6)-24}" y="${Y(tp[5])-8}" fill="#0d9488" font-weight="600">true</text>`;
+  s += `<text x="${X(6)-26}" y="${Y(fp[5])+14}" fill="#b45309" font-weight="600">false</text>`;
+  document.getElementById('opcurve').innerHTML = s;
+})();
+
+/* ---------- hub-and-spoke ---------- */
+(function(){
+  const agents = [['Monitoring','idle'],['Planner','idle'],['Diagnosis','working'],['Risk Prediction','working'],
+                  ['Treatment Rec.','idle'],['Explanation','idle'],['Verification','working']];
+  const cx = 320, cy = 185, R = 135;
+  let s = '';
+  agents.forEach((a,i) => {
+    const ang = -Math.PI/2 + i * 2*Math.PI/agents.length;
+    const x = cx + R*Math.cos(ang), y = cy + R*Math.sin(ang);
+    s += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#cfd9df" stroke-width="1.5"/>`;
+    const col = a[1] === 'working' ? '#0d9488' : '#8a94a3';
+    s += `<g data-tip="${a[0]} — ${a[1]} · all messages via Coordinator">
+      <circle cx="${x}" cy="${y}" r="34" fill="#fff" stroke="${col}" stroke-width="2"/>
+      <text x="${x}" y="${y-2}" text-anchor="middle" style="font-weight:600;fill:#1a202c">${a[0].split(' ')[0]}</text>
+      <text x="${x}" y="${y+12}" text-anchor="middle">${a[1]}</text></g>`;
+  });
+  s += `<circle cx="${cx}" cy="${cy}" r="44" fill="#0f766e"/>
+        <text x="${cx}" y="${cy+4}" text-anchor="middle" style="fill:#fff;font-weight:700">Coordinator</text>`;
+  document.getElementById('hub').innerHTML = s;
+})();
+
+/* ---------- nav ---------- */
+const titles = {unit:'Unit Overview — MICU A', patient:'Patient Timeline — P-1043', review:'Recommendation Review — P-1043',
+                alerts:'Alerts & Verification Gate', audit:'Audit Trail', agents:'Agent Orchestration Monitor'};
+function go(v){
+  document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.dataset.v === v));
+  document.querySelectorAll('.view').forEach(x => x.classList.toggle('on', x.id === 'v' + '-' + v));
+  document.getElementById('viewtitle').textContent = titles[v];
+}
+document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.v); }));
+function tab(btn, which){
+  btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('t-verified').style.display = which === 'verified' ? '' : 'none';
+  document.getElementById('t-blocked').style.display = which === 'blocked' ? '' : 'none';
+}
+</script>
+</body>
+</html>
