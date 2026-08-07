@@ -1,0 +1,74 @@
+% ============================================================================
+% W-category paper — IEEE journal format (generic IEEEtran)
+% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Or upload main.tex + _body_generated.tex + references.bib to Overleaf.
+% The body is generated from the markdown sections by scratchpad/md2tex.py;
+% edit the .md files and regenerate rather than editing _body_generated.tex.
+% ============================================================================
+\documentclass[journal]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\title{An Agentic AI Framework for Intelligent Patient Monitoring and
+Clinical Decision Support with Patient-Timeline Retrieval and Verified
+Recommendations}
+
+% TODO before submission: real author list, affiliations, and emails.
+\author{Adeel~Gill,~\IEEEmembership{Student Member}%
+\thanks{A. Gill is with the Department of Computer Science (MS thesis research).
+Supervisor: Dr. Fawad Nasim. Manuscript drafted August 2026.}%
+\thanks{Research prototype disclosure: the system described is an academic
+proof-of-concept evaluated on de-identified and synthetic data only; it is not
+a medical device and is not intended for clinical use.}}
+
+\maketitle
+
+\begin{abstract}
+Large language model (LLM) agents have moved rapidly from medical question
+answering into clinical workflows: they call validated tools, conduct
+diagnostic dialogue, and in isolated cases operate prospectively at the
+bedside. Yet three properties that would make such systems trustworthy for a
+specific patient remain unmeasured across the 2025--2026 literature:
+retrieval grounded in the patient's own longitudinal record rather than
+external knowledge alone, evaluation on real, noisy intensive-care admissions
+rather than examinations or synthetic records, and verification whose audit
+trail is itself checked rather than assumed. This paper presents an agentic
+AI framework for intelligent patient monitoring and clinical decision support
+designed around these three gaps. Specialized agents for monitoring,
+diagnosis, risk prediction, treatment recommendation, explanation, and
+verification operate under a coordinator over a memory layer that treats the
+patient timeline as a first-class retrieval corpus; every recommendation must
+pass an evidence-entailment verification gate and carries calibrated
+confidence into a structured clinician review step. We specify an evaluation
+design on MIMIC-IV that scores longitudinal patient tracking, and we report a
+pilot feasibility study on the openly licensed 100-patient MIMIC-IV demo:
+timelines for 140 ICU stays build in under three seconds; timestamp-aware
+retrieval answers in about 12\,ms without returning future information; a
+rule-based verification gate blocks 86\% of false alerts while retaining 43\%
+of true alerts at its strictest informative threshold; and all 183 logged
+audit-trail references re-resolve exactly against source records. The pilot
+establishes implementability, not clinical utility; the framework's
+contribution is making trustworthiness properties measurable that current
+systems only assert.
+\end{abstract}
+
+\begin{IEEEkeywords}
+agentic AI, clinical decision support, patient monitoring, large language
+models, retrieval-augmented generation, verification, audit trail,
+human-in-the-loop, MIMIC-IV.
+\end{IEEEkeywords}
+
+\IEEEpeerreviewmaketitle
+
+\input{_body_generated}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

@@ -12,12 +12,15 @@ this skeleton was created to meet the 10 August 2026 submission deadline recorde
 venue and its formatting requirements).
 
 ## Files
+- [main.tex](main.tex) — IEEE (IEEEtran) manuscript; compiles with `_body_generated.tex` + `references.bib` (Overleaf-ready; see [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md))
+- [00_Abstract.md](00_Abstract.md) — abstract + keywords
 - [01_Introduction.md](01_Introduction.md)
 - [02_Related_Work.md](02_Related_Work.md)
 - [03_Methodology.md](03_Methodology.md)
 - [05_Pilot_Study.md](05_Pilot_Study.md) — pilot feasibility study on the open MIMIC-IV demo (real numbers; added 2026-08-07)
 - [04_Discussion.md](04_Discussion.md)
-- References: cite keys resolve against [../02_Research/References.bib](../02_Research/References.bib)
+- [06_Conclusion.md](06_Conclusion.md)
+- [references.bib](references.bib) — trimmed to the 54 cited keys (regenerate with `python paper/tools/md2tex.py`); master bib remains [../02_Research/References.bib](../02_Research/References.bib)
 
 ## Assembly notes
 - Citation keys follow `REVIEW/Style_And_Citation_Keys.md`; entries marked TODO-VERIFY in the
