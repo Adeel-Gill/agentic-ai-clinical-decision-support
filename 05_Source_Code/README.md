@@ -171,3 +171,8 @@ python -m acdss.pilot.run_pilot --data <path to mimic-iv-clinical-database-demo-
 
 Aggregate results live in `06_Experiments/results/pilot/`; raw demo data stays outside the
 repository per `03_Dataset/README.md`.
+
+**Also implemented (2026-08-07): the clinician platform (React + FastAPI).**
+Backend: `src/acdss/api/app_dashboard.py` + `dashboard.py` (synthetic fixtures in
+`demo_data.py`; pilot metrics served from `06_Experiments/results/pilot/`). Frontend:
+`frontend/` (React + Vite, six screens). Run instructions in `frontend/README.md`.
