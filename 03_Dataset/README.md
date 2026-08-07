@@ -109,3 +109,13 @@ project tree.
 | `Data_Dictionary.md` | The specific tables and columns used, and their role in the framework |
 | `Preprocessing_Pipeline.md` | ETL and feature-engineering plan, including the patient-timeline construction |
 | `.gitignore` | Rules that keep data files out of version control |
+
+## Pilot use of the open demo subset (2026-08-07)
+
+A pilot feasibility study (`05_Source_Code/src/acdss/pilot/`, results in
+`06_Experiments/results/pilot/`) used the **MIMIC-IV Clinical Database Demo v2.2** — the
+100-patient subset PhysioNet distributes under an open license with no credentialing
+requirement. This does not change the policy above: the demo files are kept outside the
+repository, only aggregate metrics are committed, and the full credentialed MIMIC-IV remains
+the dataset for the Chapter 4 evaluation. Note the demo excludes the notes module, so the
+pilot exercises structured data only.

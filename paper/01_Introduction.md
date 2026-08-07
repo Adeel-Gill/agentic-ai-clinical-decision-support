@@ -40,8 +40,15 @@ faithfulness; (3) an evaluation design on MIMIC-IV that scores longitudinal pati
 rather than one-shot question answering, positioned against the exam-based and synthetic-EHR
 benchmarks that dominate current practice [jiang2025medagentbench; arora2025healthbench;
 lovon2025mimic]; and (4) an analysis of how the framework's safeguards map onto emerging
-regulatory requirements for unconfined non-deterministic clinical software [tan2026undcs].
+regulatory requirements for unconfined non-deterministic clinical software [tan2026undcs];
+and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that grounds the
+framework's distinguishing mechanisms in real ICU data — timelines for 140 stays build in
+under three seconds, timestamp-aware retrieval answers in roughly 12 ms without returning
+future information, the verification gate's evidence requirement suppresses false alerts
+faster than true ones (86% versus 57% blocked at four required signals), and every logged
+audit-trail reference re-resolves against the source record. These are feasibility results
+on a 100-patient cohort, and the paper reports them with that caveat throughout.
 
 The remainder of the paper reviews related work (Section 2), details the framework and its
-evaluation design (Section 3), and discusses implications, limitations, and the path to
-prospective validation (Section 4).
+evaluation design (Section 3), discusses implications and limitations (Section 4), and
+reports the pilot study (Section 5).

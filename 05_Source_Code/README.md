@@ -156,3 +156,18 @@ Every module is a **skeleton**: classes, function signatures, typed Pydantic
 models, docstrings, and `TODO` / `raise NotImplementedError` markers. Nothing here
 performs real inference or database work yet — it defines the shape the student
 implements against.
+
+**Exception (2026-08-07): `src/acdss/pilot/` is fully implemented and runnable.** It is the
+pilot feasibility study on the openly licensed MIMIC-IV Clinical Database Demo v2.2 —
+timeline construction, timestamp-aware retrieval, a first-24h mortality baseline, and the
+rule-based verification gate with a measured audit trail. Dependencies: only `pandas`,
+`numpy`, `scikit-learn`.
+
+```bash
+cd src
+python -m acdss.pilot.run_pilot --data <path to mimic-iv-clinical-database-demo-2.2> \
+    --out ../../06_Experiments/results/pilot
+```
+
+Aggregate results live in `06_Experiments/results/pilot/`; raw demo data stays outside the
+repository per `03_Dataset/README.md`.

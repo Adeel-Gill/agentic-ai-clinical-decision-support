@@ -13,7 +13,8 @@ Last updated 2026-08-05.
 | Taxonomy of LLM-based agents | Drafted | 55 | Prose exists; needs critical framing + reconciliation with figure. |
 | Research gap | Drafting | 50 | Owned by another agent; do not edit. |
 | MIMIC-IV cohort / dataset | Specified | 30 | Cohort definition + data dictionary written; extraction not yet run; PhysioNet access required. |
-| Prototype (`05_Source_Code/`) | Scaffolded | 20 | Package skeleton, Docker, pyproject, `.env.example` in place; agents/RAG/memory not implemented. |
+| Prototype (`05_Source_Code/`) | Pilot implemented | 35 | Package skeleton in place; `acdss.pilot` fully implemented and run on the open MIMIC-IV demo (2026-08-07): timelines, retrieval, baseline, verification gate, measured audit trail. LLM agent loop still skeleton. |
+| Pilot study (MIMIC-IV demo) | Done | 100 | 140 stays; retrieval ~12 ms; gate blocks 86% of false vs 57% of true alerts at m=4; trail resolvability 1.00. Results in `06_Experiments/results/pilot/`; write-up in `paper/05_Pilot_Study.md`. |
 | Architecture diagrams (`04_Architecture/`) | Drafted | 60 | Diagrams exported; re-label any that use old Chapter 4 figure numbers. |
 | References.bib | In progress | 80 | 70 entries after 2025–2026 update (25 added for P021–P045); canonical keys extended; `TODO-VERIFY` venue details outstanding for a handful of new entries; paper-ID reconciliation pending. |
 | 2025–2026 literature update (P021–P045) | Done | 100 | 25 papers: PDFs, notes, matrix rows, taxonomy, bib entries, Section 2.11, framework refinements (2026-08-05). |

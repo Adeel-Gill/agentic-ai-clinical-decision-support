@@ -15,12 +15,19 @@ venue and its formatting requirements).
 - [01_Introduction.md](01_Introduction.md)
 - [02_Related_Work.md](02_Related_Work.md)
 - [03_Methodology.md](03_Methodology.md)
+- [05_Pilot_Study.md](05_Pilot_Study.md) — pilot feasibility study on the open MIMIC-IV demo (real numbers; added 2026-08-07)
 - [04_Discussion.md](04_Discussion.md)
 - References: cite keys resolve against [../02_Research/References.bib](../02_Research/References.bib)
 
 ## Assembly notes
 - Citation keys follow `REVIEW/Style_And_Citation_Keys.md`; entries marked TODO-VERIFY in the
   .bib must be checked before camera-ready.
-- Results are not included: the prototype evaluation (Chapter 4) has not been executed. The
-  paper is framed as a framework/position contribution with an evaluation design, which is
-  common for W-category venues — confirm this framing with the supervisor.
+- Empirical status (updated 2026-08-07): the full credentialed MIMIC-IV evaluation has not
+  been executed, but the paper now includes a **pilot feasibility study** on the openly
+  licensed MIMIC-IV demo (Section 5): timeline construction, timestamp-aware retrieval, an
+  early-warning baseline (AUROC 0.641, wide CI, honestly framed), a verification-gate
+  operating curve, and a measured audit trail. Framing is therefore
+  "framework + pilot feasibility," which is materially stronger than design-only —
+  confirm with the supervisor that this suffices for the chosen venue.
+- Pilot code: `../05_Source_Code/src/acdss/pilot/`; aggregate results:
+  `../06_Experiments/results/pilot/`.

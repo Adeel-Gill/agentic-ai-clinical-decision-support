@@ -25,7 +25,9 @@ clinicians, using the **MIMIC-IV** critical-care database as the data source.
 - Literature: 2025–2026 update complete — 25 new papers (P021–P045) with PDFs, notes
   (`02_Research/Notes/`), matrix rows, taxonomy mapping, and BibTeX entries; Chapter 2 gained
   Section 2.11 (Recent Advances 2025–2026).
-- W-category paper: first draft assembled in `paper/` (deadline 2026-08-10).
+- W-category paper: draft assembled in `paper/` (deadline 2026-08-10), now including a pilot
+  feasibility study (Section 5) run on the open MIMIC-IV demo — code in
+  `05_Source_Code/src/acdss/pilot/`, aggregate results in `06_Experiments/results/pilot/`.
 - Chapters 1–2: drafted (under revision for citations + de-AI'd prose).
 - Chapter 3 (framework/methodology): drafted in `07_Thesis/Chapter_3/`.
 - Chapter 4 (experimental design): planned in `07_Thesis/Chapter_4/` + `06_Experiments/`.

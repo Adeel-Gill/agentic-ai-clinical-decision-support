@@ -1,0 +1,110 @@
+{
+  "dataset": "MIMIC-IV Clinical Database Demo v2.2 (PhysioNet, open license)",
+  "note": "Pilot feasibility study; 100-patient demo cohort; no performance claims.",
+  "environment": {
+    "python": "3.12.6"
+  },
+  "timeline_construction": {
+    "n_stays": 140,
+    "construction_seconds_total": 2.73,
+    "events_per_stay": {
+      "median": 437.5,
+      "p25": 235.75,
+      "p75": 798.25,
+      "min": 88,
+      "max": 3572
+    },
+    "event_type_share": {
+      "vital": 0.7546,
+      "med": 0.1687,
+      "lab": 0.0748,
+      "prior_admission": 0.0019
+    },
+    "stays_with_prior_admission": 60
+  },
+  "retrieval": {
+    "query_time_hours_after_icu_admission": 24.0,
+    "k": 10,
+    "latency_ms": {
+      "median": 9.62,
+      "p95": 15.01
+    },
+    "coverage_full_k": 1.0,
+    "stays_with_any_abnormal_evidence": 138,
+    "distinct_abnormal_signals_per_stay": {
+      "median": 3.0,
+      "p25": 2.0,
+      "p75": 4.0
+    }
+  },
+  "early_warning_baseline": {
+    "n_stays": 140,
+    "n_deaths": 20,
+    "death_rate": 0.1429,
+    "features": 23,
+    "feature_missingness_mean": 0.1758,
+    "auroc_cv": 0.641,
+    "auroc_ci95": [
+      0.478,
+      0.792
+    ],
+    "alert_threshold_quantile": 0.8,
+    "n_alerts": 28,
+    "alerts_true_positive": 7,
+    "alerts_false_positive": 21
+  },
+  "verification_gate": {
+    "min_signals": 3,
+    "evidence_window_hours": 6.0,
+    "alerts_total": 28,
+    "passed_total": 14,
+    "blocked_total": 14,
+    "pass_rate_true_alerts": 0.5714,
+    "pass_rate_false_alerts": 0.4762,
+    "median_signals_true_alerts": 3.0,
+    "median_signals_false_alerts": 2.0
+  },
+  "verification_gate_operating_curve": [
+    {
+      "min_signals": 1,
+      "pass_rate_true_alerts": 0.5714,
+      "pass_rate_false_alerts": 0.9048,
+      "blocked_total": 5
+    },
+    {
+      "min_signals": 2,
+      "pass_rate_true_alerts": 0.5714,
+      "pass_rate_false_alerts": 0.6667,
+      "blocked_total": 10
+    },
+    {
+      "min_signals": 3,
+      "pass_rate_true_alerts": 0.5714,
+      "pass_rate_false_alerts": 0.4762,
+      "blocked_total": 14
+    },
+    {
+      "min_signals": 4,
+      "pass_rate_true_alerts": 0.4286,
+      "pass_rate_false_alerts": 0.1429,
+      "blocked_total": 22
+    },
+    {
+      "min_signals": 5,
+      "pass_rate_true_alerts": 0.4286,
+      "pass_rate_false_alerts": 0.0952,
+      "blocked_total": 23
+    },
+    {
+      "min_signals": 6,
+      "pass_rate_true_alerts": 0.1429,
+      "pass_rate_false_alerts": 0.0476,
+      "blocked_total": 26
+    }
+  ],
+  "audit_trail": {
+    "evidence_references_total": 183,
+    "evidence_references_resolved": 183,
+    "trail_resolvability": 1.0
+  }
+}

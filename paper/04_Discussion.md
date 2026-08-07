@@ -40,9 +40,11 @@ mature.
 
 ## 4.4 Limitations
 
-Four limitations bound the claims. First, the prototype is evaluated retrospectively; no claim
-of prospective clinical benefit is made. Second, MIMIC-IV's critical-care population limits
-generalization to other care settings [johnson2023mimic]. Third, verification quality is
+Four limitations bound the claims. First, empirical evidence so far is a pilot on the
+100-patient MIMIC-IV demo without the LLM loop (Section 5); the full retrospective evaluation
+is designed but not executed, and no claim of prospective clinical benefit is made. Second,
+MIMIC-IV's critical-care population limits generalization to other care settings
+[johnson2023mimic]. Third, verification quality is
 bounded by the entailment methods used to measure it [es2024ragas]; a verification gate can
 only be as trustworthy as its own evaluation, which is why trail faithfulness is spot-audited
 by humans as well. Fourth, LLM API costs and latency constrain the monitoring cadence the
