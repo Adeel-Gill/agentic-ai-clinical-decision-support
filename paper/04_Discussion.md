@@ -5,13 +5,16 @@
 The framework's novelty is deliberately narrow. Tool-using medical agents exist
 [gao2025txagent; liu2025riskagent; fallahpour2025medrax]; multi-agent coordination exists
 [wu2024autogen; tran2025collaboration]; clinical RAG exists and works within its grounding
-assumptions [zhao2025medrag; ke2025ragfitness]. We do not claim these components. We claim the
-three gaps that, within the 2025–2026 literature reviewed for this study, remain
-insufficiently addressed: retrieval grounded in the patient's own timeline, evaluation that
-scores longitudinal tracking on de-identified real-world ICU records, and a verification
-gate whose audit trail is itself measured. If the ablations show these components
-do not improve grounded decision quality, the framework's thesis fails honestly; the
-components are separable and testable by design.
+assumptions [zhao2025medrag; ke2025ragfitness]; and longitudinal grounding itself is
+emerging in trajectory and guideline-alignment systems
+[li2026clicare; zeng2025trajcoa; cui2025timer]. We do not claim any of these components.
+What we claim is their integration, and the instrumentation of that integration:
+timestamp-aware retrieval from the patient's own timeline coupled to recommendation-level
+verification, an audit trail whose faithfulness is measured rather than assumed, and
+evaluation that scores longitudinal tracking on de-identified real-world ICU records. Within
+the literature reviewed for this study, no system combines these, and none measures them
+together. If the ablations show these components do not improve grounded decision quality,
+the framework's thesis fails honestly; the components are separable and testable by design.
 
 ## 4.2 Relation to Contemporary Evaluation Practice
 
@@ -54,14 +57,20 @@ mature.
 
 ## 4.4 Limitations
 
-Four limitations bound the claims. First, empirical evidence so far is a pilot on the
+Five limitations bound the claims. First, empirical evidence so far is a pilot on the
 100-patient MIMIC-IV demo without the LLM loop (Section 5); the full retrospective evaluation
 is designed but not executed, and no claim of prospective clinical benefit is made. Second,
-MIMIC-IV's critical-care population limits generalization to other care settings
-[johnson2023mimic]. Third, verification quality is
+the gate's sensitivity floor is a patient-safety concern in its own right: at its strictest
+informative threshold the pilot gate blocked three of seven true alerts, and a deployed
+system that suppressed half of the alerts preceding death would be clinically unacceptable.
+We treat the evidence window and signal threshold as safety parameters that clinical
+governance, not engineering, must set, and the full evaluation will report gate operating
+points with sensitivity alongside false-alert suppression so that this trade-off is chosen
+deliberately rather than inherited. Third, MIMIC-IV's critical-care population limits
+generalization to other care settings [johnson2023mimic]. Fourth, verification quality is
 bounded by the entailment methods used to measure it [es2024ragas]; a verification gate can
 only be as trustworthy as its own evaluation, which is why trail faithfulness is spot-audited
-by humans as well. Fourth, LLM API costs and latency constrain the monitoring cadence the
+by humans as well. Fifth, LLM API costs and latency constrain the monitoring cadence the
 prototype can sustain, a practical ceiling the agent-evaluation literature identifies as
 generally under-reported [yehudai2025evaluation].
 

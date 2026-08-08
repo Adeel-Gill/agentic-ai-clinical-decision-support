@@ -21,9 +21,10 @@ internally revised as results are corrected and orders change [johnson2023mimic]
 on the former substrate does not establish competence on the latter. The second concerns
 grounding direction. Clinical retrieval-augmented systems, including those with strong
 results, treat external knowledge as the corpus and the patient as the query
-[zhao2025medrag; ke2025ragfitness]. The patient's own accumulated record, the very material
-a clinician reasons over, is not itself retrievable evidence in any published system we
-identified. The third concerns verifiability. The field can now characterize hallucination
+[zhao2025medrag; ke2025ragfitness]. Emerging work grounds models in the longitudinal record
+for prediction and summarization, but there the record is input to be compressed, not
+timestamp-addressable evidence coupled to each recommendation the system makes. The third
+concerns verifiability. The field can now characterize hallucination
 and uncertainty in clinical language models [kim2025hallucinations; atf2025uncertainty], and
 regulators have begun demanding inspectable safeguards for agentic clinical software
 [tan2026undcs; weissman2025unregulated], but published systems rarely check an individual

@@ -6,8 +6,8 @@ neither answer nor measure. This paper's response is architectural and methodolo
 than model-centric. The framework's distinguishing commitments (the patient timeline as a
 retrieval corpus, a verification gate that checks recommendations against retrieved patient
 evidence, an audit trail whose faithfulness is measured, and structured rather than advisory
-clinician oversight) each correspond to a specific absence documented in the benchmark,
-safety, and regulatory literature cited throughout. The pilot on the open MIMIC-IV demo
+clinician oversight) each correspond to a requirement that the benchmark, safety, and regulatory
+literature cited throughout names but does not yet report measured together in one system. The pilot on the open MIMIC-IV demo
 establishes a bounded but concrete result: the non-LLM substrate of these commitments runs
 on de-identified real-world ICU records at interactive latency, and requiring recent, concordant, multi-signal
 evidence blocks unsupported alerts at a substantially higher rate than supported ones, while

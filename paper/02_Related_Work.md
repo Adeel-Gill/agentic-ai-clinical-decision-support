@@ -67,13 +67,29 @@ more control over its own evidence, first through self-critique of retrieved pas
 the agent loop itself [singh2025agenticrag]. Medical instantiations follow the same
 trajectory while narrowing the corpus to curated clinical knowledge, whether a diagnostic
 knowledge graph [zhao2025medrag] or perioperative guidelines, where grounding measurably
-outperformed clinicians in a bounded assessment task [ke2025ragfitness]. What has not varied
-across any of this work is the direction of grounding: external knowledge is the corpus and
-the patient is the query. A monitoring system needs the reverse as well, retrieval *from* the
-patient's accumulated record: yesterday's lactate trend, the previous admission, the
-medication that was stopped. Within the literature reviewed here, we find no system that
-treats the patient timeline as a retrieval corpus in its own right, and that omission
-defines the opening this work occupies.
+outperformed clinicians in a bounded assessment task [ke2025ragfitness]. Across this RAG
+line, the direction of grounding has not varied: external knowledge is the corpus and the
+patient is the query.
+
+A newer line of work has begun to treat the longitudinal record itself as the substrate, and
+it deserves separate attention. CliCARE compiles a patient's cancer EHR into a temporal
+knowledge graph and aligns it with guideline knowledge to generate recommendations,
+evaluated on MIMIC-IV among other data [li2026clicare]. Traj-CoA and its successor TrajOnco
+process multi-year records with chains of summarizing agents whose distilled timelines feed
+cancer risk prediction [zeng2025trajcoa; zeng2026trajonco]. TIMER benchmarks and
+instruction-tunes temporal reasoning grounded to segments of real longitudinal records
+[cui2025timer], and RGAR iteratively refines retrieval between the EHR context attached to a
+question and external knowledge [liang2025rgar]. These systems establish that longitudinal
+grounding is both feasible and valuable. They also sharpen, rather than close, the opening
+this work occupies: in each, the patient record serves prediction, summarization, or
+question answering as input to be compressed or aligned, not as timestamp-addressable
+evidence coupled to individual recommendations; none verifies a recommendation against the
+evidence retrieved for it; none measures the faithfulness of an audit trail; and their
+evaluations score endpoint accuracy rather than sustained tracking of one admission. What
+remains unoccupied, within the literature reviewed for this study, is the integration this
+paper proposes and instruments: timestamp-aware retrieval from the patient timeline, coupled
+to recommendation-level verification and a measured audit trail, evaluated longitudinally on
+de-identified real-world ICU records.
 
 ## 2.4 How Trust Would Be Established
 

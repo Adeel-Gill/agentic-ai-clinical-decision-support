@@ -11,7 +11,8 @@ ORDER = ["01_Introduction.md", "02_Related_Work.md", "03_Methodology.md",
 XREFS = [("Section 3.6", r"Section~III-F"), ("Section 3.4", r"Section~III-D"),
          ("Section 2", r"Section~II"),
          ("Section 3", r"Section~III"), ("Section 4", r"Section~IV"),
-         ("Section 5", r"Section~V"), ("Figure 1", r"Fig.~\ref{fig:arch}")]
+         ("Section 5", r"Section~V"), ("Figure 1", r"Fig.~\ref{fig:arch}"),
+         ("Table 1", r"Table~\ref{tab:1}")]
 
 
 def md2tex(text):
@@ -42,9 +43,46 @@ def md2tex(text):
     return t
 
 
+def convert_tables(tex: str) -> str:
+    """Convert 'Table: caption' + pipe-row blocks into IEEE table floats.
+
+    First pipe row is the header. Assumes tables were already LaTeX-escaped
+    by md2tex (cells contain no raw special chars).
+    """
+    lines = tex.split('\n')
+    out, i, tno = [], 0, 0
+    while i < len(lines):
+        if lines[i].startswith('Table: ') and i + 1 < len(lines) and lines[i + 1].startswith('|'):
+            tno += 1
+            caption = lines[i][len('Table: '):].strip()
+            i += 1
+            rows = []
+            while i < len(lines) and lines[i].startswith('|'):
+                rows.append([c.strip() for c in lines[i].strip().strip('|').split('|')])
+                i += 1
+            ncol = len(rows[0])
+            out.append(r'\begin{table}[!t]')
+            out.append(r'\caption{' + caption + '}')
+            out.append(r'\label{tab:' + str(tno) + '}')
+            out.append(r'\centering\footnotesize')
+            out.append(r'\begin{tabular}{p{0.36\columnwidth}' + 'l' * (ncol - 1) + '}')
+            out.append(r'\hline')
+            out.append(' & '.join(r'\textbf{' + c + '}' for c in rows[0]) + r' \\')
+            out.append(r'\hline')
+            for r in rows[1:]:
+                out.append(' & '.join(r) + r' \\')
+            out.append(r'\hline')
+            out.append(r'\end{tabular}')
+            out.append(r'\end{table}')
+        else:
+            out.append(lines[i])
+            i += 1
+    return '\n'.join(out)
+
+
 body_parts, cited = [], set()
 for f in ORDER:
-    tex = md2tex(Path('paper', f).read_text(encoding='utf-8'))
+    tex = convert_tables(md2tex(Path('paper', f).read_text(encoding='utf-8')))
     cited.update(re.findall(r'\\cite\{([^}]+)\}', tex))
     body_parts.append(tex)
 Path('paper/_body_generated.tex').write_text('\n\n'.join(body_parts), encoding='utf-8')

@@ -20,9 +20,10 @@ internally revised as results are corrected and orders change \cite{johnson2023m
 on the former substrate does not establish competence on the latter. The second concerns
 grounding direction. Clinical retrieval-augmented systems, including those with strong
 results, treat external knowledge as the corpus and the patient as the query
-\cite{zhao2025medrag,ke2025ragfitness}. The patient's own accumulated record, the very material
-a clinician reasons over, is not itself retrievable evidence in any published system we
-identified. The third concerns verifiability. The field can now characterize hallucination
+\cite{zhao2025medrag,ke2025ragfitness}. Emerging work grounds models in the longitudinal record
+for prediction and summarization, but there the record is input to be compressed, not
+timestamp-addressable evidence coupled to each recommendation the system makes. The third
+concerns verifiability. The field can now characterize hallucination
 and uncertainty in clinical language models \cite{kim2025hallucinations,atf2025uncertainty}, and
 regulators have begun demanding inspectable safeguards for agentic clinical software
 \cite{tan2026undcs,weissman2025unregulated}, but published systems rarely check an individual
@@ -131,13 +132,29 @@ more control over its own evidence, first through self-critique of retrieved pas
 the agent loop itself \cite{singh2025agenticrag}. Medical instantiations follow the same
 trajectory while narrowing the corpus to curated clinical knowledge, whether a diagnostic
 knowledge graph \cite{zhao2025medrag} or perioperative guidelines, where grounding measurably
-outperformed clinicians in a bounded assessment task \cite{ke2025ragfitness}. What has not varied
-across any of this work is the direction of grounding: external knowledge is the corpus and
-the patient is the query. A monitoring system needs the reverse as well, retrieval \emph{from} the
-patient's accumulated record: yesterday's lactate trend, the previous admission, the
-medication that was stopped. Within the literature reviewed here, we find no system that
-treats the patient timeline as a retrieval corpus in its own right, and that omission
-defines the opening this work occupies.
+outperformed clinicians in a bounded assessment task \cite{ke2025ragfitness}. Across this RAG
+line, the direction of grounding has not varied: external knowledge is the corpus and the
+patient is the query.
+
+A newer line of work has begun to treat the longitudinal record itself as the substrate, and
+it deserves separate attention. CliCARE compiles a patient's cancer EHR into a temporal
+knowledge graph and aligns it with guideline knowledge to generate recommendations,
+evaluated on MIMIC-IV among other data \cite{li2026clicare}. Traj-CoA and its successor TrajOnco
+process multi-year records with chains of summarizing agents whose distilled timelines feed
+cancer risk prediction \cite{zeng2025trajcoa,zeng2026trajonco}. TIMER benchmarks and
+instruction-tunes temporal reasoning grounded to segments of real longitudinal records
+\cite{cui2025timer}, and RGAR iteratively refines retrieval between the EHR context attached to a
+question and external knowledge \cite{liang2025rgar}. These systems establish that longitudinal
+grounding is both feasible and valuable. They also sharpen, rather than close, the opening
+this work occupies: in each, the patient record serves prediction, summarization, or
+question answering as input to be compressed or aligned, not as timestamp-addressable
+evidence coupled to individual recommendations; none verifies a recommendation against the
+evidence retrieved for it; none measures the faithfulness of an audit trail; and their
+evaluations score endpoint accuracy rather than sustained tracking of one admission. What
+remains unoccupied, within the literature reviewed for this study, is the integration this
+paper proposes and instruments: timestamp-aware retrieval from the patient timeline, coupled
+to recommendation-level verification and a measured audit trail, evaluated longitudinally on
+de-identified real-world ICU records.
 
 \subsection{How Trust Would Be Established}
 
@@ -186,7 +203,31 @@ orchestration, clinical decision, and trustworthy AI. A clinician dashboard and
 human-in-the-loop validation close the loop, and a cross-cutting trustworthy-AI panel
 (explainability, audit logs, safety checks, bias monitoring, human oversight) governs every
 layer. Fig.~\ref{fig:arch} shows the full architecture over MIMIC-IV; this section states only the
-components that carry the paper's claims.
+components that carry the paper's claims. Table~\ref{tab:1} summarizes, per component, what is
+designed, what is implemented, and what has been evaluated, so that the boundary between the
+completed pilot (Section~V) and the planned full evaluation (Section~III-F) is explicit.
+
+\begin{table}[!t]
+\caption{Component status: designed, implemented, and evaluated.}
+\label{tab:1}
+\centering\footnotesize
+\begin{tabular}{p{0.36\columnwidth}lll}
+\hline
+\textbf{Component} & \textbf{Designed} & \textbf{Implemented} & \textbf{Evaluated} \\
+\hline
+Patient-timeline memory (construction, management, retrieval) & Yes & Yes (non-LLM) & Pilot (Section~V) \\
+Timestamp-aware retrieval & Yes & Yes & Pilot: latency, no future data \\
+Early-warning baseline & Yes & Yes & Pilot: AUROC with proxy labels \\
+Verification gate (rule-based form) & Yes & Yes & Pilot: operating curve \\
+Audit trail with measured resolvability & Yes & Yes & Pilot: 183/183 references \\
+Seven LLM agents and coordinator & Yes & Scaffold only & Planned (Section~III-F) \\
+Guideline and literature RAG & Yes & No & Planned (Section~III-F) \\
+Calibrated confidence estimation & Yes & No & Planned (Section~III-F) \\
+Human-in-the-loop review protocol & Yes & UI prototype & Planned (Section~III-F) \\
+Longitudinal evaluation on full MIMIC-IV & Yes & No & Planned (Section~III-F) \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Patient-Timeline Retrieval}
 
@@ -206,9 +247,12 @@ patient-specific evidence rather than population-level knowledge alone
 
 \subsection{Agent Orchestration}
 
-A coordinator agent delegates to seven specialized agents (monitoring, planner, diagnosis,
-risk prediction, treatment recommendation, explanation, and verification), each of which uses
-ReAct-style reasoning internally \cite{yao2023react}. Coordination follows a hub-and-spoke
+This subsection describes the designed orchestration; as Table~\ref{tab:1} records, the seven agents
+exist as an implementation scaffold, no LLM-based reasoning ran in the pilot of Section~V,
+and every present-tense statement here specifies intended behavior rather than demonstrated
+behavior. In the design, a coordinator agent delegates to seven specialized agents
+(monitoring, planner, diagnosis, risk prediction, treatment recommendation, explanation, and
+verification), each of which uses ReAct-style reasoning internally \cite{yao2023react}. Coordination follows a hub-and-spoke
 topology. All inter-agent messages pass through the coordinator, a choice motivated by
 adversarial evidence that multi-agent topology governs how far a compromised agent's
 influence spreads, with open shared-communication designs proving most vulnerable to
@@ -230,9 +274,13 @@ the clinician \cite{atf2025uncertainty,guo2017calibration}. Recommendations fail
 blocked and returned with the failure reason. Every check writes to an evidence-linked audit
 trail. Whether that trail accurately reflects the evidence the system actually used is treated
 as a measured property rather than an assumed one, using entailment-based spot audits
-\cite{es2024ragas}. This combination is designed to satisfy, and to demonstrate compliance with,
-emerging expectations for unconfined non-deterministic clinical software: guardrails,
-moderation, retrieval grounding, and inspectability \cite{tan2026undcs,weissman2025unregulated}.
+\cite{es2024ragas}. The confidence value attached to each recommendation is calibrated post hoc on
+a held-out calibration split (temperature scaling, with isotonic regression as a fallback for
+non-monotone miscalibration) and its quality is evaluated by expected calibration error and
+reliability diagrams \cite{guo2017calibration}. This combination is designed to align with
+emerging regulatory expectations for unconfined non-deterministic clinical software:
+guardrails, moderation, retrieval grounding, and inspectability
+\cite{tan2026undcs,weissman2025unregulated}.
 
 \subsection{Human-in-the-Loop Protocol}
 
@@ -250,12 +298,20 @@ has not yet been executed. The only completed empirical work in this paper is th
 pilot reported in Section~V, and no result below should be read as obtained. The planned
 full evaluation uses MIMIC-IV \cite{johnson2023mimic} cohorts (sepsis and deterioration use cases;
 Sepsis-3 labels \cite{singer2016sepsis3,vincent1996sofa}) and scores the system on longitudinal
-tracking, not one-shot prediction. Primary axes: (1) decision quality against clinical ground
-truth and revisited MIMIC-IV baselines \cite{lovon2025mimic}; (2) grounding rate, the fraction of
-recommendation claims entailed by retrieved patient evidence, following RAG-evaluation practice
-\cite{es2024ragas}; (3) verification-gate effectiveness, measured as the ungrounded-recommendation
-catch rate at fixed review budget; (4) audit-trail faithfulness under spot audit; and (5) rubric-graded
-recommendation quality in the style of physician-rubric benchmarks
+tracking, not one-shot prediction. Clinical ground truth is defined concretely per use case:
+in-hospital mortality from discharge disposition, sepsis onset time under the Sepsis-3
+criteria applied to the recorded observations \cite{singer2016sepsis3}, and, for treatment
+recommendations, concordance with the interventions documented in the record, adjudicated by
+clinician review where the record is ambiguous. The primary metrics are defined as follows.
+(1) Decision quality: discrimination (AUROC) and calibration of predicted risk against these
+labels, compared with revisited MIMIC-IV baselines \cite{lovon2025mimic}. (2) Grounding rate: of
+the atomic claims extracted from a recommendation, the fraction entailed by at least one
+retrieved patient-evidence item, following RAG-evaluation practice \cite{es2024ragas}. (3)
+Verification-gate effectiveness: among recommendations independently judged ungrounded, the
+fraction the gate blocks (catch rate) at a fixed clinician-review budget. (4) Audit-trail
+faithfulness: the fraction of logged evidence references that both re-resolve to the source
+record and match the value the system actually used, under human spot audit. (5)
+Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 \cite{arora2025healthbench,jiang2025medagentbench}. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.
 Statistical comparisons follow standard practice for correlated classifiers
@@ -270,13 +326,16 @@ Statistical comparisons follow standard practice for correlated classifiers
 The framework's novelty is deliberately narrow. Tool-using medical agents exist
 \cite{gao2025txagent,liu2025riskagent,fallahpour2025medrax}; multi-agent coordination exists
 \cite{wu2024autogen,tran2025collaboration}; clinical RAG exists and works within its grounding
-assumptions \cite{zhao2025medrag,ke2025ragfitness}. We do not claim these components. We claim the
-three gaps that, within the 2025--2026 literature reviewed for this study, remain
-insufficiently addressed: retrieval grounded in the patient's own timeline, evaluation that
-scores longitudinal tracking on de-identified real-world ICU records, and a verification
-gate whose audit trail is itself measured. If the ablations show these components
-do not improve grounded decision quality, the framework's thesis fails honestly; the
-components are separable and testable by design.
+assumptions \cite{zhao2025medrag,ke2025ragfitness}; and longitudinal grounding itself is
+emerging in trajectory and guideline-alignment systems
+\cite{li2026clicare,zeng2025trajcoa,cui2025timer}. We do not claim any of these components.
+What we claim is their integration, and the instrumentation of that integration:
+timestamp-aware retrieval from the patient's own timeline coupled to recommendation-level
+verification, an audit trail whose faithfulness is measured rather than assumed, and
+evaluation that scores longitudinal tracking on de-identified real-world ICU records. Within
+the literature reviewed for this study, no system combines these, and none measures them
+together. If the ablations show these components do not improve grounded decision quality,
+the framework's thesis fails honestly; the components are separable and testable by design.
 
 \subsection{Relation to Contemporary Evaluation Practice}
 
@@ -319,14 +378,20 @@ mature.
 
 \subsection{Limitations}
 
-Four limitations bound the claims. First, empirical evidence so far is a pilot on the
+Five limitations bound the claims. First, empirical evidence so far is a pilot on the
 100-patient MIMIC-IV demo without the LLM loop (Section~V); the full retrospective evaluation
 is designed but not executed, and no claim of prospective clinical benefit is made. Second,
-MIMIC-IV's critical-care population limits generalization to other care settings
-\cite{johnson2023mimic}. Third, verification quality is
+the gate's sensitivity floor is a patient-safety concern in its own right: at its strictest
+informative threshold the pilot gate blocked three of seven true alerts, and a deployed
+system that suppressed half of the alerts preceding death would be clinically unacceptable.
+We treat the evidence window and signal threshold as safety parameters that clinical
+governance, not engineering, must set, and the full evaluation will report gate operating
+points with sensitivity alongside false-alert suppression so that this trade-off is chosen
+deliberately rather than inherited. Third, MIMIC-IV's critical-care population limits
+generalization to other care settings \cite{johnson2023mimic}. Fourth, verification quality is
 bounded by the entailment methods used to measure it \cite{es2024ragas}; a verification gate can
 only be as trustworthy as its own evaluation, which is why trail faithfulness is spot-audited
-by humans as well. Fourth, LLM API costs and latency constrain the monitoring cadence the
+by humans as well. Fifth, LLM API costs and latency constrain the monitoring cadence the
 prototype can sustain, a practical ceiling the agent-evaluation literature identifies as
 generally under-reported \cite{yehudai2025evaluation}.
 
@@ -362,8 +427,18 @@ reference to its source table and row. Retrieval at a decision point (24 h after
 admission) scored events by recency, type, and deterioration relevance, and never returned an
 event recorded after the query time. A standardized logistic regression over first-24 h
 features (5-fold stratified cross-validation) produced an in-hospital mortality risk score,
-and the top quintile generated 28 alerts (7 in patients who died, 21 in patients who
-survived). The verification gate passed an alert only when the patient's retrieved timeline
+and the top quintile generated 28 alerts. We define a \emph{true alert} as an alert raised for a
+stay whose hospital admission ended in in-hospital death (7 alerts) and a \emph{false alert} as
+one raised for a patient discharged alive (21 alerts). In-hospital mortality is a proxy
+endpoint chosen because it is unambiguous in the demo tables, not a claim that every
+deteriorating patient dies; clinically meaningful alerts often precede non-fatal
+interventions, which is why the planned full evaluation replaces this proxy with Sepsis-3
+onset and intervention concordance (Section~III-F). Leakage was controlled at three points: features were computed
+only from events time-stamped within the first 24 h of the ICU stay, while the mortality
+label derives from the discharge disposition recorded at the end of the admission; prior
+admissions entered the timeline only if discharged strictly before the current admission;
+and imputation and standardization were fit inside each cross-validation training fold via a
+pipeline, never on the full cohort. The verification gate passed an alert only when the patient's retrieved timeline
 contained at least \emph{m} distinct deterioration-relevant signals (tachycardia, hypotension,
 tachypnea, hypoxemia, temperature derangement, elevated lactate, leukocytosis or leukopenia,
 rising creatinine or bilirubin, thrombocytopenia) within the six hours preceding the decision.
@@ -377,8 +452,10 @@ IQR 236--798); 43\% of stays carried at least one prior admission, confirming th
 context exists to retrieve even in a small cohort. Retrieval answered queries in 11.7 ms
 median (17.9 ms p95) with full top-k coverage and returned no future information by
 construction. The baseline reached a cross-validated AUROC of 0.641 (95\% bootstrap CI
-0.478--0.792), an interval that crosses chance, as expected at this sample size. Its role is
-to supply a realistic alert stream, not predictive skill.
+0.478--0.792). Because the interval crosses 0.5, the baseline demonstrates no statistically
+significant discrimination at this sample size, and we draw no decision-support performance
+conclusion from it whatsoever. Its only function in the pilot is to generate a realistic,
+imperfect alert stream against which the gate's behavior can be observed.
 
 The gate produced the pilot's most instructive result. As the required number of distinct
 recent signals rises from 1 to 6, the pass rate for false alerts falls from 0.90 to 0.05
@@ -401,6 +478,16 @@ does not show clinical utility, generalization beyond a 100-patient demo cohort,
 about the LLM agent loop, which the full MIMIC-IV evaluation of Section~III-F will test. The
 demo lacks the clinical notes module, so retrieval here is structured-data only.
 
+The relation between the pilot gate and the framework's verification agent deserves explicit
+statement. The pilot gate is a deliberately simple heuristic instantiation of the
+verification interface: it consumes the same retrieved-evidence set, emits the same
+pass-or-block decision, and logs the same evidence references that the LLM-based agent of
+Section~III-D will. What changes in the full system is the decision rule, from counting
+distinct deterioration signals to claim-level entailment against the retrieved evidence.
+Whether the preferential suppression of false alerts observed here transfers to the
+entailment-based form is therefore an explicit hypothesis for the full evaluation, not an
+assumption this pilot licenses.
+
 
 \section{Conclusion}
 
@@ -410,8 +497,8 @@ neither answer nor measure. This paper's response is architectural and methodolo
 than model-centric. The framework's distinguishing commitments (the patient timeline as a
 retrieval corpus, a verification gate that checks recommendations against retrieved patient
 evidence, an audit trail whose faithfulness is measured, and structured rather than advisory
-clinician oversight) each correspond to a specific absence documented in the benchmark,
-safety, and regulatory literature cited throughout. The pilot on the open MIMIC-IV demo
+clinician oversight) each correspond to a requirement that the benchmark, safety, and regulatory
+literature cited throughout names but does not yet report measured together in one system. The pilot on the open MIMIC-IV demo
 establishes a bounded but concrete result: the non-LLM substrate of these commitments runs
 on de-identified real-world ICU records at interactive latency, and requiring recent, concordant, multi-signal
 evidence blocks unsupported alerts at a substantially higher rate than supported ones, while

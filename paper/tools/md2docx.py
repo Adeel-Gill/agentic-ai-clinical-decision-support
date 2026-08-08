@@ -133,6 +133,26 @@ def main() -> None:
             block = block.strip()
             if not block:
                 continue
+            if block.startswith("Table: "):
+                lines = block.split("\n")
+                cap = doc.add_paragraph()
+                cr = cap.add_run("TABLE. " + lines[0][len("Table: "):])
+                cr.bold = True
+                cr.font.size = Pt(9)
+                rows = [[c.strip() for c in l.strip().strip("|").split("|")]
+                        for l in lines[1:] if l.startswith("|")]
+                tbl = doc.add_table(rows=len(rows), cols=len(rows[0]))
+                tbl.style = "Table Grid"
+                for ri, row in enumerate(rows):
+                    for ci, cell in enumerate(row):
+                        c = tbl.cell(ri, ci)
+                        c.text = cell
+                        for par in c.paragraphs:
+                            for run in par.runs:
+                                run.font.size = Pt(9)
+                                if ri == 0:
+                                    run.bold = True
+                continue
             m1 = re.match(r"^# \d+\.\s*(.+)$", block)
             m2 = re.match(r"^## \d+\.\d+\s*(.+)$", block)
             if m1:

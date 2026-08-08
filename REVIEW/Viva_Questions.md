@@ -43,3 +43,26 @@ Derived only from this thesis's own claims and artifacts. Prepare a crisp, evide
 28. Do you have credentialed access to MIMIC-IV-Note? Your notes-RAG depends on it — confirm.
 29. Several passages paraphrase source papers without citation. How is that not an academic-integrity concern, and what have you changed?
 30. If you had three months and could run exactly one experiment, which result would most validate the thesis, and why that one?
+
+## Paper viva questions (from final examiner-style review, 2026-08-08)
+
+These 15 target the W-category paper specifically; several will recur in the thesis defense.
+Q1-Q4 and Q6 are answered in the manuscript itself after the final revision (Table I scaffold
+status, "no statistically significant discrimination" statement, the rule-based-to-entailment
+bridge in Section V, the sensitivity-floor limitation, and the deterministic-pilot caveat).
+
+1. What constitutes the seven-agent "scaffold", and how much pilot reasoning was LLM-based? (Answer: none — stated in III-C and Table I.)
+2. Given AUROC CI crosses chance, how can the gate be said to behave "as designed"? (Answer: gate claims concern alert-stream filtering behavior, not baseline skill — stated in V-C.)
+3. How do you guarantee the LLM verification agent shows the same preferential suppression as the rule-based gate? (Answer: we don't — explicit hypothesis for the full evaluation, stated in V-D.)
+4. Is a gate that blocks 57% of true alerts clinically viable? (Answer: no — treated as a governance-set safety parameter, Limitations item 2.)
+5. How does reversing grounding direction improve diagnosis accuracy? (To argue: patient-specific evidence entailment vs population priors; ablation will quantify.)
+6. Why expect 100% trail resolvability to hold with a non-deterministic LLM? (Answer: we don't — that is why it is a measured target, stated in V-C.)
+7. Does structured review invite automation bias (clinicians clicking approve)? (Prepare: mandatory reasons, rejection-rate monitoring, audit sampling.)
+8. How do MCP/A2A specifically satisfy UNDCS inspectability? (Prepare: standardized message logs at the coordinator hub; needs a concrete mapping table in the thesis.)
+9. Is a notes-free pilot a valid test of the retrieval thesis? (Answer in V-D: structured-data only; notes in full evaluation.)
+10. How are revised/retracted lab values handled? (Answer: supersede-not-erase memory management, III-B; demonstrate in full evaluation.)
+11. Is retrospective MIMIC-IV a valid substrate for "revision and contradiction"? (Prepare: revisions exist in the record; prospectivity acknowledged as next rung.)
+12. Estimated daily LLM cost per monitored bed? (OPEN — needs measurement before the viva; flagged INSUFFICIENT EVIDENCE by the reviewer.)
+13. Why not compare against Sepsis-3-specific predictors? (Prepare: they are among planned baselines via Sepsis-3 labels; make explicit in Chapter 4.)
+14. How is bias measured in the orchestration layer? (OPEN — thesis Chapter 4 must specify subgroup metrics; currently only named in the trustworthy panel.)
+15. What metric triggers silent-mode to active decision support? (Prepare: pre-registered sensitivity/PPV thresholds + governance sign-off; add to future work.)

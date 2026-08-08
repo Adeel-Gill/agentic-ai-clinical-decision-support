@@ -9,7 +9,22 @@ orchestration, clinical decision, and trustworthy AI. A clinician dashboard and
 human-in-the-loop validation close the loop, and a cross-cutting trustworthy-AI panel
 (explainability, audit logs, safety checks, bias monitoring, human oversight) governs every
 layer. Figure 1 shows the full architecture over MIMIC-IV; this section states only the
-components that carry the paper's claims.
+components that carry the paper's claims. Table 1 summarizes, per component, what is
+designed, what is implemented, and what has been evaluated, so that the boundary between the
+completed pilot (Section 5) and the planned full evaluation (Section 3.6) is explicit.
+
+Table: Component status: designed, implemented, and evaluated.
+| Component | Designed | Implemented | Evaluated |
+| Patient-timeline memory (construction, management, retrieval) | Yes | Yes (non-LLM) | Pilot (Section 5) |
+| Timestamp-aware retrieval | Yes | Yes | Pilot: latency, no future data |
+| Early-warning baseline | Yes | Yes | Pilot: AUROC with proxy labels |
+| Verification gate (rule-based form) | Yes | Yes | Pilot: operating curve |
+| Audit trail with measured resolvability | Yes | Yes | Pilot: 183/183 references |
+| Seven LLM agents and coordinator | Yes | Scaffold only | Planned (Section 3.6) |
+| Guideline and literature RAG | Yes | No | Planned (Section 3.6) |
+| Calibrated confidence estimation | Yes | No | Planned (Section 3.6) |
+| Human-in-the-loop review protocol | Yes | UI prototype | Planned (Section 3.6) |
+| Longitudinal evaluation on full MIMIC-IV | Yes | No | Planned (Section 3.6) |
 
 ## 3.2 Patient-Timeline Retrieval
 
@@ -29,9 +44,12 @@ patient-specific evidence rather than population-level knowledge alone
 
 ## 3.3 Agent Orchestration
 
-A coordinator agent delegates to seven specialized agents (monitoring, planner, diagnosis,
-risk prediction, treatment recommendation, explanation, and verification), each of which uses
-ReAct-style reasoning internally [yao2023react]. Coordination follows a hub-and-spoke
+This subsection describes the designed orchestration; as Table 1 records, the seven agents
+exist as an implementation scaffold, no LLM-based reasoning ran in the pilot of Section 5,
+and every present-tense statement here specifies intended behavior rather than demonstrated
+behavior. In the design, a coordinator agent delegates to seven specialized agents
+(monitoring, planner, diagnosis, risk prediction, treatment recommendation, explanation, and
+verification), each of which uses ReAct-style reasoning internally [yao2023react]. Coordination follows a hub-and-spoke
 topology. All inter-agent messages pass through the coordinator, a choice motivated by
 adversarial evidence that multi-agent topology governs how far a compromised agent's
 influence spreads, with open shared-communication designs proving most vulnerable to
@@ -53,9 +71,13 @@ the clinician [atf2025uncertainty; guo2017calibration]. Recommendations failing 
 blocked and returned with the failure reason. Every check writes to an evidence-linked audit
 trail. Whether that trail accurately reflects the evidence the system actually used is treated
 as a measured property rather than an assumed one, using entailment-based spot audits
-[es2024ragas]. This combination is designed to satisfy, and to demonstrate compliance with,
-emerging expectations for unconfined non-deterministic clinical software: guardrails,
-moderation, retrieval grounding, and inspectability [tan2026undcs; weissman2025unregulated].
+[es2024ragas]. The confidence value attached to each recommendation is calibrated post hoc on
+a held-out calibration split (temperature scaling, with isotonic regression as a fallback for
+non-monotone miscalibration) and its quality is evaluated by expected calibration error and
+reliability diagrams [guo2017calibration]. This combination is designed to align with
+emerging regulatory expectations for unconfined non-deterministic clinical software:
+guardrails, moderation, retrieval grounding, and inspectability
+[tan2026undcs; weissman2025unregulated].
 
 ## 3.5 Human-in-the-Loop Protocol
 
@@ -73,12 +95,20 @@ has not yet been executed. The only completed empirical work in this paper is th
 pilot reported in Section 5, and no result below should be read as obtained. The planned
 full evaluation uses MIMIC-IV [johnson2023mimic] cohorts (sepsis and deterioration use cases;
 Sepsis-3 labels [singer2016sepsis3; vincent1996sofa]) and scores the system on longitudinal
-tracking, not one-shot prediction. Primary axes: (1) decision quality against clinical ground
-truth and revisited MIMIC-IV baselines [lovon2025mimic]; (2) grounding rate, the fraction of
-recommendation claims entailed by retrieved patient evidence, following RAG-evaluation practice
-[es2024ragas]; (3) verification-gate effectiveness, measured as the ungrounded-recommendation
-catch rate at fixed review budget; (4) audit-trail faithfulness under spot audit; and (5) rubric-graded
-recommendation quality in the style of physician-rubric benchmarks
+tracking, not one-shot prediction. Clinical ground truth is defined concretely per use case:
+in-hospital mortality from discharge disposition, sepsis onset time under the Sepsis-3
+criteria applied to the recorded observations [singer2016sepsis3], and, for treatment
+recommendations, concordance with the interventions documented in the record, adjudicated by
+clinician review where the record is ambiguous. The primary metrics are defined as follows.
+(1) Decision quality: discrimination (AUROC) and calibration of predicted risk against these
+labels, compared with revisited MIMIC-IV baselines [lovon2025mimic]. (2) Grounding rate: of
+the atomic claims extracted from a recommendation, the fraction entailed by at least one
+retrieved patient-evidence item, following RAG-evaluation practice [es2024ragas]. (3)
+Verification-gate effectiveness: among recommendations independently judged ungrounded, the
+fraction the gate blocks (catch rate) at a fixed clinician-review budget. (4) Audit-trail
+faithfulness: the fraction of logged evidence references that both re-resolve to the source
+record and match the value the system actually used, under human spot audit. (5)
+Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 [arora2025healthbench; jiang2025medagentbench]. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.
 Statistical comparisons follow standard practice for correlated classifiers
