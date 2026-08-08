@@ -33,8 +33,10 @@ A coordinator agent delegates to seven specialized agents (monitoring, planner, 
 risk prediction, treatment recommendation, explanation, and verification), each of which uses
 ReAct-style reasoning internally [yao2023react]. Coordination follows a hub-and-spoke
 topology. All inter-agent messages pass through the coordinator, a choice motivated by
-evidence that decentralized medical multi-agent topologies let adversarial or erroneous
-influence propagate further [chen2025medsentry]. Tool access uses MCP-style standardized
+adversarial evidence that multi-agent topology governs how far a compromised agent's
+influence spreads, with open shared-communication designs proving most vulnerable to
+contamination [chen2025medsentry]; routing every message through one auditable point also
+serves the audit-trail requirement of Section 3.4. Tool access uses MCP-style standardized
 interfaces and inter-agent exchange follows A2A-style conventions [ehtesham2025protocols],
 which keeps the prototype composable with hospital tooling. External tools follow the
 validated-tool principle of RiskAgent and TxAgent: calculations and lookups are delegated to

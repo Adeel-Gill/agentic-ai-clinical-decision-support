@@ -8,7 +8,8 @@ ORDER = ["01_Introduction.md", "02_Related_Work.md", "03_Methodology.md",
          "04_Discussion.md", "05_Pilot_Study.md", "06_Conclusion.md"]
 
 # Numeric md cross-references -> IEEE roman section labels / figure refs
-XREFS = [("Section 3.6", r"Section~III-F"), ("Section 2", r"Section~II"),
+XREFS = [("Section 3.6", r"Section~III-F"), ("Section 3.4", r"Section~III-D"),
+         ("Section 2", r"Section~II"),
          ("Section 3", r"Section~III"), ("Section 4", r"Section~IV"),
          ("Section 5", r"Section~V"), ("Figure 1", r"Fig.~\ref{fig:arch}")]
 

@@ -20,8 +20,8 @@ third wave is consolidation. Collaboration patterns now have a formal taxonomy
 [liu2025foundationagents], memory a construction–management–retrieval decomposition
 [wu2025memory], and inter-agent communication a set of emerging wire protocols
 [ehtesham2025protocols]. The distinction between a tool-using agent and an orchestrated
-agentic ecosystem has itself been formalized, with healthcare repeatedly named as the domain
-with most to gain [sapkota2025agents].
+agentic ecosystem has itself been formalized, with healthcare cited among the application
+domains where the orchestrated form matters most [sapkota2025agents].
 
 For present purposes the significance of this maturation is double-edged. It means a clinical
 framework can be assembled from settled components, so integration alone earns no novelty.
@@ -53,10 +53,10 @@ Viewed together, these design choices share an assumption that none of the paper
 the patient exists only for the duration of a prompt. Whatever is externalized — deliberation,
 queries, tools, or dialogue policy — patient state is reassembled from the scenario at each
 step, and no system carries an evidence-linked model of one real patient forward through an
-admission. The broadest survey of the area reaches a complementary conclusion from the
-deployment side: clinical decision-making is where medical agents concentrate their research
-effort and where deployed evidence is thinnest [wang2025baymax]. The gap this paper targets
-sits at the intersection of those two observations.
+admission. The broadest survey of the area finds the research effort concentrated on clinical
+decision-making while naming implementation barriers among the field's central open
+challenges [wang2025baymax]. The gap this paper targets sits at the intersection of those
+two observations.
 
 ## 2.3 What Retrieval Is Grounded In
 
@@ -71,9 +71,9 @@ outperformed clinicians in a bounded assessment task [ke2025ragfitness]. What ha
 across any of this work is the direction of grounding: external knowledge is the corpus and
 the patient is the query. A monitoring system needs the reverse as well, retrieval *from* the
 patient's accumulated record: yesterday's lactate trend, the previous admission, the
-medication that was stopped. We find no published system that treats the patient timeline as
-a retrieval corpus in its own right, and that omission defines the opening this work
-occupies.
+medication that was stopped. Within the literature reviewed here, we find no system that
+treats the patient timeline as a retrieval corpus in its own right, and that omission
+defines the opening this work occupies.
 
 ## 2.4 How Trust Would Be Established
 
@@ -82,11 +82,12 @@ meet. Evaluation research is moving benchmarks toward realism, placing agents in
 FHIR-compliant virtual EHR with physician-authored tasks [jiang2025medagentbench], grading
 open-ended conversations against physician-written rubrics [arora2025healthbench], and
 cataloguing which agent capabilities current benchmarks measure — with safety flagged as the
-persistent omission [yehudai2025evaluation]. On real records, the evidence is thinner and
-more sobering: revisited MIMIC-IV baselines find language models merely competitive with
-tabular classifiers on one-shot prediction [lovon2025mimic], and the single prospective
-deployment, an LLM adjudicating high-uncertainty sepsis alerts, earns its bedside role by
-augmenting a conventional predictor rather than replacing it [shashikumar2025sepsis].
+persistent omission [yehudai2025evaluation]. On de-identified real-world records, the evidence is thinner and
+more sobering: revisited MIMIC-IV baselines find fine-tuned language models merely
+competitive with tabular classifiers on one-shot prediction, with zero-shot models trailing
+both [lovon2025mimic], and the single prospective deployment, an LLM adjudicating
+high-uncertainty sepsis alerts in silent mode, earns that role by augmenting a conventional
+predictor rather than replacing it [shashikumar2025sepsis].
 
 Safety research, meanwhile, characterizes the failure modes that evaluation should be
 catching: taxonomies of medical hallucination grounded in clinician annotation
@@ -99,10 +100,12 @@ output meeting medical-device criteria [weissman2025unregulated], prompting prop
 governance for unconfined non-deterministic clinical software built on guardrails,
 moderation, and inspectability [tan2026undcs]. Even the human backstop is less settled than
 assumed; the sole meta-analysis of clinician–LLM collaboration reports gains that are
-statistically fragile alongside clinically significant error rates [wang2026collaboration].
+statistically fragile alongside non-trivial error rates in collaborative outputs
+[wang2026collaboration].
 
 Each literature names a requirement: grounded recommendations, calibrated confidence,
-inspectable trails, structured oversight. None reports a system in which those requirements
-are implemented together and *measured* end-to-end on real patient records. That
+inspectable trails, structured oversight. To the best of our knowledge, none reports a
+system in which those requirements are implemented together and *measured* end-to-end on
+de-identified real-world patient records. That
 measurement, rather than any single component, is what the framework presented next is
 designed to make possible.

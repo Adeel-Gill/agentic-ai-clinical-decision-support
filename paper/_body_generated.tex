@@ -5,15 +5,15 @@ trajectory: what the lactate did overnight, which medications were started and s
 this admission compares with the last one. The language-model systems now entering clinical
 workflows do not reason this way. They can select and invoke validated clinical tools
 \cite{gao2025txagent,liu2025riskagent}, sustain multi-turn diagnostic dialogue
-\cite{palepu2025disease,saab2025multimodal}, and in one documented case operate prospectively at
-the bedside \cite{shashikumar2025sepsis}; their underlying machinery, from reasoning-and-acting
+\cite{palepu2025disease,saab2025multimodal}, and in one documented case run prospectively, in
+silent mode, inside a live emergency-department deployment \cite{shashikumar2025sepsis}; their underlying machinery, from reasoning-and-acting
 loops \cite{yao2023react} and retrieval-augmented generation \cite{lewis2020rag} to multi-agent
 coordination \cite{wu2024autogen} and structured memory \cite{wu2025memory}, is individually mature.
-Yet each of these systems reconstructs the patient from the current prompt and forgets them
-when the interaction ends.
+Each of these systems, however, rebuilds its picture of the patient from the current prompt
+and retains nothing once the interaction ends.
 
-That mismatch between how clinicians reason and how these systems are built produces three
-shortfalls that motivate this research, and we argue they are the load-bearing ones. The
+This research is motivated by three shortfalls that follow from that mismatch between
+clinical reasoning and system design. The
 first concerns evaluation substrate. The strongest medical agents are still graded on
 curated examinations or synthetic records \cite{tang2024medagents,li2024agenthospital,jiang2025medagentbench}, whereas a real intensive-care admission is noisy, longitudinal, and
 internally revised as results are corrected and orders change \cite{johnson2023mimic}; competence
@@ -49,7 +49,7 @@ patient tracking rather than one-shot question answering, positioned against the
 and synthetic-EHR benchmarks that dominate current practice \cite{jiang2025medagentbench,arora2025healthbench,lovon2025mimic}; (4) an analysis of how the framework's safeguards map
 onto emerging regulatory requirements for unconfined non-deterministic clinical software
 \cite{tan2026undcs}; and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that
-grounds the framework's distinguishing mechanisms in real ICU data: timelines for 140 stays
+grounds the framework's distinguishing mechanisms in de-identified real-world ICU data: timelines for 140 stays
 build in under three seconds, timestamp-aware retrieval answers in roughly 12 ms without
 returning future information, the verification gate's evidence requirement suppresses false
 alerts faster than true ones (86\% versus 57\% blocked at four required signals), and every
@@ -83,8 +83,8 @@ third wave is consolidation. Collaboration patterns now have a formal taxonomy
 \cite{liu2025foundationagents}, memory a construction--management--retrieval decomposition
 \cite{wu2025memory}, and inter-agent communication a set of emerging wire protocols
 \cite{ehtesham2025protocols}. The distinction between a tool-using agent and an orchestrated
-agentic ecosystem has itself been formalized, with healthcare repeatedly named as the domain
-with most to gain \cite{sapkota2025agents}.
+agentic ecosystem has itself been formalized, with healthcare cited among the application
+domains where the orchestrated form matters most \cite{sapkota2025agents}.
 
 For present purposes the significance of this maturation is double-edged. It means a clinical
 framework can be assembled from settled components, so integration alone earns no novelty.
@@ -116,10 +116,10 @@ Viewed together, these design choices share an assumption that none of the paper
 the patient exists only for the duration of a prompt. Whatever is externalized --- deliberation,
 queries, tools, or dialogue policy --- patient state is reassembled from the scenario at each
 step, and no system carries an evidence-linked model of one real patient forward through an
-admission. The broadest survey of the area reaches a complementary conclusion from the
-deployment side: clinical decision-making is where medical agents concentrate their research
-effort and where deployed evidence is thinnest \cite{wang2025baymax}. The gap this paper targets
-sits at the intersection of those two observations.
+admission. The broadest survey of the area finds the research effort concentrated on clinical
+decision-making while naming implementation barriers among the field's central open
+challenges \cite{wang2025baymax}. The gap this paper targets sits at the intersection of those
+two observations.
 
 \subsection{What Retrieval Is Grounded In}
 
@@ -134,9 +134,9 @@ outperformed clinicians in a bounded assessment task \cite{ke2025ragfitness}. Wh
 across any of this work is the direction of grounding: external knowledge is the corpus and
 the patient is the query. A monitoring system needs the reverse as well, retrieval \emph{from} the
 patient's accumulated record: yesterday's lactate trend, the previous admission, the
-medication that was stopped. We find no published system that treats the patient timeline as
-a retrieval corpus in its own right, and that omission defines the opening this work
-occupies.
+medication that was stopped. Within the literature reviewed here, we find no system that
+treats the patient timeline as a retrieval corpus in its own right, and that omission
+defines the opening this work occupies.
 
 \subsection{How Trust Would Be Established}
 
@@ -145,11 +145,12 @@ meet. Evaluation research is moving benchmarks toward realism, placing agents in
 FHIR-compliant virtual EHR with physician-authored tasks \cite{jiang2025medagentbench}, grading
 open-ended conversations against physician-written rubrics \cite{arora2025healthbench}, and
 cataloguing which agent capabilities current benchmarks measure --- with safety flagged as the
-persistent omission \cite{yehudai2025evaluation}. On real records, the evidence is thinner and
-more sobering: revisited MIMIC-IV baselines find language models merely competitive with
-tabular classifiers on one-shot prediction \cite{lovon2025mimic}, and the single prospective
-deployment, an LLM adjudicating high-uncertainty sepsis alerts, earns its bedside role by
-augmenting a conventional predictor rather than replacing it \cite{shashikumar2025sepsis}.
+persistent omission \cite{yehudai2025evaluation}. On de-identified real-world records, the evidence is thinner and
+more sobering: revisited MIMIC-IV baselines find fine-tuned language models merely
+competitive with tabular classifiers on one-shot prediction, with zero-shot models trailing
+both \cite{lovon2025mimic}, and the single prospective deployment, an LLM adjudicating
+high-uncertainty sepsis alerts in silent mode, earns that role by augmenting a conventional
+predictor rather than replacing it \cite{shashikumar2025sepsis}.
 
 Safety research, meanwhile, characterizes the failure modes that evaluation should be
 catching: taxonomies of medical hallucination grounded in clinician annotation
@@ -162,11 +163,13 @@ output meeting medical-device criteria \cite{weissman2025unregulated}, prompting
 governance for unconfined non-deterministic clinical software built on guardrails,
 moderation, and inspectability \cite{tan2026undcs}. Even the human backstop is less settled than
 assumed; the sole meta-analysis of clinician--LLM collaboration reports gains that are
-statistically fragile alongside clinically significant error rates \cite{wang2026collaboration}.
+statistically fragile alongside non-trivial error rates in collaborative outputs
+\cite{wang2026collaboration}.
 
 Each literature names a requirement: grounded recommendations, calibrated confidence,
-inspectable trails, structured oversight. None reports a system in which those requirements
-are implemented together and \emph{measured} end-to-end on real patient records. That
+inspectable trails, structured oversight. To the best of our knowledge, none reports a
+system in which those requirements are implemented together and \emph{measured} end-to-end on
+de-identified real-world patient records. That
 measurement, rather than any single component, is what the framework presented next is
 designed to make possible.
 
@@ -206,8 +209,10 @@ A coordinator agent delegates to seven specialized agents (monitoring, planner, 
 risk prediction, treatment recommendation, explanation, and verification), each of which uses
 ReAct-style reasoning internally \cite{yao2023react}. Coordination follows a hub-and-spoke
 topology. All inter-agent messages pass through the coordinator, a choice motivated by
-evidence that decentralized medical multi-agent topologies let adversarial or erroneous
-influence propagate further \cite{chen2025medsentry}. Tool access uses MCP-style standardized
+adversarial evidence that multi-agent topology governs how far a compromised agent's
+influence spreads, with open shared-communication designs proving most vulnerable to
+contamination \cite{chen2025medsentry}; routing every message through one auditable point also
+serves the audit-trail requirement of Section~III-D. Tool access uses MCP-style standardized
 interfaces and inter-agent exchange follows A2A-style conventions \cite{ehtesham2025protocols},
 which keeps the prototype composable with hospital tooling. External tools follow the
 validated-tool principle of RiskAgent and TxAgent: calculations and lookups are delegated to
@@ -263,7 +268,7 @@ The framework's novelty is deliberately narrow. Tool-using medical agents exist
 \cite{wu2024autogen,tran2025collaboration}; clinical RAG exists and works within its grounding
 assumptions \cite{zhao2025medrag,ke2025ragfitness}. We do not claim these components. We claim the
 three things the 2025--2026 literature documents as absent: retrieval grounded in the patient's
-own timeline, evaluation that scores longitudinal tracking on real ICU records, and a
+own timeline, evaluation that scores longitudinal tracking on de-identified real-world ICU records, and a
 verification gate whose audit trail is itself measured. If the ablations show these components
 do not improve grounded decision quality, the framework's thesis fails honestly; the
 components are separable and testable by design.
@@ -292,9 +297,11 @@ Each safety mechanism in the framework answers a failure mode the literature has
 rather than one we hypothesize. Clinician-annotated evidence that hallucinated medical
 content reaches practice \cite{kim2025hallucinations} is why the gate screens recommendations
 before delivery; the argument that clinical systems owe users calibrated uncertainty, not
-bare answers \cite{atf2025uncertainty}, is why every recommendation carries a confidence interval;
-adversarial findings that topology governs how far a compromised agent's influence travels
-\cite{chen2025medsentry} are why coordination is hub-and-spoke with no side channels; and the
+bare answers \cite{atf2025uncertainty}, is why every recommendation carries a calibrated
+confidence estimate;
+adversarial findings that open shared communication channels are the most vulnerable
+multi-agent design \cite{chen2025medsentry} are why the framework eliminates side channels and
+routes every message through one auditable point; and the
 demonstration that unconstrained model output already meets medical-device criteria
 \cite{weissman2025unregulated} is why we treat regulatory alignment as a design input. We read
 the meta-analytic evidence on clinician--LLM teaming \cite{wang2026collaboration} as supporting a
@@ -335,7 +342,7 @@ trustworthy-agent literature identifies as open \cite{yu2025trustagent,tan2026un
 
 The full evaluation of Section~III-F requires credentialed MIMIC-IV access and an LLM agent
 loop; both are in progress. To establish that the framework's distinguishing components are
-implementable and behave as designed on real ICU data, we conducted a bounded pilot on the
+implementable and behave as designed on de-identified real-world ICU data, we conducted a bounded pilot on the
 openly licensed MIMIC-IV Clinical Database Demo (v2.2; 100 patients, 275 admissions, 140 ICU
 stays) \cite{johnson2023mimic}. The pilot exercises the non-LLM slice of the architecture
 (timeline construction, timestamp-aware retrieval, an alert-generating classical baseline, and
@@ -383,7 +390,7 @@ and the metric exists precisely because it becomes non-trivial once an LLM write
 \subsection{What the Pilot Does and Does Not Show}
 
 The pilot shows that the framework's memory, retrieval, and verification mechanisms are
-implementable on real ICU records at interactive latency, that evidence-gating discriminates
+implementable on de-identified real-world ICU records at interactive latency, that evidence-gating discriminates
 in the intended direction, and that audit-trail faithfulness is a measurable quantity. It
 does not show clinical utility, generalization beyond a 100-patient demo cohort, or anything
 about the LLM agent loop, which the full MIMIC-IV evaluation of Section~III-F will test. The
@@ -401,12 +408,12 @@ evidence, an audit trail whose faithfulness is measured, and structured rather t
 clinician oversight) each correspond to a specific absence documented in the benchmark,
 safety, and regulatory literature cited throughout. The pilot on the open MIMIC-IV demo
 establishes a bounded but concrete result: the non-LLM substrate of these commitments runs
-on real ICU records at interactive latency, and requiring recent, concordant, multi-signal
+on de-identified real-world ICU records at interactive latency, and requiring recent, concordant, multi-signal
 evidence blocks unsupported alerts at a substantially higher rate than supported ones, while
-also exposing a sensitivity floor that examination-style evaluation cannot reveal. What the
-pilot does not do is equally definite. It says nothing about the LLM agent loop, whose test
+also exposing a sensitivity floor that examination-style evaluation cannot reveal. The
+pilot's limits are just as clear. It says nothing about the LLM agent loop, whose test
 is the full MIMIC-IV evaluation specified in Section~III-F, and nothing about clinical
 utility, which only prospective study can establish. If the full evaluation shows these
 components fail to improve grounded decision quality, the design permits that failure to be
-located exactly. In a domain where unverifiable success is indistinguishable from plausible
-error, we argue that this is the property clinical agentic AI needs most.
+located exactly. Because unverifiable success in this domain cannot be told apart from
+plausible error, we consider this the property clinical agentic AI needs most.

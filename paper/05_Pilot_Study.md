@@ -4,7 +4,7 @@
 
 The full evaluation of Section 3.6 requires credentialed MIMIC-IV access and an LLM agent
 loop; both are in progress. To establish that the framework's distinguishing components are
-implementable and behave as designed on real ICU data, we conducted a bounded pilot on the
+implementable and behave as designed on de-identified real-world ICU data, we conducted a bounded pilot on the
 openly licensed MIMIC-IV Clinical Database Demo (v2.2; 100 patients, 275 admissions, 140 ICU
 stays) [johnson2023mimic]. The pilot exercises the non-LLM slice of the architecture
 (timeline construction, timestamp-aware retrieval, an alert-generating classical baseline, and
@@ -52,7 +52,7 @@ and the metric exists precisely because it becomes non-trivial once an LLM write
 ## 5.4 What the Pilot Does and Does Not Show
 
 The pilot shows that the framework's memory, retrieval, and verification mechanisms are
-implementable on real ICU records at interactive latency, that evidence-gating discriminates
+implementable on de-identified real-world ICU records at interactive latency, that evidence-gating discriminates
 in the intended direction, and that audit-trail faithfulness is a measurable quantity. It
 does not show clinical utility, generalization beyond a 100-patient demo cohort, or anything
 about the LLM agent loop, which the full MIMIC-IV evaluation of Section 3.6 will test. The

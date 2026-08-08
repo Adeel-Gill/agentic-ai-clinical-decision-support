@@ -5,15 +5,15 @@ trajectory: what the lactate did overnight, which medications were started and s
 this admission compares with the last one. The language-model systems now entering clinical
 workflows do not reason this way. They can select and invoke validated clinical tools
 [gao2025txagent; liu2025riskagent], sustain multi-turn diagnostic dialogue
-[palepu2025disease; saab2025multimodal], and in one documented case operate prospectively at
-the bedside [shashikumar2025sepsis]; their underlying machinery, from reasoning-and-acting
+[palepu2025disease; saab2025multimodal], and in one documented case run prospectively, in
+silent mode, inside a live emergency-department deployment [shashikumar2025sepsis]; their underlying machinery, from reasoning-and-acting
 loops [yao2023react] and retrieval-augmented generation [lewis2020rag] to multi-agent
 coordination [wu2024autogen] and structured memory [wu2025memory], is individually mature.
-Yet each of these systems reconstructs the patient from the current prompt and forgets them
-when the interaction ends.
+Each of these systems, however, rebuilds its picture of the patient from the current prompt
+and retains nothing once the interaction ends.
 
-That mismatch between how clinicians reason and how these systems are built produces three
-shortfalls that motivate this research, and we argue they are the load-bearing ones. The
+This research is motivated by three shortfalls that follow from that mismatch between
+clinical reasoning and system design. The
 first concerns evaluation substrate. The strongest medical agents are still graded on
 curated examinations or synthetic records [tang2024medagents; li2024agenthospital;
 jiang2025medagentbench], whereas a real intensive-care admission is noisy, longitudinal, and
@@ -51,7 +51,7 @@ and synthetic-EHR benchmarks that dominate current practice [jiang2025medagentbe
 arora2025healthbench; lovon2025mimic]; (4) an analysis of how the framework's safeguards map
 onto emerging regulatory requirements for unconfined non-deterministic clinical software
 [tan2026undcs]; and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that
-grounds the framework's distinguishing mechanisms in real ICU data: timelines for 140 stays
+grounds the framework's distinguishing mechanisms in de-identified real-world ICU data: timelines for 140 stays
 build in under three seconds, timestamp-aware retrieval answers in roughly 12 ms without
 returning future information, the verification gate's evidence requirement suppresses false
 alerts faster than true ones (86% versus 57% blocked at four required signals), and every

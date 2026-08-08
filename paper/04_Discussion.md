@@ -7,7 +7,7 @@ The framework's novelty is deliberately narrow. Tool-using medical agents exist
 [wu2024autogen; tran2025collaboration]; clinical RAG exists and works within its grounding
 assumptions [zhao2025medrag; ke2025ragfitness]. We do not claim these components. We claim the
 three things the 2025–2026 literature documents as absent: retrieval grounded in the patient's
-own timeline, evaluation that scores longitudinal tracking on real ICU records, and a
+own timeline, evaluation that scores longitudinal tracking on de-identified real-world ICU records, and a
 verification gate whose audit trail is itself measured. If the ablations show these components
 do not improve grounded decision quality, the framework's thesis fails honestly; the
 components are separable and testable by design.
@@ -36,9 +36,11 @@ Each safety mechanism in the framework answers a failure mode the literature has
 rather than one we hypothesize. Clinician-annotated evidence that hallucinated medical
 content reaches practice [kim2025hallucinations] is why the gate screens recommendations
 before delivery; the argument that clinical systems owe users calibrated uncertainty, not
-bare answers [atf2025uncertainty], is why every recommendation carries a confidence interval;
-adversarial findings that topology governs how far a compromised agent's influence travels
-[chen2025medsentry] are why coordination is hub-and-spoke with no side channels; and the
+bare answers [atf2025uncertainty], is why every recommendation carries a calibrated
+confidence estimate;
+adversarial findings that open shared communication channels are the most vulnerable
+multi-agent design [chen2025medsentry] are why the framework eliminates side channels and
+routes every message through one auditable point; and the
 demonstration that unconstrained model output already meets medical-device criteria
 [weissman2025unregulated] is why we treat regulatory alignment as a design input. We read
 the meta-analytic evidence on clinician–LLM teaming [wang2026collaboration] as supporting a
