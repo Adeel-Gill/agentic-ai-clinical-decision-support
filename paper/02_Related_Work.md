@@ -50,10 +50,10 @@ or extend dialogue systems toward multi-visit management and multimodal evidence
 [palepu2025disease; saab2025multimodal].
 
 Viewed together, these design choices share an assumption that none of the papers states:
-the patient exists only for the duration of a prompt. Whatever is externalized — deliberation,
-queries, tools, or dialogue policy — patient state is reassembled from the scenario at each
-step, and no system carries an evidence-linked model of one real patient forward through an
-admission. The broadest survey of the area finds the research effort concentrated on clinical
+the patient exists only for the duration of a prompt. Whatever is externalized (deliberation,
+queries, tools, or dialogue policy), patient state is reassembled from the scenario at each
+step, and none of these systems carries an evidence-linked model of one real patient forward
+through an admission. The broadest survey of the area finds the research effort concentrated on clinical
 decision-making while naming implementation barriers among the field's central open
 challenges [wang2025baymax]. The gap this paper targets sits at the intersection of those
 two observations.
@@ -81,7 +81,7 @@ Whether these systems can be trusted is being addressed by three literatures tha
 meet. Evaluation research is moving benchmarks toward realism, placing agents inside a
 FHIR-compliant virtual EHR with physician-authored tasks [jiang2025medagentbench], grading
 open-ended conversations against physician-written rubrics [arora2025healthbench], and
-cataloguing which agent capabilities current benchmarks measure — with safety flagged as the
+cataloguing which agent capabilities current benchmarks measure, with safety flagged as the
 persistent omission [yehudai2025evaluation]. On de-identified real-world records, the evidence is thinner and
 more sobering: revisited MIMIC-IV baselines find fine-tuned language models merely
 competitive with tabular classifiers on one-shot prediction, with zero-shot models trailing

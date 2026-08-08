@@ -27,8 +27,9 @@ identified. The third concerns verifiability. The field can now characterize hal
 and uncertainty in clinical language models [kim2025hallucinations; atf2025uncertainty], and
 regulators have begun demanding inspectable safeguards for agentic clinical software
 [tan2026undcs; weissman2025unregulated], but published systems rarely check an individual
-recommendation against the patient evidence that was retrieved for it, and we found none
-that measures whether its own audit trail faithfully records what the system used.
+recommendation against the patient evidence that was retrieved for it, and within the
+literature reviewed for this study we found none that measures whether its own audit trail
+faithfully records what the system used.
 
 This paper presents an agentic AI framework for intelligent patient monitoring and clinical
 decision support in which each of those three properties is a designed, measurable component

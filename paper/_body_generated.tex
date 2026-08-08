@@ -26,8 +26,9 @@ identified. The third concerns verifiability. The field can now characterize hal
 and uncertainty in clinical language models \cite{kim2025hallucinations,atf2025uncertainty}, and
 regulators have begun demanding inspectable safeguards for agentic clinical software
 \cite{tan2026undcs,weissman2025unregulated}, but published systems rarely check an individual
-recommendation against the patient evidence that was retrieved for it, and we found none
-that measures whether its own audit trail faithfully records what the system used.
+recommendation against the patient evidence that was retrieved for it, and within the
+literature reviewed for this study we found none that measures whether its own audit trail
+faithfully records what the system used.
 
 This paper presents an agentic AI framework for intelligent patient monitoring and clinical
 decision support in which each of those three properties is a designed, measurable component
@@ -113,10 +114,10 @@ or extend dialogue systems toward multi-visit management and multimodal evidence
 \cite{palepu2025disease,saab2025multimodal}.
 
 Viewed together, these design choices share an assumption that none of the papers states:
-the patient exists only for the duration of a prompt. Whatever is externalized --- deliberation,
-queries, tools, or dialogue policy --- patient state is reassembled from the scenario at each
-step, and no system carries an evidence-linked model of one real patient forward through an
-admission. The broadest survey of the area finds the research effort concentrated on clinical
+the patient exists only for the duration of a prompt. Whatever is externalized (deliberation,
+queries, tools, or dialogue policy), patient state is reassembled from the scenario at each
+step, and none of these systems carries an evidence-linked model of one real patient forward
+through an admission. The broadest survey of the area finds the research effort concentrated on clinical
 decision-making while naming implementation barriers among the field's central open
 challenges \cite{wang2025baymax}. The gap this paper targets sits at the intersection of those
 two observations.
@@ -144,7 +145,7 @@ Whether these systems can be trusted is being addressed by three literatures tha
 meet. Evaluation research is moving benchmarks toward realism, placing agents inside a
 FHIR-compliant virtual EHR with physician-authored tasks \cite{jiang2025medagentbench}, grading
 open-ended conversations against physician-written rubrics \cite{arora2025healthbench}, and
-cataloguing which agent capabilities current benchmarks measure --- with safety flagged as the
+cataloguing which agent capabilities current benchmarks measure, with safety flagged as the
 persistent omission \cite{yehudai2025evaluation}. On de-identified real-world records, the evidence is thinner and
 more sobering: revisited MIMIC-IV baselines find fine-tuned language models merely
 competitive with tabular classifiers on one-shot prediction, with zero-shot models trailing
@@ -267,9 +268,10 @@ The framework's novelty is deliberately narrow. Tool-using medical agents exist
 \cite{gao2025txagent,liu2025riskagent,fallahpour2025medrax}; multi-agent coordination exists
 \cite{wu2024autogen,tran2025collaboration}; clinical RAG exists and works within its grounding
 assumptions \cite{zhao2025medrag,ke2025ragfitness}. We do not claim these components. We claim the
-three things the 2025--2026 literature documents as absent: retrieval grounded in the patient's
-own timeline, evaluation that scores longitudinal tracking on de-identified real-world ICU records, and a
-verification gate whose audit trail is itself measured. If the ablations show these components
+three gaps that, within the 2025--2026 literature reviewed for this study, remain
+insufficiently addressed: retrieval grounded in the patient's own timeline, evaluation that
+scores longitudinal tracking on de-identified real-world ICU records, and a verification
+gate whose audit trail is itself measured. If the ablations show these components
 do not improve grounded decision quality, the framework's thesis fails honestly; the
 components are separable and testable by design.
 

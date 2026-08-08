@@ -6,9 +6,10 @@ The framework's novelty is deliberately narrow. Tool-using medical agents exist
 [gao2025txagent; liu2025riskagent; fallahpour2025medrax]; multi-agent coordination exists
 [wu2024autogen; tran2025collaboration]; clinical RAG exists and works within its grounding
 assumptions [zhao2025medrag; ke2025ragfitness]. We do not claim these components. We claim the
-three things the 2025–2026 literature documents as absent: retrieval grounded in the patient's
-own timeline, evaluation that scores longitudinal tracking on de-identified real-world ICU records, and a
-verification gate whose audit trail is itself measured. If the ablations show these components
+three gaps that, within the 2025–2026 literature reviewed for this study, remain
+insufficiently addressed: retrieval grounded in the patient's own timeline, evaluation that
+scores longitudinal tracking on de-identified real-world ICU records, and a verification
+gate whose audit trail is itself measured. If the ablations show these components
 do not improve grounded decision quality, the framework's thesis fails honestly; the
 components are separable and testable by design.
 
