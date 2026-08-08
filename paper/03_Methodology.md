@@ -116,7 +116,9 @@ faithfulness: the fraction of logged evidence references that both re-resolve to
 record and match the value the system actually used, under human spot audit of a random
 sample sized to bound the faithfulness estimate within ±5 percentage points at 95%
 confidence, assuming the maximum-variance baseline p = 0.5 (approximately 385 references, or
-the full trail when smaller). (5)
+the full trail when smaller). Adjudication is strictly binary: a reference that is partially
+correct, for example resolving to the right table but the wrong row or to a superseded
+value, counts as unfaithful. (5)
 Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 [arora2025healthbench; jiang2025medagentbench]. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.

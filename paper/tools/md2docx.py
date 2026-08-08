@@ -196,20 +196,31 @@ def main() -> None:
         "human-in-the-loop validation, governed by a cross-cutting trustworthy-AI panel.")
     cr.font.size = Pt(9)
 
+    doc.add_heading("Ethics Statement", level=1)
+    doc.add_paragraph(
+        "This study uses only the MIMIC-IV Clinical Database Demo v2.2, a fully de-identified, "
+        "openly licensed public dataset distributed by PhysioNet that requires no credentialing "
+        "and involves no interaction with patients or clinicians; no additional ethics approval "
+        "was required for its use. The planned full evaluation will use the credentialed MIMIC-IV "
+        "database under the PhysioNet Credentialed Health Data Use Agreement and completed human "
+        "subjects research training. The system described is an academic proof-of-concept "
+        "evaluated on de-identified and synthetic data only; it is not a medical device and is "
+        "not intended for clinical use, and any output it produces requires review by a "
+        "qualified licensed clinician.")
+    doc.add_heading("Data Availability", level=1)
+    doc.add_paragraph(
+        "The MIMIC-IV Clinical Database Demo v2.2 is publicly available from PhysioNet. The "
+        "pilot implementation (timeline construction, timestamp-aware retrieval, early-warning "
+        "baseline, and verification gate) and the aggregate pilot metrics reported in Section 5 "
+        "are available in the project repository; no patient-level data is redistributed. The "
+        "full MIMIC-IV database is available to credentialed researchers via PhysioNet.")
+
     doc.add_heading("References", level=1)
     for key, n in sorted(cites.items(), key=lambda kv: kv[1]):
         e = bib.get(key)
         p = doc.add_paragraph(f"[{n}] " + (format_ref(e) if e else key))
         p.paragraph_format.space_after = Pt(4)
         p.runs[0].font.size = Pt(10)
-
-    note = doc.add_paragraph()
-    nr = note.add_run(
-        "Research prototype disclosure: the system described is an academic proof-of-concept "
-        "evaluated on de-identified and synthetic data only; it is not a medical device and is "
-        "not intended for clinical use.")
-    nr.italic = True
-    nr.font.size = Pt(9)
 
     out = PAPER / "Agentic_AI_Framework_for_Intelligent_Patient_Monitoring_and_Clinical_Decision_Support.docx"
     doc.save(out)
