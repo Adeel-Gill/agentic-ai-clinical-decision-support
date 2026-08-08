@@ -39,8 +39,8 @@ coordinator. Beneath them, a memory layer makes the patient's longitudinal EHR t
 first-class retrieval corpus. Above them, a verification gate blocks recommendations that
 the retrieved evidence does not support, writing every decision to an audit trail whose
 faithfulness is itself an evaluation target. Clinician oversight is structured rather than
-advisory; recommendations arrive only after verification, carrying linked evidence and
-calibrated confidence, because the meta-analytic record suggests unstructured human–LLM
+advisory; recommendations arrive only after verification, carrying linked evidence and a
+calibrated confidence estimate, because the meta-analytic record suggests unstructured human–LLM
 collaboration yields gains too uncertain to rely on [wang2026collaboration].
 
 The contributions are: (1) a layered framework that grounds retrieval in the patient

@@ -13,7 +13,7 @@ component. Specialized agents for monitoring, diagnosis, risk prediction, treatm
 recommendation, explanation, and verification operate under a coordinator, over a memory
 layer in which the patient timeline is a first-class retrieval corpus; recommendations must
 pass an evidence-entailment verification gate before reaching a structured clinician review
-step, accompanied by calibrated confidence. We specify an evaluation design on MIMIC-IV that
+step, accompanied by a calibrated confidence estimate. We specify an evaluation design on MIMIC-IV that
 scores longitudinal patient tracking, and report a pilot feasibility study on the openly
 licensed 100-patient MIMIC-IV demo: timelines for 140 ICU stays build in under three
 seconds; timestamp-aware retrieval answers in about 12 ms without returning future

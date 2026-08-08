@@ -38,8 +38,8 @@ coordinator. Beneath them, a memory layer makes the patient's longitudinal EHR t
 first-class retrieval corpus. Above them, a verification gate blocks recommendations that
 the retrieved evidence does not support, writing every decision to an audit trail whose
 faithfulness is itself an evaluation target. Clinician oversight is structured rather than
-advisory; recommendations arrive only after verification, carrying linked evidence and
-calibrated confidence, because the meta-analytic record suggests unstructured human--LLM
+advisory; recommendations arrive only after verification, carrying linked evidence and a
+calibrated confidence estimate, because the meta-analytic record suggests unstructured human--LLM
 collaboration yields gains too uncertain to rely on \cite{wang2026collaboration}.
 
 The contributions are: (1) a layered framework that grounds retrieval in the patient
@@ -167,8 +167,8 @@ assumed; the sole meta-analysis of clinician--LLM collaboration reports gains th
 statistically fragile alongside non-trivial error rates in collaborative outputs
 \cite{wang2026collaboration}.
 
-Each literature names a requirement: grounded recommendations, calibrated confidence,
-inspectable trails, structured oversight. To the best of our knowledge, none reports a
+Each literature names a requirement: grounded recommendations, calibrated confidence
+estimates, inspectable trails, structured oversight. To the best of our knowledge, none reports a
 system in which those requirements are implemented together and \emph{measured} end-to-end on
 de-identified real-world patient records. That
 measurement, rather than any single component, is what the framework presented next is
@@ -236,16 +236,19 @@ moderation, retrieval grounding, and inspectability \cite{tan2026undcs,weissman2
 
 \subsection{Human-in-the-Loop Protocol}
 
-Clinicians receive only verified recommendations, each with linked evidence, confidence, and
-explanation. Review is structured rather than free-form: approve, modify, or reject, with
+Clinicians receive only verified recommendations, each with linked evidence, a calibrated
+confidence estimate, and an explanation. Review is structured rather than free-form: approve, modify, or reject, with
 reasons captured into memory. The choice reflects meta-analytic evidence that unstructured
 clinician--LLM collaboration produces gains too uncertain to build on
 \cite{wang2026collaboration}. Rejections and modifications feed the monitoring loop as supervision
 signals.
 
-\subsection{Evaluation Design}
+\subsection{Planned Evaluation Design}
 
-Evaluation uses MIMIC-IV \cite{johnson2023mimic} cohorts (sepsis and deterioration use cases;
+This subsection specifies the full evaluation of the LLM-based framework; it is designed but
+has not yet been executed. The only completed empirical work in this paper is the non-LLM
+pilot reported in Section~V, and no result below should be read as obtained. The planned
+evaluation uses MIMIC-IV \cite{johnson2023mimic} cohorts (sepsis and deterioration use cases;
 Sepsis-3 labels \cite{singer2016sepsis3,vincent1996sofa}) and scores the system on longitudinal
 tracking, not one-shot prediction. Primary axes: (1) decision quality against clinical ground
 truth and revisited MIMIC-IV baselines \cite{lovon2025mimic}; (2) grounding rate, the fraction of

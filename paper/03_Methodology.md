@@ -59,16 +59,19 @@ moderation, retrieval grounding, and inspectability [tan2026undcs; weissman2025u
 
 ## 3.5 Human-in-the-Loop Protocol
 
-Clinicians receive only verified recommendations, each with linked evidence, confidence, and
-explanation. Review is structured rather than free-form: approve, modify, or reject, with
+Clinicians receive only verified recommendations, each with linked evidence, a calibrated
+confidence estimate, and an explanation. Review is structured rather than free-form: approve, modify, or reject, with
 reasons captured into memory. The choice reflects meta-analytic evidence that unstructured
 clinician–LLM collaboration produces gains too uncertain to build on
 [wang2026collaboration]. Rejections and modifications feed the monitoring loop as supervision
 signals.
 
-## 3.6 Evaluation Design
+## 3.6 Planned Evaluation Design
 
-Evaluation uses MIMIC-IV [johnson2023mimic] cohorts (sepsis and deterioration use cases;
+This subsection specifies the full evaluation of the LLM-based framework; it is designed but
+has not yet been executed. The only completed empirical work in this paper is the non-LLM
+pilot reported in Section 5, and no result below should be read as obtained. The planned
+evaluation uses MIMIC-IV [johnson2023mimic] cohorts (sepsis and deterioration use cases;
 Sepsis-3 labels [singer2016sepsis3; vincent1996sofa]) and scores the system on longitudinal
 tracking, not one-shot prediction. Primary axes: (1) decision quality against clinical ground
 truth and revisited MIMIC-IV baselines [lovon2025mimic]; (2) grounding rate, the fraction of

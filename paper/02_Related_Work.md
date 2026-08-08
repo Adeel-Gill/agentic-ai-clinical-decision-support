@@ -103,8 +103,8 @@ assumed; the sole meta-analysis of clinician–LLM collaboration reports gains t
 statistically fragile alongside non-trivial error rates in collaborative outputs
 [wang2026collaboration].
 
-Each literature names a requirement: grounded recommendations, calibrated confidence,
-inspectable trails, structured oversight. To the best of our knowledge, none reports a
+Each literature names a requirement: grounded recommendations, calibrated confidence
+estimates, inspectable trails, structured oversight. To the best of our knowledge, none reports a
 system in which those requirements are implemented together and *measured* end-to-end on
 de-identified real-world patient records. That
 measurement, rather than any single component, is what the framework presented next is
