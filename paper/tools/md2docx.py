@@ -215,6 +215,21 @@ def main() -> None:
         "are available in the project repository; no patient-level data is redistributed. The "
         "full MIMIC-IV database is available to credentialed researchers via PhysioNet.")
 
+    doc.add_heading("Funding", level=1)
+    doc.add_paragraph("The authors received no specific funding for this work.")
+    doc.add_heading("Competing Interests", level=1)
+    doc.add_paragraph("The authors declare no competing interests.")
+    doc.add_heading("Author Contributions", level=1)
+    doc.add_paragraph(
+        "A.G. designed the framework, implemented the pilot study and platform prototype, and "
+        "wrote the manuscript. F.N. supervised the research and reviewed the manuscript.")
+    doc.add_heading("AI-Assistance Disclosure", level=1)
+    doc.add_paragraph(
+        "Large language model tools were used, under the authors' direction, to assist with "
+        "literature search, drafting, and editing of this manuscript and with the "
+        "implementation of the pilot software. The authors reviewed and verified all content, "
+        "citations, analyses, and results, and take full responsibility for the manuscript.")
+
     doc.add_heading("References", level=1)
     for key, n in sorted(cites.items(), key=lambda kv: kv[1]):
         e = bib.get(key)

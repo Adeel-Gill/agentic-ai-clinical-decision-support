@@ -73,9 +73,11 @@ generally under-reported [yehudai2025evaluation].
 
 The pilot's most consequential finding for deployment is not the gate's specificity but its
 sensitivity floor, and it warrants treatment as a first-class safety issue rather than a
-footnote to the results. At the strictest informative threshold the rule-based gate blocked
-three of the seven true alerts; a deployed system that suppressed half of the alerts
-preceding death would be clinically unacceptable, whatever its false-alert suppression. Three
+footnote to the results. At the strictest informative threshold (m = 4) the rule-based gate
+blocked four of the seven true alerts, three of which carried no deterioration-relevant
+signal in the evidence window at all; a deployed system that suppressed more than half of
+the alerts preceding death would be clinically unacceptable, whatever its false-alert
+suppression. Three
 design consequences follow. The evidence window and signal threshold are safety parameters
 whose values clinical governance, not engineering, must set. Gate operating points must
 always be reported with sensitivity alongside false-alert suppression, as the pilot's

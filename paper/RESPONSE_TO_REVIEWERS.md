@@ -33,9 +33,9 @@ established predictive validity."
 
 **R3 — Safety / sensitivity floor as a primary limitation.**
 Resolved. The sensitivity floor has its own subsection, IV-E "Safety Consideration: The
-Gate's Sensitivity Floor," which states that "a deployed system that suppressed half of the
-alerts preceding death would be clinically unacceptable, whatever its false-alert
-suppression," and draws three design consequences: governance-set thresholds, sensitivity
+Gate's Sensitivity Floor," which states that "a deployed system that suppressed more than
+half of the alerts preceding death would be clinically unacceptable, whatever its
+false-alert suppression," and draws three design consequences: governance-set thresholds, sensitivity
 reported at every operating point, and suppression that is never silent (blocked alerts
 remain visible and overridable). Section IV-D (Limitations) cross-references it as a
 first-class item.
