@@ -71,7 +71,7 @@ signals.
 This subsection specifies the full evaluation of the LLM-based framework; it is designed but
 has not yet been executed. The only completed empirical work in this paper is the non-LLM
 pilot reported in Section 5, and no result below should be read as obtained. The planned
-evaluation uses MIMIC-IV [johnson2023mimic] cohorts (sepsis and deterioration use cases;
+full evaluation uses MIMIC-IV [johnson2023mimic] cohorts (sepsis and deterioration use cases;
 Sepsis-3 labels [singer2016sepsis3; vincent1996sofa]) and scores the system on longitudinal
 tracking, not one-shot prediction. Primary axes: (1) decision quality against clinical ground
 truth and revisited MIMIC-IV baselines [lovon2025mimic]; (2) grounding rate, the fraction of
