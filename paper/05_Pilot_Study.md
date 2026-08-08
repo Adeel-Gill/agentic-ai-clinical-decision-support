@@ -6,9 +6,9 @@ The full evaluation of Section 3.6 requires credentialed MIMIC-IV access and an 
 loop; both are in progress. To establish that the framework's distinguishing components are
 implementable and behave as designed on real ICU data, we conducted a bounded pilot on the
 openly licensed MIMIC-IV Clinical Database Demo (v2.2; 100 patients, 275 admissions, 140 ICU
-stays) [johnson2023mimic]. The pilot exercises the non-LLM slice of the architecture —
-timeline construction, timestamp-aware retrieval, an alert-generating classical baseline, and
-the verification gate with its audit trail — and is reported as feasibility evidence. With
+stays) [johnson2023mimic]. The pilot exercises the non-LLM slice of the architecture
+(timeline construction, timestamp-aware retrieval, an alert-generating classical baseline, and
+the verification gate with its audit trail) and is reported as feasibility evidence. With
 twenty deaths in the cohort, no performance claim survives this sample size, and we make none.
 
 ## 5.2 Setup
@@ -34,7 +34,7 @@ IQR 236–798); 43% of stays carried at least one prior admission, confirming th
 context exists to retrieve even in a small cohort. Retrieval answered queries in 11.7 ms
 median (17.9 ms p95) with full top-k coverage and returned no future information by
 construction. The baseline reached a cross-validated AUROC of 0.641 (95% bootstrap CI
-0.478–0.792) — an interval that crosses chance, as expected at this sample size; its role is
+0.478–0.792), an interval that crosses chance, as expected at this sample size. Its role is
 to supply a realistic alert stream, not predictive skill.
 
 The gate produced the pilot's most instructive result. As the required number of distinct
@@ -44,7 +44,7 @@ blocks 86% of false alerts while retaining 43% of true ones. Evidence-gating the
 preferentially suppresses unsupported alerts, which is the mechanism the framework relies on.
 The same experiment exposes the mechanism's cost: three of the seven true alerts had no
 abnormal signal in the six-hour window at all, so the gate imposes a sensitivity floor
-governed by the evidence window — a safety parameter to be tuned, and an effect invisible in
+governed by the evidence window, a safety parameter to be tuned, and an effect invisible in
 exam-style evaluation. All 183 logged evidence references re-resolved exactly against the raw
 tables (trail resolvability 1.00); in this deterministic pilot the perfect score is expected,
 and the metric exists precisely because it becomes non-trivial once an LLM writes the trail.

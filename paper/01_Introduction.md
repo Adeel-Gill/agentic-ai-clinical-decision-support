@@ -1,53 +1,62 @@
 # 1. Introduction
 
-Large language models have moved quickly from answering medical examination questions to acting
-inside clinical workflows. Systems now select and call validated clinical tools
-[gao2025txagent; liu2025riskagent], conduct multi-turn diagnostic conversations
-[palepu2025disease; saab2025multimodal], and in at least one case operate prospectively at the
-bedside [shashikumar2025sepsis]. The building blocks of such systems — ReAct-style reasoning
-[yao2023react], retrieval-augmented generation [lewis2020rag], multi-agent coordination
-[wu2024autogen], and structured agent memory [wu2025memory] — are individually mature.
+An intensive-care clinician deciding whether to escalate treatment reasons over a patient's
+trajectory: what the lactate did overnight, which medications were started and stopped, how
+this admission compares with the last one. The language-model systems now entering clinical
+workflows do not reason this way. They can select and invoke validated clinical tools
+[gao2025txagent; liu2025riskagent], sustain multi-turn diagnostic dialogue
+[palepu2025disease; saab2025multimodal], and in one documented case operate prospectively at
+the bedside [shashikumar2025sepsis]; their underlying machinery, from reasoning-and-acting
+loops [yao2023react] and retrieval-augmented generation [lewis2020rag] to multi-agent
+coordination [wu2024autogen] and structured memory [wu2025memory], is individually mature.
+Yet each of these systems reconstructs the patient from the current prompt and forgets them
+when the interaction ends.
 
-What has not matured is the evidence that these systems can be trusted with a specific patient
-over time. Three shortfalls recur across the strongest published work. First, evaluation remains
-distant from deployment: medical agents are still graded on curated examinations or synthetic
-records [tang2024medagents; li2024agenthospital; jiang2025medagentbench], not on the noisy,
-longitudinal, internally revised record of a real intensive-care admission [johnson2023mimic].
-Second, retrieval is grounded in guidelines and literature rather than in the patient: even
-strong clinical RAG deployments treat external knowledge as the corpus and the patient as the
-query [zhao2025medrag; ke2025ragfitness], leaving the patient's own timeline — prior labs, prior
-admissions, the trend of a vital sign — outside the evidence base. Third, verification and
-auditability are asserted rather than measured: hallucination and uncertainty are now well
-characterized [kim2025hallucinations; atf2025uncertainty], and regulators increasingly demand
-inspectable safeguards for agentic clinical software [tan2026undcs; weissman2025unregulated],
-yet published systems rarely check a recommendation against the retrieved patient evidence, and
-none that we are aware of measures the faithfulness of its own audit trail.
+That mismatch between how clinicians reason and how these systems are built produces three
+shortfalls that motivate this research, and we argue they are the load-bearing ones. The
+first concerns evaluation substrate. The strongest medical agents are still graded on
+curated examinations or synthetic records [tang2024medagents; li2024agenthospital;
+jiang2025medagentbench], whereas a real intensive-care admission is noisy, longitudinal, and
+internally revised as results are corrected and orders change [johnson2023mimic]; competence
+on the former substrate does not establish competence on the latter. The second concerns
+grounding direction. Clinical retrieval-augmented systems, including those with strong
+results, treat external knowledge as the corpus and the patient as the query
+[zhao2025medrag; ke2025ragfitness]. The patient's own accumulated record, the very material
+a clinician reasons over, is not itself retrievable evidence in any published system we
+identified. The third concerns verifiability. The field can now characterize hallucination
+and uncertainty in clinical language models [kim2025hallucinations; atf2025uncertainty], and
+regulators have begun demanding inspectable safeguards for agentic clinical software
+[tan2026undcs; weissman2025unregulated], but published systems rarely check an individual
+recommendation against the patient evidence that was retrieved for it, and we found none
+that measures whether its own audit trail faithfully records what the system used.
 
 This paper presents an agentic AI framework for intelligent patient monitoring and clinical
-decision support designed around these three shortfalls. The framework organizes specialized
-LLM agents — monitoring, diagnosis, risk prediction, treatment recommendation, explanation, and
-verification — under a coordinator, over a memory layer that treats the patient's longitudinal
-EHR timeline as a first-class retrieval corpus, with a dedicated verification gate and an audit
-trail whose faithfulness is itself an evaluation target. Clinician oversight is structured
-rather than advisory: recommendations reach the clinician only after verification, with linked
-evidence and calibrated confidence, a design choice supported by meta-analytic evidence that
-unstructured human–LLM collaboration yields fragile gains [wang2026collaboration].
+decision support in which each of those three properties is a designed, measurable component
+rather than an aspiration. Specialized LLM agents for monitoring, diagnosis, risk
+prediction, treatment recommendation, explanation, and verification operate under a
+coordinator. Beneath them, a memory layer makes the patient's longitudinal EHR timeline a
+first-class retrieval corpus. Above them, a verification gate blocks recommendations that
+the retrieved evidence does not support, writing every decision to an audit trail whose
+faithfulness is itself an evaluation target. Clinician oversight is structured rather than
+advisory; recommendations arrive only after verification, carrying linked evidence and
+calibrated confidence, because the meta-analytic record suggests unstructured human–LLM
+collaboration yields gains too uncertain to rely on [wang2026collaboration].
 
-The contributions are: (1) a layered framework that grounds retrieval in the patient timeline
-rather than only in external knowledge; (2) a verification gate and evidence-linked audit trail
-specified as measurable components, with metrics for recommendation grounding and trail
-faithfulness; (3) an evaluation design on MIMIC-IV that scores longitudinal patient tracking
-rather than one-shot question answering, positioned against the exam-based and synthetic-EHR
-benchmarks that dominate current practice [jiang2025medagentbench; arora2025healthbench;
-lovon2025mimic]; and (4) an analysis of how the framework's safeguards map onto emerging
-regulatory requirements for unconfined non-deterministic clinical software [tan2026undcs];
-and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that grounds the
-framework's distinguishing mechanisms in real ICU data — timelines for 140 stays build in
-under three seconds, timestamp-aware retrieval answers in roughly 12 ms without returning
-future information, the verification gate's evidence requirement suppresses false alerts
-faster than true ones (86% versus 57% blocked at four required signals), and every logged
-audit-trail reference re-resolves against the source record. These are feasibility results
-on a 100-patient cohort, and the paper reports them with that caveat throughout.
+The contributions are: (1) a layered framework that grounds retrieval in the patient
+timeline rather than only in external knowledge; (2) a verification gate and evidence-linked
+audit trail specified as measurable components, with metrics for recommendation grounding
+and trail faithfulness; (3) an evaluation design on MIMIC-IV that scores longitudinal
+patient tracking rather than one-shot question answering, positioned against the exam-based
+and synthetic-EHR benchmarks that dominate current practice [jiang2025medagentbench;
+arora2025healthbench; lovon2025mimic]; (4) an analysis of how the framework's safeguards map
+onto emerging regulatory requirements for unconfined non-deterministic clinical software
+[tan2026undcs]; and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that
+grounds the framework's distinguishing mechanisms in real ICU data: timelines for 140 stays
+build in under three seconds, timestamp-aware retrieval answers in roughly 12 ms without
+returning future information, the verification gate's evidence requirement suppresses false
+alerts faster than true ones (86% versus 57% blocked at four required signals), and every
+logged audit-trail reference re-resolves against the source record. These are feasibility
+results on a 100-patient cohort, and the paper reports them with that caveat throughout.
 
 The remainder of the paper reviews related work (Section 2), details the framework and its
 evaluation design (Section 3), discusses implications and limitations (Section 4), and
