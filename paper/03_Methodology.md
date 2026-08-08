@@ -56,8 +56,9 @@ through the coordinator, a choice motivated by adversarial evidence that multi-a
 topology governs how far a compromised agent's influence spreads, with open
 shared-communication designs proving most vulnerable to contamination [chen2025medsentry];
 routing every message through one auditable point will also serve the audit-trail
-requirement of Section 3.4. Tool access will use MCP-style standardized interfaces and
-inter-agent exchange will follow A2A-style conventions [ehtesham2025protocols], keeping the
+requirement of Section 3.4. Tool access will use the Model Context Protocol (MCP), and
+inter-agent exchange will follow Agent-to-Agent (A2A)-style conventions, the two
+interoperability protocols named in the index terms [ehtesham2025protocols], keeping the
 prototype composable with hospital tooling. External tools will follow the validated-tool
 principle of RiskAgent and TxAgent: calculations and lookups will be delegated to auditable
 components rather than generated [liu2025riskagent; gao2025txagent].
@@ -114,7 +115,8 @@ fraction the gate blocks (catch rate) at a fixed clinician-review budget. (4) Au
 faithfulness: the fraction of logged evidence references that both re-resolve to the source
 record and match the value the system actually used, under human spot audit of a random
 sample sized to bound the faithfulness estimate within ±5 percentage points at 95%
-confidence (approximately 385 references, or the full trail when smaller). (5)
+confidence, assuming the maximum-variance baseline p = 0.5 (approximately 385 references, or
+the full trail when smaller). (5)
 Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 [arora2025healthbench; jiang2025medagentbench]. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.

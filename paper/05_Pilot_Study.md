@@ -44,7 +44,10 @@ Timeline construction processed all 140 stays in 2.9 s (median 438 events per st
 IQR 236–798); 43% of stays carried at least one prior admission, confirming that longitudinal
 context exists to retrieve even in a small cohort. Retrieval answered queries in 11.7 ms
 median (17.9 ms p95) with full top-k coverage and returned no future information by
-construction. The baseline reached a cross-validated AUROC of 0.641 (95% bootstrap CI
+construction. This figure measures the retrieval substrate alone: in the full system, each
+recommendation will additionally incur multiple LLM inference calls, so total response time
+will be dominated by agentic reasoning, not retrieval, and will be measured separately in
+the planned evaluation. The baseline reached a cross-validated AUROC of 0.641 (95% bootstrap CI
 0.478–0.792). Because the interval crosses 0.5, the baseline demonstrates no statistically
 significant discrimination at this sample size, and we draw no decision-support performance
 conclusion from it whatsoever. Its only function in the pilot is to generate a realistic,

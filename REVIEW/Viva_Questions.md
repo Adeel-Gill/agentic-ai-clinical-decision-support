@@ -66,3 +66,17 @@ bridge in Section V, the sensitivity-floor limitation, and the deterministic-pil
 13. Why not compare against Sepsis-3-specific predictors? (Prepare: they are among planned baselines via Sepsis-3 labels; make explicit in Chapter 4.)
 14. How is bias measured in the orchestration layer? (OPEN — thesis Chapter 4 must specify subgroup metrics; currently only named in the trustworthy panel.)
 15. What metric triggers silent-mode to active decision support? (Prepare: pre-registered sensitivity/PPV thresholds + governance sign-off; add to future work.)
+
+## Final risk-ranked viva questions (96/100 re-audit, 2026-08-08)
+
+Top risks after all revisions — several overlap earlier lists but the ranking is useful:
+1. Significance trap: gate claims on a statistically-noise alert stream (answered in V-C scoping sentence; be ready to defend "filter behavior is measurable on any stream").
+2. Sensitivity floor vs trustworthiness trade-off when governance prioritizes sensitivity.
+3. Backup plan if LLM-entailment gate proves LESS discriminating than the m-signal rule.
+4. Coordinator hub as single point of failure / latency bottleneck (prepare: redundancy plan; latency now explicitly deferred to full evaluation in V-C).
+5. Audit ground truth: human auditor vs LLM entailment disagreement — adjudication rule needed (currently: human is ground truth by construction; state it).
+6. Back-dated entries: charttime vs storetime — pilot used charttime; full system should retrieve on storetime (availability) — good honest answer to prepare.
+7. Blocked-alert queue as new alert-fatigue source.
+8. If ablations show the gate adds nothing over standard RAG, what remains? (Answer: the measurement instrumentation itself is the contribution.)
+9. MIMIC-IV retrospective substrate vs "bedside readiness" claims.
+10. Calibrated estimates from overconfident LLMs (temperature scaling on held-out split; ECE reported; rare-event stratification open).

@@ -259,8 +259,9 @@ through the coordinator, a choice motivated by adversarial evidence that multi-a
 topology governs how far a compromised agent's influence spreads, with open
 shared-communication designs proving most vulnerable to contamination \cite{chen2025medsentry};
 routing every message through one auditable point will also serve the audit-trail
-requirement of Section~III-D. Tool access will use MCP-style standardized interfaces and
-inter-agent exchange will follow A2A-style conventions \cite{ehtesham2025protocols}, keeping the
+requirement of Section~III-D. Tool access will use the Model Context Protocol (MCP), and
+inter-agent exchange will follow Agent-to-Agent (A2A)-style conventions, the two
+interoperability protocols named in the index terms \cite{ehtesham2025protocols}, keeping the
 prototype composable with hospital tooling. External tools will follow the validated-tool
 principle of RiskAgent and TxAgent: calculations and lookups will be delegated to auditable
 components rather than generated \cite{liu2025riskagent,gao2025txagent}.
@@ -317,7 +318,8 @@ fraction the gate blocks (catch rate) at a fixed clinician-review budget. (4) Au
 faithfulness: the fraction of logged evidence references that both re-resolve to the source
 record and match the value the system actually used, under human spot audit of a random
 sample sized to bound the faithfulness estimate within ±5 percentage points at 95\%
-confidence (approximately 385 references, or the full trail when smaller). (5)
+confidence, assuming the maximum-variance baseline p = 0.5 (approximately 385 references, or
+the full trail when smaller). (5)
 Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 \cite{arora2025healthbench,jiang2025medagentbench}. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.
@@ -471,7 +473,10 @@ Timeline construction processed all 140 stays in 2.9 s (median 438 events per st
 IQR 236--798); 43\% of stays carried at least one prior admission, confirming that longitudinal
 context exists to retrieve even in a small cohort. Retrieval answered queries in 11.7 ms
 median (17.9 ms p95) with full top-k coverage and returned no future information by
-construction. The baseline reached a cross-validated AUROC of 0.641 (95\% bootstrap CI
+construction. This figure measures the retrieval substrate alone: in the full system, each
+recommendation will additionally incur multiple LLM inference calls, so total response time
+will be dominated by agentic reasoning, not retrieval, and will be measured separately in
+the planned evaluation. The baseline reached a cross-validated AUROC of 0.641 (95\% bootstrap CI
 0.478--0.792). Because the interval crosses 0.5, the baseline demonstrates no statistically
 significant discrimination at this sample size, and we draw no decision-support performance
 conclusion from it whatsoever. Its only function in the pilot is to generate a realistic,
