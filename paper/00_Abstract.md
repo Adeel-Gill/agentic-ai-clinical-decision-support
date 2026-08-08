@@ -26,4 +26,5 @@ trustworthiness properties measurable that current systems only assert.
 # Keywords
 
 agentic AI; clinical decision support; patient monitoring; large language models;
-retrieval-augmented generation; verification; audit trail; human-in-the-loop; MIMIC-IV
+retrieval-augmented generation; verification; audit trail; human-in-the-loop;
+agent interoperability protocols (MCP, A2A); MIMIC-IV

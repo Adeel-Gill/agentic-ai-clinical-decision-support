@@ -112,7 +112,9 @@ retrieved patient-evidence item, following RAG-evaluation practice [es2024ragas]
 Verification-gate effectiveness: among recommendations independently judged ungrounded, the
 fraction the gate blocks (catch rate) at a fixed clinician-review budget. (4) Audit-trail
 faithfulness: the fraction of logged evidence references that both re-resolve to the source
-record and match the value the system actually used, under human spot audit. (5)
+record and match the value the system actually used, under human spot audit of a random
+sample sized to bound the faithfulness estimate within ±5 percentage points at 95%
+confidence (approximately 385 references, or the full trail when smaller). (5)
 Recommendation quality: rubric-graded scores in the style of physician-rubric benchmarks
 [arora2025healthbench; jiang2025medagentbench]. Ablations remove patient-timeline retrieval,
 the verification gate, and longitudinal memory in turn, isolating each claimed contribution.

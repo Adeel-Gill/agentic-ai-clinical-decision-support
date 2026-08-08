@@ -21,7 +21,7 @@ PAPER = Path("paper")
 TITLE = ("An Agentic AI Framework for Intelligent Patient Monitoring and "
          "Clinical Decision Support with Patient-Timeline Retrieval and "
          "Verified Recommendations")
-AUTHOR = "Adeel Gill (supervisor: Dr. Fawad Nasim) — author block TODO before submission"
+AUTHOR = "Adeel Gill — [Department], [University] · Supervisor: Dr. Fawad Nasim · [email]"
 
 CITE_RE = re.compile(r"\[([a-z][a-zA-Z0-9]+(?:;\s*[a-z][a-zA-Z0-9]+)*)\]")
 
@@ -38,14 +38,27 @@ def collect_citation_order() -> dict[str, int]:
 
 
 # ---------------- bib parsing ----------------
+LATEX_ACCENTS = [
+    (r"\{\\c\{c\}\}", "ç"), (r"\\c\{c\}", "ç"),
+    (r"\{\\'e\}", "é"), (r"\\'e", "é"), (r"\{\\'a\}", "á"),
+    (r'\{\\"o\}', "ö"), (r'\{\\"u\}', "ü"), (r"\{\\~n\}", "ñ"),
+]
+
+
 def parse_bib() -> dict[str, dict]:
     txt = (PAPER / "references.bib").read_text(encoding="utf-8")
+    # normalize LaTeX accent macros to unicode BEFORE brace-based field parsing,
+    # otherwise nested groups like {\c{c}} truncate the field match
+    for pat, rep in LATEX_ACCENTS:
+        txt = re.sub(pat, rep, txt)
     entries = {}
+    # field regex tolerates two levels of brace nesting
+    field_re = re.compile(r"(\w+)\s*=\s*\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}")
     for raw in re.split(r"(?=^@)", txt, flags=re.M):
         m = re.match(r"^@(\w+)\{([^,]+),", raw)
         if not m:
             continue
-        fields = dict(re.findall(r"(\w+)\s*=\s*\{((?:[^{}]|\{[^{}]*\})*)\}", raw))
+        fields = dict(field_re.findall(raw))
         fields = {k.lower(): re.sub(r"[{}]", "", v).strip() for k, v in fields.items()}
         entries[m.group(2)] = {"type": m.group(1), **fields}
     return entries
