@@ -2,6 +2,20 @@
 
 **Deadline:** 2026-08-10 · **Format:** generic IEEE journal (IEEEtran); adjust when venue is fixed.
 
+## FINAL STATUS (2026-08-08): 100/100 — SUBMIT
+Eight external review rounds (72→72→72 stale-file loop →92→96→98→97→100). Closing gate
+passed: numerical consistency sweep clean (12/12 repeated figures identical everywhere);
+all metadata declarations present. Remaining actions are the author's alone:
+1. Fill [Department]/[University]/[email] in `main.tex` \author block and `tools/md2docx.py`
+   AUTHOR line; rebuild (md2tex.py → tectonic → md2docx.py).
+2. Personally confirm the Funding / Competing Interests / Author Contributions /
+   AI-Assistance statements are factually accurate (they are declarations in your name).
+3. University Turnitin run (exclude bibliography/quotes; don't store draft in repository).
+4. Venue confirmation with supervisor; adapt template if Springer/Elsevier.
+Viva prep: defend the sensitivity floor (why gated suppression with visible blocked-alert
+queue beats an ungated predictor that drowns clinicians in false alarms) — see
+REVIEW/Viva_Questions.md.
+
 ## Revision history (compressed)
 - 2026-08-07: pilot study added; humanization + plagiarism pass; verified refs.
 - 2026-08-08 (three review rounds): novelty repositioned to *instrumented integration*;
