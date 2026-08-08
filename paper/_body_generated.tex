@@ -247,49 +247,54 @@ patient-specific evidence rather than population-level knowledge alone
 
 \subsection{Agent Orchestration}
 
-This subsection describes the designed orchestration; as Table~\ref{tab:1} records, the seven agents
-exist as an implementation scaffold, no LLM-based reasoning ran in the pilot of Section~V,
-and every present-tense statement here specifies intended behavior rather than demonstrated
-behavior. In the design, a coordinator agent delegates to seven specialized agents
+This subsection describes designed, not demonstrated, behavior: as Table~\ref{tab:1} records, the
+seven agents exist only as an implementation scaffold (typed interfaces, message schemas,
+and placeholder reasoning stubs), and no LLM-based reasoning ran in the pilot of Section~V,
+whose intelligence resided entirely in a logistic-regression baseline and a rule-based gate.
+In the full system, a coordinator agent will delegate to seven specialized agents
 (monitoring, planner, diagnosis, risk prediction, treatment recommendation, explanation, and
-verification), each of which uses ReAct-style reasoning internally \cite{yao2023react}. Coordination follows a hub-and-spoke
-topology. All inter-agent messages pass through the coordinator, a choice motivated by
-adversarial evidence that multi-agent topology governs how far a compromised agent's
-influence spreads, with open shared-communication designs proving most vulnerable to
-contamination \cite{chen2025medsentry}; routing every message through one auditable point also
-serves the audit-trail requirement of Section~III-D. Tool access uses MCP-style standardized
-interfaces and inter-agent exchange follows A2A-style conventions \cite{ehtesham2025protocols},
-which keeps the prototype composable with hospital tooling. External tools follow the
-validated-tool principle of RiskAgent and TxAgent: calculations and lookups are delegated to
-auditable components rather than generated \cite{liu2025riskagent,gao2025txagent}.
+verification), each of which will use ReAct-style reasoning internally \cite{yao2023react}.
+Coordination will follow a hub-and-spoke topology: all inter-agent messages will pass
+through the coordinator, a choice motivated by adversarial evidence that multi-agent
+topology governs how far a compromised agent's influence spreads, with open
+shared-communication designs proving most vulnerable to contamination \cite{chen2025medsentry};
+routing every message through one auditable point will also serve the audit-trail
+requirement of Section~III-D. Tool access will use MCP-style standardized interfaces and
+inter-agent exchange will follow A2A-style conventions \cite{ehtesham2025protocols}, keeping the
+prototype composable with hospital tooling. External tools will follow the validated-tool
+principle of RiskAgent and TxAgent: calculations and lookups will be delegated to auditable
+components rather than generated \cite{liu2025riskagent,gao2025txagent}.
 
 \subsection{Verification Gate and Audit Trail}
 
-The verification agent is the framework's distinguishing safety component. Every candidate
-recommendation is checked on three axes: (a) evidential grounding, i.e. whether the claim is
+The verification agent is the framework's distinguishing safety component; only its
+rule-based form has been implemented and exercised (Section~V), and the LLM-based form
+described here is designed, not built. In the full system, every candidate recommendation
+will be checked on three axes: (a) evidential grounding, i.e. whether the claim is
 entailed by the retrieved patient evidence and guidelines, screened against known classes of
 medical hallucination \cite{kim2025hallucinations}; (b) guideline compliance and conflict with
-active orders; and (c) a calibrated confidence estimate that accompanies the recommendation to
-the clinician \cite{atf2025uncertainty,guo2017calibration}. Recommendations failing any check are
-blocked and returned with the failure reason. Every check writes to an evidence-linked audit
-trail. Whether that trail accurately reflects the evidence the system actually used is treated
+active orders; and (c) a calibrated confidence estimate that will accompany the recommendation to
+the clinician \cite{atf2025uncertainty,guo2017calibration}. Recommendations failing any check will be
+blocked and returned with the failure reason. Every check will write to an evidence-linked audit
+trail. Whether that trail accurately reflects the evidence the system actually used will be treated
 as a measured property rather than an assumed one, using entailment-based spot audits
-\cite{es2024ragas}. The confidence value attached to each recommendation is calibrated post hoc on
+\cite{es2024ragas}. The confidence value attached to each recommendation will be calibrated post hoc on
 a held-out calibration split (temperature scaling, with isotonic regression as a fallback for
-non-monotone miscalibration) and its quality is evaluated by expected calibration error and
-reliability diagrams \cite{guo2017calibration}. This combination is designed to align with
+non-monotone miscalibration) and its quality will be evaluated by expected calibration error and
+reliability diagrams \cite{guo2017calibration}; no output of the current pilot is calibrated.
+This combination is designed to align with
 emerging regulatory expectations for unconfined non-deterministic clinical software:
 guardrails, moderation, retrieval grounding, and inspectability
 \cite{tan2026undcs,weissman2025unregulated}.
 
 \subsection{Human-in-the-Loop Protocol}
 
-Clinicians receive only verified recommendations, each with linked evidence, a calibrated
-confidence estimate, and an explanation. Review is structured rather than free-form: approve, modify, or reject, with
-reasons captured into memory. The choice reflects meta-analytic evidence that unstructured
-clinician--LLM collaboration produces gains too uncertain to build on
-\cite{wang2026collaboration}. Rejections and modifications feed the monitoring loop as supervision
-signals.
+In the full system, clinicians will receive only verified recommendations, each with linked
+evidence, a calibrated confidence estimate, and an explanation. Review will be structured
+rather than free-form: approve, modify, or reject, with reasons captured into memory. The
+choice reflects meta-analytic evidence that unstructured clinician--LLM collaboration
+produces gains too uncertain to build on \cite{wang2026collaboration}. Rejections and
+modifications will feed the monitoring loop as supervision signals.
 
 \subsection{Planned Evaluation Design}
 
@@ -361,8 +366,8 @@ Each safety mechanism in the framework answers a failure mode the literature has
 rather than one we hypothesize. Clinician-annotated evidence that hallucinated medical
 content reaches practice \cite{kim2025hallucinations} is why the gate screens recommendations
 before delivery; the argument that clinical systems owe users calibrated uncertainty, not
-bare answers \cite{atf2025uncertainty}, is why every recommendation carries a calibrated
-confidence estimate;
+bare answers \cite{atf2025uncertainty}, is why the design attaches a calibrated confidence
+estimate to every recommendation (planned, not implemented in the pilot; Table~\ref{tab:1});
 adversarial findings that open shared communication channels are the most vulnerable
 multi-agent design \cite{chen2025medsentry} are why the framework eliminates side channels and
 routes every message through one auditable point; and the
@@ -378,22 +383,34 @@ mature.
 
 \subsection{Limitations}
 
-Five limitations bound the claims. First, empirical evidence so far is a pilot on the
+Four limitations bound the claims, beyond the safety consideration that Section~IV.5 treats
+separately. First, empirical evidence so far is a pilot on the
 100-patient MIMIC-IV demo without the LLM loop (Section~V); the full retrospective evaluation
 is designed but not executed, and no claim of prospective clinical benefit is made. Second,
-the gate's sensitivity floor is a patient-safety concern in its own right: at its strictest
-informative threshold the pilot gate blocked three of seven true alerts, and a deployed
-system that suppressed half of the alerts preceding death would be clinically unacceptable.
-We treat the evidence window and signal threshold as safety parameters that clinical
-governance, not engineering, must set, and the full evaluation will report gate operating
-points with sensitivity alongside false-alert suppression so that this trade-off is chosen
-deliberately rather than inherited. Third, MIMIC-IV's critical-care population limits
-generalization to other care settings \cite{johnson2023mimic}. Fourth, verification quality is
+MIMIC-IV's critical-care population limits
+generalization to other care settings \cite{johnson2023mimic}. Third, verification quality is
 bounded by the entailment methods used to measure it \cite{es2024ragas}; a verification gate can
 only be as trustworthy as its own evaluation, which is why trail faithfulness is spot-audited
-by humans as well. Fifth, LLM API costs and latency constrain the monitoring cadence the
+by humans as well. Fourth, LLM API costs and latency constrain the monitoring cadence the
 prototype can sustain, a practical ceiling the agent-evaluation literature identifies as
 generally under-reported \cite{yehudai2025evaluation}.
+
+\subsection{Safety Consideration: The Gate's Sensitivity Floor}
+
+The pilot's most consequential finding for deployment is not the gate's specificity but its
+sensitivity floor, and it warrants treatment as a first-class safety issue rather than a
+footnote to the results. At the strictest informative threshold the rule-based gate blocked
+three of the seven true alerts; a deployed system that suppressed half of the alerts
+preceding death would be clinically unacceptable, whatever its false-alert suppression. Three
+design consequences follow. The evidence window and signal threshold are safety parameters
+whose values clinical governance, not engineering, must set. Gate operating points must
+always be reported with sensitivity alongside false-alert suppression, as the pilot's
+operating curve does, so the trade-off is chosen deliberately rather than inherited from a
+default. And suppression must never be silent: in this framework blocked alerts remain
+visible and overridable in a dedicated queue rather than being discarded, so the gate
+defers, rather than replaces, clinical judgment on the alerts it declines to forward. The
+full evaluation will report sensitivity at every operating point, and we regard any
+deployment decision that has not confronted this floor explicitly as unsafe.
 
 \subsection{Future Work}
 
@@ -431,9 +448,10 @@ and the top quintile generated 28 alerts. We define a \emph{true alert} as an al
 stay whose hospital admission ended in in-hospital death (7 alerts) and a \emph{false alert} as
 one raised for a patient discharged alive (21 alerts). In-hospital mortality is a proxy
 endpoint chosen because it is unambiguous in the demo tables, not a claim that every
-deteriorating patient dies; clinically meaningful alerts often precede non-fatal
-interventions, which is why the planned full evaluation replaces this proxy with Sepsis-3
-onset and intervention concordance (Section~III-F). Leakage was controlled at three points: features were computed
+deteriorating patient dies; much of monitoring's clinical value lies in non-fatal events
+such as escalation of care, fluid management, or antibiotic titration, which a mortality
+proxy cannot see. The planned full evaluation therefore replaces this proxy with Sepsis-3
+onset and intervention-concordance labels (Section~III-F). Leakage was controlled at three points: features were computed
 only from events time-stamped within the first 24 h of the ICU stay, while the mortality
 label derives from the discharge disposition recorded at the end of the admission; prior
 admissions entered the timeline only if discharged strictly before the current admission;
@@ -457,17 +475,23 @@ significant discrimination at this sample size, and we draw no decision-support 
 conclusion from it whatsoever. Its only function in the pilot is to generate a realistic,
 imperfect alert stream against which the gate's behavior can be observed.
 
-The gate produced the pilot's most instructive result. As the required number of distinct
+The gate produced the pilot's most instructive result, with an essential scoping caveat:
+everything the gate demonstrates here is demonstrated on a stream of alerts, not on a stream
+of validated predictions, since the baseline generating those alerts has no established
+predictive validity. As the required number of distinct
 recent signals rises from 1 to 6, the pass rate for false alerts falls from 0.90 to 0.05
 while the pass rate for true alerts falls more slowly (0.57 to 0.14); at m = 4 the gate
 blocks 86\% of false alerts while retaining 43\% of true ones. Evidence-gating therefore
-preferentially suppresses unsupported alerts, which is the mechanism the framework relies on.
+preferentially suppresses unsupported alerts within this stream, which is the mechanism the
+framework relies on.
 The same experiment exposes the mechanism's cost: three of the seven true alerts had no
 abnormal signal in the six-hour window at all, so the gate imposes a sensitivity floor
 governed by the evidence window, a safety parameter to be tuned, and an effect invisible in
 exam-style evaluation. All 183 logged evidence references re-resolved exactly against the raw
-tables (trail resolvability 1.00); in this deterministic pilot the perfect score is expected,
-and the metric exists precisely because it becomes non-trivial once an LLM writes the trail.
+tables (trail resolvability 1.00). In this deterministic pilot the perfect score is expected
+and carries no reliability claim: what the exercise benchmarks is the metric and its
+measurement machinery, not the system, and the metric earns its place because it becomes
+non-trivial once a non-deterministic LLM writes the trail.
 
 \subsection{What the Pilot Does and Does Not Show}
 

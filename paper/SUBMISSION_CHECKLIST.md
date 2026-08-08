@@ -2,14 +2,25 @@
 
 **Deadline:** 2026-08-10 · **Format:** generic IEEE journal (IEEEtran); adjust when venue is fixed.
 
-## Manuscript state (2026-08-07)
+## Revision history (compressed)
+- 2026-08-07: pilot study added; humanization + plagiarism pass; verified refs.
+- 2026-08-08 (three review rounds): novelty repositioned to *instrumented integration*;
+  Related Work gained the longitudinal-EHR paragraph (CliCARE, Traj-CoA, TrajOnco, TIMER,
+  RGAR — all verified; refs 54→59); Table I (designed/implemented/evaluated); formal metric
+  + ground-truth + true/false-alert + leakage definitions; calibration methodology;
+  future-tense for unbuilt components (III-C/D/E); "stream of alerts, not validated
+  predictions" scoping; dedicated §4.5 sensitivity-floor safety subsection; abstract says
+  "measures in combination". Examiner-style score at last external check: 72/100 MINOR
+  REVISIONS (both MUST-FIX rounds addressed).
+
+## Manuscript state (2026-08-08)
 
 | Item | Status |
 |---|---|
 | Abstract (≈250 words) + keywords | ✅ `00_Abstract.md` / in `main.tex` |
 | Introduction, Related Work, Methodology, Pilot Study, Discussion, Conclusion | ✅ all drafted |
 | LaTeX manuscript | ✅ `main.tex` + `_body_generated.tex` (generated from the .md sections) |
-| Bibliography | ✅ `references.bib` — 54 entries, all cited, trimmed from `../02_Research/References.bib` |
+| Bibliography | ✅ `references.bib` — 59 entries, all cited, trimmed from `../02_Research/References.bib` |
 | Reference verification | ✅ 5 flagged entries verified against publisher records (NEJM AI, PMLR 267, KDD '25, Findings of ACL 2026, Nature 642) |
 | Pilot results | ✅ real numbers from `../06_Experiments/results/pilot/` |
 | Architecture figure | ⬜ export `../04_Architecture/` Figure 3.1 as PDF/EPS and add `\includegraphics` in Methodology §3.1 |

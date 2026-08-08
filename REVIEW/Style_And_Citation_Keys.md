@@ -92,6 +92,15 @@ If a claim needs a source not listed here, write `[CITATION NEEDED]` — never i
 | tan2026undcs | UNDCS regulation of agentic clinical AI |
 | wang2026collaboration | Human–LLM collaboration meta-analysis |
 
+### Longitudinal-EHR systems (P046–P050, added 2026-08-08)
+| Key | Short name |
+|---|---|
+| li2026clicare | CliCARE (guideline-grounded longitudinal cancer EHR, AAAI-26) |
+| zeng2025trajcoa | Traj-CoA (chain-of-agents trajectory modeling) |
+| zeng2026trajonco | TrajOnco (multi-agent temporal EHR reasoning) |
+| cui2025timer | TIMER (temporal instruction modeling, npj Digit Med) |
+| liang2025rgar | RGAR (recurrence generation-augmented retrieval, EMNLP-25 Findings) |
+
 ## Paper-ID reconciliation (fix in Literature_Matrix + Notes)
 - Use `Pnn` consistently (P001–P020); drop the stray `P003s`.
 - **P016 and P017 are the SAME paper** ("Towards Generalist Biomedical AI") → keep one (P016), delete/repurpose the other.

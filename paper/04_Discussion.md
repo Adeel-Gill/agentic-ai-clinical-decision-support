@@ -40,8 +40,8 @@ Each safety mechanism in the framework answers a failure mode the literature has
 rather than one we hypothesize. Clinician-annotated evidence that hallucinated medical
 content reaches practice [kim2025hallucinations] is why the gate screens recommendations
 before delivery; the argument that clinical systems owe users calibrated uncertainty, not
-bare answers [atf2025uncertainty], is why every recommendation carries a calibrated
-confidence estimate;
+bare answers [atf2025uncertainty], is why the design attaches a calibrated confidence
+estimate to every recommendation (planned, not implemented in the pilot; Table 1);
 adversarial findings that open shared communication channels are the most vulnerable
 multi-agent design [chen2025medsentry] are why the framework eliminates side channels and
 routes every message through one auditable point; and the
@@ -57,24 +57,36 @@ mature.
 
 ## 4.4 Limitations
 
-Five limitations bound the claims. First, empirical evidence so far is a pilot on the
+Four limitations bound the claims, beyond the safety consideration that Section 4.5 treats
+separately. First, empirical evidence so far is a pilot on the
 100-patient MIMIC-IV demo without the LLM loop (Section 5); the full retrospective evaluation
 is designed but not executed, and no claim of prospective clinical benefit is made. Second,
-the gate's sensitivity floor is a patient-safety concern in its own right: at its strictest
-informative threshold the pilot gate blocked three of seven true alerts, and a deployed
-system that suppressed half of the alerts preceding death would be clinically unacceptable.
-We treat the evidence window and signal threshold as safety parameters that clinical
-governance, not engineering, must set, and the full evaluation will report gate operating
-points with sensitivity alongside false-alert suppression so that this trade-off is chosen
-deliberately rather than inherited. Third, MIMIC-IV's critical-care population limits
-generalization to other care settings [johnson2023mimic]. Fourth, verification quality is
+MIMIC-IV's critical-care population limits
+generalization to other care settings [johnson2023mimic]. Third, verification quality is
 bounded by the entailment methods used to measure it [es2024ragas]; a verification gate can
 only be as trustworthy as its own evaluation, which is why trail faithfulness is spot-audited
-by humans as well. Fifth, LLM API costs and latency constrain the monitoring cadence the
+by humans as well. Fourth, LLM API costs and latency constrain the monitoring cadence the
 prototype can sustain, a practical ceiling the agent-evaluation literature identifies as
 generally under-reported [yehudai2025evaluation].
 
-## 4.5 Future Work
+## 4.5 Safety Consideration: The Gate's Sensitivity Floor
+
+The pilot's most consequential finding for deployment is not the gate's specificity but its
+sensitivity floor, and it warrants treatment as a first-class safety issue rather than a
+footnote to the results. At the strictest informative threshold the rule-based gate blocked
+three of the seven true alerts; a deployed system that suppressed half of the alerts
+preceding death would be clinically unacceptable, whatever its false-alert suppression. Three
+design consequences follow. The evidence window and signal threshold are safety parameters
+whose values clinical governance, not engineering, must set. Gate operating points must
+always be reported with sensitivity alongside false-alert suppression, as the pilot's
+operating curve does, so the trade-off is chosen deliberately rather than inherited from a
+default. And suppression must never be silent: in this framework blocked alerts remain
+visible and overridable in a dedicated queue rather than being discarded, so the gate
+defers, rather than replaces, clinical judgment on the alerts it declines to forward. The
+full evaluation will report sensitivity at every operating point, and we regard any
+deployment decision that has not confronted this floor explicitly as unsafe.
+
+## 4.6 Future Work
 
 Beyond executing the evaluation of Section 3.6, three directions follow. Prospective
 shadow-mode deployment in the style of the deployed sepsis system is the natural next

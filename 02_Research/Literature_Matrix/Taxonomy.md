@@ -98,4 +98,12 @@ several categories. IDs refer to `Literature_Matrix.md`; citation keys refer to
 - **P039 MIMIC-IV Benchmark Revisit (`lovon2025mimic`) — real-record prediction baselines.**
 - **P042 MedSentry (`chen2025medsentry`) — adversarial safety benchmark.**
 
-Bold entries are the 2025–2026 additions (P021–P045).
+## Longitudinal EHR Reasoning (added 2026-08-08)
+- **P046 CliCARE (`li2026clicare`) — patient EHR as temporal knowledge graph aligned with guideline KG (AAAI-26; MIMIC-IV).**
+- **P047 Traj-CoA (`zeng2025trajcoa`) — chain-of-agents summarization of multi-year records with EHRMem timeline memory.**
+- **P048 TrajOnco (`zeng2026trajonco`) — multi-agent temporal reasoning for multi-cancer early detection (Truveta EHR).**
+- **P049 TIMER (`cui2025timer`) — temporal instruction benchmark + tuning over longitudinal records (npj Digit Med).**
+- **P050 RGAR (`liang2025rgar`) — dual-corpus (EHR context + external knowledge) iterative retrieval for medical QA.**
+- Differentiation claimed by the thesis: these compress, align, or benchmark the longitudinal record; none couples timestamp-addressable retrieval to recommendation-level verification with a measured audit trail.
+
+Bold entries are the 2025–2026 additions (P021–P050).

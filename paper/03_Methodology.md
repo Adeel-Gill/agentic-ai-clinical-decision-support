@@ -44,49 +44,54 @@ patient-specific evidence rather than population-level knowledge alone
 
 ## 3.3 Agent Orchestration
 
-This subsection describes the designed orchestration; as Table 1 records, the seven agents
-exist as an implementation scaffold, no LLM-based reasoning ran in the pilot of Section 5,
-and every present-tense statement here specifies intended behavior rather than demonstrated
-behavior. In the design, a coordinator agent delegates to seven specialized agents
+This subsection describes designed, not demonstrated, behavior: as Table 1 records, the
+seven agents exist only as an implementation scaffold (typed interfaces, message schemas,
+and placeholder reasoning stubs), and no LLM-based reasoning ran in the pilot of Section 5,
+whose intelligence resided entirely in a logistic-regression baseline and a rule-based gate.
+In the full system, a coordinator agent will delegate to seven specialized agents
 (monitoring, planner, diagnosis, risk prediction, treatment recommendation, explanation, and
-verification), each of which uses ReAct-style reasoning internally [yao2023react]. Coordination follows a hub-and-spoke
-topology. All inter-agent messages pass through the coordinator, a choice motivated by
-adversarial evidence that multi-agent topology governs how far a compromised agent's
-influence spreads, with open shared-communication designs proving most vulnerable to
-contamination [chen2025medsentry]; routing every message through one auditable point also
-serves the audit-trail requirement of Section 3.4. Tool access uses MCP-style standardized
-interfaces and inter-agent exchange follows A2A-style conventions [ehtesham2025protocols],
-which keeps the prototype composable with hospital tooling. External tools follow the
-validated-tool principle of RiskAgent and TxAgent: calculations and lookups are delegated to
-auditable components rather than generated [liu2025riskagent; gao2025txagent].
+verification), each of which will use ReAct-style reasoning internally [yao2023react].
+Coordination will follow a hub-and-spoke topology: all inter-agent messages will pass
+through the coordinator, a choice motivated by adversarial evidence that multi-agent
+topology governs how far a compromised agent's influence spreads, with open
+shared-communication designs proving most vulnerable to contamination [chen2025medsentry];
+routing every message through one auditable point will also serve the audit-trail
+requirement of Section 3.4. Tool access will use MCP-style standardized interfaces and
+inter-agent exchange will follow A2A-style conventions [ehtesham2025protocols], keeping the
+prototype composable with hospital tooling. External tools will follow the validated-tool
+principle of RiskAgent and TxAgent: calculations and lookups will be delegated to auditable
+components rather than generated [liu2025riskagent; gao2025txagent].
 
 ## 3.4 Verification Gate and Audit Trail
 
-The verification agent is the framework's distinguishing safety component. Every candidate
-recommendation is checked on three axes: (a) evidential grounding, i.e. whether the claim is
+The verification agent is the framework's distinguishing safety component; only its
+rule-based form has been implemented and exercised (Section 5), and the LLM-based form
+described here is designed, not built. In the full system, every candidate recommendation
+will be checked on three axes: (a) evidential grounding, i.e. whether the claim is
 entailed by the retrieved patient evidence and guidelines, screened against known classes of
 medical hallucination [kim2025hallucinations]; (b) guideline compliance and conflict with
-active orders; and (c) a calibrated confidence estimate that accompanies the recommendation to
-the clinician [atf2025uncertainty; guo2017calibration]. Recommendations failing any check are
-blocked and returned with the failure reason. Every check writes to an evidence-linked audit
-trail. Whether that trail accurately reflects the evidence the system actually used is treated
+active orders; and (c) a calibrated confidence estimate that will accompany the recommendation to
+the clinician [atf2025uncertainty; guo2017calibration]. Recommendations failing any check will be
+blocked and returned with the failure reason. Every check will write to an evidence-linked audit
+trail. Whether that trail accurately reflects the evidence the system actually used will be treated
 as a measured property rather than an assumed one, using entailment-based spot audits
-[es2024ragas]. The confidence value attached to each recommendation is calibrated post hoc on
+[es2024ragas]. The confidence value attached to each recommendation will be calibrated post hoc on
 a held-out calibration split (temperature scaling, with isotonic regression as a fallback for
-non-monotone miscalibration) and its quality is evaluated by expected calibration error and
-reliability diagrams [guo2017calibration]. This combination is designed to align with
+non-monotone miscalibration) and its quality will be evaluated by expected calibration error and
+reliability diagrams [guo2017calibration]; no output of the current pilot is calibrated.
+This combination is designed to align with
 emerging regulatory expectations for unconfined non-deterministic clinical software:
 guardrails, moderation, retrieval grounding, and inspectability
 [tan2026undcs; weissman2025unregulated].
 
 ## 3.5 Human-in-the-Loop Protocol
 
-Clinicians receive only verified recommendations, each with linked evidence, a calibrated
-confidence estimate, and an explanation. Review is structured rather than free-form: approve, modify, or reject, with
-reasons captured into memory. The choice reflects meta-analytic evidence that unstructured
-clinician–LLM collaboration produces gains too uncertain to build on
-[wang2026collaboration]. Rejections and modifications feed the monitoring loop as supervision
-signals.
+In the full system, clinicians will receive only verified recommendations, each with linked
+evidence, a calibrated confidence estimate, and an explanation. Review will be structured
+rather than free-form: approve, modify, or reject, with reasons captured into memory. The
+choice reflects meta-analytic evidence that unstructured clinician–LLM collaboration
+produces gains too uncertain to build on [wang2026collaboration]. Rejections and
+modifications will feed the monitoring loop as supervision signals.
 
 ## 3.6 Planned Evaluation Design
 

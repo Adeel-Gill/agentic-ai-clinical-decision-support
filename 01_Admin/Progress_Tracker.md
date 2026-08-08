@@ -18,6 +18,8 @@ Last updated 2026-08-05.
 | Architecture diagrams (`04_Architecture/`) | Drafted | 60 | Diagrams exported; re-label any that use old Chapter 4 figure numbers. |
 | References.bib | In progress | 80 | 70 entries after 2025–2026 update (25 added for P021–P045); canonical keys extended; `TODO-VERIFY` venue details outstanding for a handful of new entries; paper-ID reconciliation pending. |
 | 2025–2026 literature update (P021–P045) | Done | 100 | 25 papers: PDFs, notes, matrix rows, taxonomy, bib entries, Section 2.11, framework refinements (2026-08-05). |
+| W-category paper | Revised through 3 external review rounds | 90 | IEEE manuscript + pilot; 59 verified refs; novelty repositioned to instrumented integration; Table I status transparency; §4.5 safety subsection. Remaining: author block, venue, Turnitin (2026-08-08). |
+| Longitudinal-EHR prior work (P046–P050) | In progress | 80 | CliCARE, Traj-CoA, TrajOnco, TIMER, RGAR: PDFs + bib + taxonomy done; notes + matrix rows landing (2026-08-08). |
 | Defense deck (`08_Presentation/`) | Outline | 15 | `Defense_Outline.md` created; slides not built. |
 | Front matter (abstract, etc.) | Not started | 0 | Write after full draft is stable. |
 

@@ -49,3 +49,22 @@ Each paper below has a PDF under `../Papers/`, a note under `../Notes/`, a row i
 6. **Safety, trust, and regulation moved to the foreground.** Medical hallucination taxonomies, uncertainty quantification, multi-agent safety stress-testing (MedSentry), trustworthy-agent threat surveys, and regulatory analyses (unregulated device-like output; UNDCS regulation proposals) all appeared within twelve months.
 7. **Prospective clinical deployment.** A small number of systems crossed from retrospective benchmarks into prospective bedside use (COMPOSER-LLM sepsis prediction), setting a higher evidence bar for clinical AI agents.
 8. **Human-AI collaboration evidence is mixed.** Meta-analysis of clinician-LLM collaboration shows suggestive but uncertain gains with non-trivial error rates, reinforcing the need for structured human-in-the-loop design rather than ad-hoc oversight.
+
+## Addendum (2026-08-08): Longitudinal-EHR systems P046–P050
+
+Added during the W-paper review rounds after an external reviewer named them as closest prior
+work. All verified against arXiv/publisher records; PDFs, notes, matrix rows, and BibTeX
+entries follow the standard pipeline.
+
+| ID | Year | Title | Venue | BibTeX key | Why it matters here |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| P046 | 2026 | CliCARE: Grounding LLMs in Clinical Guidelines for Decision Support over Longitudinal Cancer EHRs | AAAI-26 (40(37):31554–31562) | `li2026clicare` | Closest in spirit: per-patient temporal KG aligned with guideline KG; evaluated on MIMIC-IV; no recommendation verification or audit trail |
+| P047 | 2025 | Traj-CoA: Patient Trajectory Modeling via Chain-of-Agents for Lung Cancer Risk Prediction | arXiv (NeurIPS-25 GenAI4Health WS) | `zeng2025trajcoa` | Chain-of-agents summarization of 5-year records into EHRMem timeline memory; prediction, not retrieval/verification |
+| P048 | 2026 | TrajOnco: Multi-Agent Framework for Temporal Reasoning over Longitudinal EHR | arXiv | `zeng2026trajonco` | Scaled successor of Traj-CoA; 15 cancer types on Truveta EHR; evidence-linked rationales but no verification |
+| P049 | 2025 | TIMER: Temporal Instruction Modeling and Evaluation for Longitudinal Clinical Records | npj Digital Medicine 8:577 | `cui2025timer` | Benchmark + instruction tuning for temporal EHR reasoning (STARR, MedAlign) |
+| P050 | 2025 | RGAR: Recurrence Generation-augmented Retrieval for Factual-aware Medical QA | Findings of EMNLP 2025 | `liang2025rgar` | Dual-corpus iterative retrieval incl. EHR context; snapshot QA, not longitudinal |
+
+Trend implication: longitudinal grounding is emerging as its own line of work (trend 4
+sharpened) — the thesis novelty now rests explicitly on the *instrumented integration* of
+timeline retrieval + verification + measured auditability + longitudinal evaluation, not on
+timeline grounding alone.
