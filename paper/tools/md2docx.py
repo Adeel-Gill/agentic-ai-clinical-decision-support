@@ -21,7 +21,8 @@ PAPER = Path("paper")
 TITLE = ("An Agentic AI Framework for Intelligent Patient Monitoring and "
          "Clinical Decision Support with Patient-Timeline Retrieval and "
          "Verified Recommendations")
-AUTHOR = "Adeel Gill — [Department], [University] · Supervisor: Dr. Fawad Nasim · [email]"
+AUTHOR = ("Adeel Masih — Department of Computer Science, The Superior University, Lahore, "
+          "Pakistan · Supervisor: Dr. Fawad Nasim · adeel_gill@outlook.com")
 
 CITE_RE = re.compile(r"\[([a-z][a-zA-Z0-9]+(?:;\s*[a-z][a-zA-Z0-9]+)*)\]")
 
@@ -221,7 +222,7 @@ def main() -> None:
     doc.add_paragraph("The authors declare no competing interests.")
     doc.add_heading("Author Contributions", level=1)
     doc.add_paragraph(
-        "A.G. designed the framework, implemented the pilot study and platform prototype, and "
+        "A.M. designed the framework, implemented the pilot study and platform prototype, and "
         "wrote the manuscript. F.N. supervised the research and reviewed the manuscript.")
     doc.add_heading("AI-Assistance Disclosure", level=1)
     doc.add_paragraph(
