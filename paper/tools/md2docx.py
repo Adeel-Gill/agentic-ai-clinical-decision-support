@@ -21,8 +21,8 @@ PAPER = Path("paper")
 TITLE = ("An Agentic AI Framework for Intelligent Patient Monitoring and "
          "Clinical Decision Support with Patient-Timeline Retrieval and "
          "Verified Recommendations")
-AUTHOR = ("Adeel Masih — Department of Computer Science, The Superior University, Lahore, "
-          "Pakistan · Supervisor: Dr. Fawad Nasim · adeel_gill@outlook.com")
+AUTHOR = ("Adeel Masih — Department of Computer Science and IT, The Superior University, "
+          "Lahore, Pakistan · Supervisor: Dr. Fawad Nasim · adeel_gill@outlook.com")
 
 CITE_RE = re.compile(r"\[([a-z][a-zA-Z0-9]+(?:;\s*[a-z][a-zA-Z0-9]+)*)\]")
 
