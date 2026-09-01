@@ -3,11 +3,19 @@
 % "An Agentic AI Framework for Intelligent Patient Monitoring and
 %  Clinical Decision Support"
 %
-% NOTE ON VERIFICATION: Bibliographic details below reflect the best
-% available metadata for each work. Before final submission, verify each
-% entry against the publisher of record (DOI / proceedings page). Entries
-% marked % TODO-VERIFY have a venue or page detail that should be double
-% checked. Do not submit without this pass.
+% NOTE ON VERIFICATION: Full pass completed 2026-08-13.
+%  - 58 entries match paper/references.bib, which passed its own verification
+%    for the W-paper's SUBMIT verdict (two of those were further corrected here:
+%    shi2024ehragent pages added; yehudai2025evaluation title "A Survey...").
+%  - DOI-bearing master-only entries verified via the Crossref API; venue-only
+%    entries (NeurIPS/ICLR/TMLR canon) checked against publisher listings.
+%  - tu2025amie verified against the Nature record (author order corrected);
+%    xi2023rise upgraded arXiv -> Sci China Inf Sci 68(2) 2025;
+%    jin2021medqa type fixed to @article; jimenez2023trustworthy REMOVED (phantom).
+% No TODO-VERIFY entries remain. Keep this file and build_thesis_docx.py's IEEE
+% dict in lockstep (currently 77/77 after the verified post-P050 additions of
+% 2026-08-13: liang2026smartalert [P051], black2026nonclinician [supporting],
+% bedi2026medhelm [P052]).
 % =====================================================================
 
 % ---------------------------------------------------------------------
@@ -173,8 +181,12 @@
 @article{xi2023rise,
   title   = {The Rise and Potential of Large Language Model Based Agents: A Survey},
   author  = {Xi, Zhiheng and Chen, Wenxiang and Guo, Xin and He, Wei and Ding, Yiwen and Hong, Boyang and Zhang, Ming and Wang, Junzhe and Jin, Senjie and Zhou, Enyu and others},
-  journal = {arXiv preprint arXiv:2309.07864},
-  year    = {2023}
+  journal = {Science China Information Sciences},
+  volume  = {68},
+  number  = {2},
+  year    = {2025},
+  doi     = {10.1007/s11432-024-4222-0},
+  note    = {Preprint (2023): arXiv:2309.07864. Published version verified 2026-08-13}
 }
 
 @inproceedings{schick2023toolformer,
@@ -379,7 +391,7 @@
   year    = {2023}
 }
 
-@inproceedings{jin2021medqa,
+@article{jin2021medqa,
   title     = {What Disease Does This Patient Have? A Large-Scale Open Domain Question Answering Dataset from Medical Exams (MedQA)},
   author    = {Jin, Di and Pan, Eileen and Oufattole, Nassim and Weng, Wei-Hung and Fang, Hanyi and Szolovits, Peter},
   journal   = {Applied Sciences},
@@ -392,14 +404,15 @@
 
 % ---------------------------------------------------------------------
 % RECENT CLINICAL AGENTS / BENCHMARKS (2024-2025) - currency
-% TODO-VERIFY venues before submission
+% Venues verified 2026-08-13 against publishers of record (ACL Anthology, Nature/PMC).
 % ---------------------------------------------------------------------
 @inproceedings{shi2024ehragent,
   title     = {{EHRAgent}: Code Empowers Large Language Models for Few-shot Complex Tabular Reasoning on Electronic Health Records},
   author    = {Shi, Wenqi and Xu, Ran and Zhuang, Yuchen and Yu, Yue and Zhang, Jieyu and Wu, Hang and Zhu, Yuanda and Ho, Joyce C. and Yang, Carl and Wang, May D.},
   booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {22315--22339},
   year      = {2024},
-  note      = {arXiv:2401.07128}
+  note      = {arXiv:2401.07128; verified against ACL Anthology 2026-08-13}
 }
 
 @article{schmidgall2024agentclinic,
@@ -411,14 +424,14 @@
 
 @article{tu2025amie,
   title   = {Towards conversational diagnostic artificial intelligence},
-  author  = {Tu, Tao and Palepu, Anil and Schaekermann, Mike and Saab, Khaled and Freyberg, Jan and Tanno, Ryutaro and Wang, Amy and Li, Brenna and Amin, Mohamed and Tomasev, Nenad and others},
+  author  = {Tu, Tao and Schaekermann, Mike and Palepu, Anil and Saab, Khaled and Freyberg, Jan and Tanno, Ryutaro and others},
   journal = {Nature},
   volume  = {642},
   number  = {8067},
   pages   = {442--450},
   year    = {2025},
   doi     = {10.1038/s41586-025-08866-7},
-  note    = {Preprint: arXiv:2401.05654}
+  note    = {Preprint: arXiv:2401.05654. Verified against the Nature record 2026-08-13 (published author order differs from the preprint)}
 }
 
 % ---------------------------------------------------------------------
@@ -434,13 +447,12 @@
   doi     = {10.1016/j.compbiomed.2022.106043}
 }
 
-@article{jimenez2023trustworthy,
-  title   = {Toward Trustworthy {AI} in Healthcare: Challenges and Opportunities},
-  author  = {Jimenez-Luna, Jose and others},
-  journal = {arXiv preprint (TODO-VERIFY exact citation matched to P018 placeholder slot)},
-  year    = {2023},
-  note    = {TODO-VERIFY: replace with the actual "Toward Trustworthy AI in Healthcare" paper stored under 02_Research/Papers/LLM_Healthcare/P018}
-}
+% jimenez2023trustworthy REMOVED 2026-08-13: phantom placeholder. Content extraction
+% proved the stored P018 PDF is a category-theory paper (arXiv:2401.01863, Pirashvili);
+% no "Toward Trustworthy AI in Healthcare" paper was ever collected, and no verifiable
+% publication matches the placeholder metadata. All 9 citing claims were remapped to
+% verified keys (rasheed2022explainable, tan2026undcs, weissman2025unregulated).
+% See 02_Research/Literature_Matrix/Literature_Matrix.md corrections log.
 
 % ---------------------------------------------------------------------
 % 2025-2026 LITERATURE UPDATE (P021-P045)
@@ -558,7 +570,7 @@
 }
 
 @inproceedings{yehudai2025evaluation,
-  title     = {Survey on Evaluation of {LLM}-based Agents},
+  title     = {A Survey on Evaluation of {LLM}-based Agents},
   author    = {Yehudai, Asaf and Eden, Lilach and Li, Alan and others},
   booktitle = {Findings of the Association for Computational Linguistics: ACL 2026},
   pages     = {26690--26714},
@@ -579,7 +591,7 @@
 
 @inproceedings{fallahpour2025medrax,
   title     = {{MedRAX}: Medical Reasoning Agent for Chest X-ray},
-  author    = {Fallahpour, Adibvafa and Ma, Jun and Munim, Alif and others},
+  author    = {Fallahpour, Adibvafa and Ma, Jun and Munim, Alif and Lyu, Hongwei and Wang, Bo},
   booktitle = {Proceedings of the 42nd International Conference on Machine Learning (ICML)},
   series    = {PMLR},
   volume    = {267},
@@ -713,4 +725,41 @@
   pages     = {4006--4033},
   year      = {2025},
   doi       = {10.18653/v1/2025.findings-emnlp.214}
+}
+
+% ---------------------------------------------------------------------
+% POST-P050 ADDITIONS (added 2026-08-13, verified on addition)
+% ---------------------------------------------------------------------
+@article{liang2026smartalert,
+  title   = {{SmartAlert} --- Implementing Machine Learning-Driven Clinical Decision Support for Inpatient Laboratory Utilization Reduction},
+  author  = {Liang, April S. and Amrollahi, Fatemeh and Jiang, Yixing and Corbin, Conor K. and Kim, Grace Y. E. and others},
+  journal = {NEJM AI},
+  volume  = {3},
+  number  = {7},
+  year    = {2026},
+  doi     = {10.1056/AIcs2501086},
+  note    = {Preprint: arXiv:2512.04354. Verified against PubMed 42453199 and the NEJM AI record, 2026-08-13}
+}
+
+@article{black2026nonclinician,
+  title   = {Uses of Generative {AI} by Non-Clinician Staff at an Academic Medical Center},
+  author  = {Black, Kameron C. and Haberkorn, William J. and Ma, Stephen P. and Kiani, Hanna and Bhasin, Aditya and Chen, Jonathan H. and Shah, Nigam H. and Morse, Keith},
+  journal = {npj Health Systems},
+  volume  = {3},
+  pages   = {13},
+  year    = {2026},
+  doi     = {10.1038/s44401-025-00063-y},
+  note    = {Open access; verified against the journal page, 2026-08-13. Supporting citation (not a P-numbered corpus paper)}
+}
+
+@article{bedi2026medhelm,
+  title   = {Holistic Evaluation of Large Language Models for Medical Tasks with {MedHELM}},
+  author  = {Bedi, Suhana and Cui, Hejie and Fuentes, Miguel and Unell, Alyssa and Wornow, Michael and others},
+  journal = {Nature Medicine},
+  volume  = {32},
+  number  = {3},
+  pages   = {943--951},
+  year    = {2026},
+  doi     = {10.1038/s41591-025-04151-2},
+  note    = {Preprint: arXiv:2505.23802. Verified against the PMC record (PMC13267972) and PubMed 41559415, 2026-08-13}
 }

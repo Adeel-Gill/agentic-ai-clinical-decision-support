@@ -4,6 +4,12 @@
 
 **An Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support**
 
+> **Canonical status.** The examiner-grade treatment of this architecture is
+> `07_Thesis/Chapter_3/Chapter_3.md`; this document is the working summary and must stay
+> consistent with it (eight specialized agents + Coordinator + Memory-Manager module; six
+> layers + cross-cutting Trustworthy AI + HITL gating). Updated to the canonical scheme
+> 2026-08-13.
+
 ---
 
 # 1. Introduction
@@ -43,7 +49,7 @@ The framework consists of six primary layers:
 5. Clinical Decision Layer
 6. Clinician Dashboard
 
-Each layer is responsible for a specific stage of intelligent decision making.
+Each layer is responsible for a specific stage of intelligent decision making. Two elements cut across this stack rather than sitting inside it: the Trustworthy AI layer (Section 12), whose controls every layer writes into, and the human-in-the-loop validation gate (Section 10), which sits between the Clinical Decision Layer and the Clinician Dashboard.
 
 ---
 
@@ -51,7 +57,7 @@ Each layer is responsible for a specific stage of intelligent decision making.
 
 The Data Layer provides clinical information required by the intelligent agents.
 
-The framework uses the **MIMIC-IV** dataset, which contains de-identified electronic health records collected from intensive care units.
+The framework uses the **MIMIC-IV** dataset, which contains de-identified electronic health records collected from intensive care units [johnson2023mimic].
 
 The data sources include:
 
@@ -73,7 +79,7 @@ This layer represents the primary source of patient information used for monitor
 
 The Memory Layer enables the framework to retain patient history and previous reasoning outcomes.
 
-It contains four components:
+It contains four memory stores, governed by an explicit Memory-Manager module:
 
 ### Short-Term Memory
 
@@ -122,6 +128,12 @@ Maintains contextual information including:
 
 ---
 
+### Memory-Manager (module)
+
+A deterministic policy module — not an agent — that governs the four stores: it decides what is kept verbatim, what is summarized, and what is evicted, and it enforces timestamp-aware retrieval so that no future data can enter a decision. Its operation vocabulary (construction / management / retrieval) follows the memory survey and is detailed in Section 16.2 [wu2025memory].
+
+---
+
 # 6. Reasoning & Knowledge Layer
 
 This layer provides intelligent reasoning capabilities.
@@ -130,7 +142,7 @@ It consists of:
 
 ## ReAct Reasoning Engine
 
-Implements the Reasoning + Acting paradigm by iteratively:
+Implements the Reasoning + Acting paradigm [yao2023react] by iteratively:
 
 - reasoning,
 - retrieving evidence,
@@ -150,7 +162,7 @@ The retrieval sources include:
 - Drug Databases
 - Patient History
 
-RAG reduces hallucinations and improves factual accuracy.
+Grounding generation in retrieved evidence reduces hallucinated content and improves factual accuracy, which is why retrieval precedes every recommendation in this framework [lewis2020rag; gao2023rag].
 
 ---
 
@@ -193,7 +205,7 @@ A **Coordinator Agent** manages collaboration among specialized AI agents.
 
 The coordinator delegates tasks based on patient conditions.
 
-The framework includes the following agents:
+The framework includes the following eight specialized agents:
 
 ---
 
@@ -216,6 +228,20 @@ Responsibilities include:
 - selecting required agents
 - decomposing clinical tasks
 - sequencing workflow
+
+---
+
+## Data/Retrieval Agent
+
+Owns every read from the Data Layer and the RAG pipeline on behalf of the other agents.
+
+Responsibilities:
+
+- executing retrieval requests for the reasoning agents
+- attaching provenance to each retrieved item
+- enforcing timestamp-aware access so no future data enters a decision
+
+Centralizing retrieval in one agent is what makes evidence provenance auditable end-to-end.
 
 ---
 
@@ -329,19 +355,17 @@ External knowledge enhances evidence retrieval and keeps recommendations aligned
 
 ---
 
-# 12. Trustworthy AI Layer
+# 12. Trustworthy AI Layer (cross-cutting)
 
-To ensure safe deployment in healthcare, the framework incorporates Trustworthy AI principles.
+The Trustworthy AI layer is not a seventh pipeline stage; it is a set of controls that every layer writes into — the framing Chapter 3, Section 3.3.7 makes explicit:
 
-The framework includes:
+- explanations are captured at the reasoning step that produced them;
+- audit records are written by every agent as it acts;
+- bias is measured on the data as it is partitioned;
+- confidence is calibrated at the point of emission;
+- human oversight is enforced at the HITL gate (Section 10).
 
-- Explainability
-- Audit Logs
-- Safety Checks
-- Bias Monitoring
-- Human Oversight
-
-These mechanisms improve transparency, accountability, and clinician trust.
+Enforcing each control where its concern arises, rather than bolting checks onto the end of the pipeline, avoids post-hoc rationalization — explanations produced after the fact that do not reflect the reasoning that generated the recommendation [rasheed2022explainable].
 
 ---
 
@@ -379,9 +403,17 @@ The proposed framework contributes to intelligent healthcare by:
 
 # 15. Figure
 
-**Figure 3.1:** Proposed Agentic AI Framework for Intelligent Patient Monitoring and Clinical Decision Support using the MIMIC-IV Dataset.
+![Layered architecture of the proposed framework (regenerated 2026-08-14)](Diagrams/framework_figure_3_1.png)
 
-![alt text](image.png)
+*Figure 3.1.* Proposed Agentic AI framework for intelligent patient monitoring and clinical decision support using the MIMIC-IV dataset.
+
+> **Figure regenerated 2026-08-14** to the canonical scheme (eight specialized agents +
+> Coordinator, Memory-Manager module, HITL gate, cross-cutting Trustworthy AI layer), per
+> `Diagrams/Diagram_Specs.md` spec 1: vector source `Diagrams/framework_figure_3_1.svg`,
+> 300-dpi export `Diagrams/framework_figure_3_1.png` (also deployed to
+> `07_Thesis/Images/proposed_framework.png`). The superseded 2026-07-22 seven-agent export
+> (`image.png`) is retained only as drafting history — do not embed it anywhere.
+
 ---
 
 # 16. Refinements from the 2025-2026 Literature Update
@@ -431,8 +463,8 @@ The Chapter 4 evaluation adds comparators that did not exist at proposal time: M
 task success in a FHIR-shaped environment [jiang2025medagentbench], HealthBench-style rubric
 grading of recommendation quality [arora2025healthbench], and the revisited MIMIC-IV prediction
 baselines [lovon2025mimic]. The Trustworthy AI Layer documents how the framework's guardrails,
-human oversight, and audit trail map onto the safeguards prescribed for unconfined
-non-deterministic clinical software [tan2026undcs], acknowledging that LLM-based decision support
+human oversight, and audit trail map onto the safeguards prescribed for "unconfined
+non-deterministic clinical software" [tan2026undcs], acknowledging that LLM-based decision support
 can constitute regulated medical-device output [weissman2025unregulated]. The human-in-the-loop
 design cites the collaboration meta-analysis as motivation for structured rather than free-form
 clinician review [wang2026collaboration].

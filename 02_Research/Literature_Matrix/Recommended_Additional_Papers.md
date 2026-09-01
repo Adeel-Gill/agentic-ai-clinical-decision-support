@@ -5,6 +5,15 @@ but are not yet represented as rows in the Literature Matrix. Keys are the canon
 from `REVIEW/Style_And_Citation_Keys.md`. These should be added to the matrix (or at minimum kept
 consistent in the References) so the review's foundations are complete.
 
+> **Status (reconciled 2026-08-13).** All 14 keys below are (a) present and verified in
+> `References.bib` (full verification pass completed this date) and (b) **cited in the thesis** —
+> every one appears in the compiled Chapters 1–2, and most also in Ch3/Ch4/Ch5 (checked
+> programmatically). The citation half of this file's ask is therefore complete. **None has a
+> 19-dimension matrix row.** Open author decision: the matrix documents the reviewed corpus
+> (P001–P050), while these are foundation citations — either scope the matrix explicitly to the
+> reviewed corpus (one sentence in the matrix header) or commission rows, which requires the
+> per-paper reading the row schema demands. Do not write rows from memory.
+
 | Key | Paper | Why it matters | Where to cite |
 | :--- | :--- | :--- | :--- |
 | lewis2020rag | Retrieval-Augmented Generation (original) | Foundational RAG method; the basis for every grounding argument in the thesis. | Ch. 2 RAG background; Ch. 3 where patient-timeline retrieval is introduced. |

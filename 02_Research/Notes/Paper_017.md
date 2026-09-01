@@ -1,5 +1,12 @@
 # Paper 017
 
+> **[DUPLICATE — retired 2026-08-13]** This note describes the same paper as
+> `Paper_016.md` (*Towards Generalist Biomedical AI*, Med-PaLM M — canonical key
+> `tu2024generalist`). The P017 PDF is byte-identical to the P016 PDF (MD5
+> `2372d13652a86bdb4729945cafb01bf0`); its `MultiMedQA_Benchmarking…` filename is
+> misleading. `Paper_016.md` is the canonical note. Do not map P017 to
+> `singhal2023clinical` — that key belongs to P013.
+
 ## Basic Information
 - **Title:** Towards Generalist Biomedical AI
 - **Authors:** Tao Tu, Shekoofeh Azizi, Danny Driess, Mike Schaekermann, Mohamed Amin, et al.

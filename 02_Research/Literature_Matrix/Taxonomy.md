@@ -61,7 +61,7 @@ several categories. IDs refer to `Literature_Matrix.md`; citation keys refer to
 - **P023 TxAgent (`gao2025txagent`) — real-time biomedical knowledge retrieval during reasoning.**
 
 ## Large Language Models in Healthcare
-- P013 Med-PaLM (`singhal2023clinical`); P015 Med-PaLM 2 (`singhal2025medpalm2`); P016 Med-PaLM M (`tu2024generalist`); P017 MultiMedQA (`singhal2023clinical`); P019 Clinical Camel (`toma2023clinicalcamel`); P014 LLMs in Medicine survey (`zhou2024survey`).
+- P013 Med-PaLM (`singhal2023clinical`); P015 Med-PaLM 2 (`singhal2025medpalm2`); P016 Med-PaLM M (`tu2024generalist`; P017 is a duplicate copy of this paper — retired); P019 Clinical Camel (`toma2023clinicalcamel`); P014 LLMs in Medicine survey (`zhou2024survey`).
 - **P021 Medical Agents Survey (`wang2025baymax`) — landscape of LLM agents in medicine.**
 - **P025/P026 AMIE extensions (`palepu2025disease`; `saab2025multimodal`) — management and multimodal dialogue.**
 - **P040 COMPOSER-LLM (`shashikumar2025sepsis`) — prospective bedside sepsis prediction.**
@@ -75,7 +75,7 @@ several categories. IDs refer to `Literature_Matrix.md`; citation keys refer to
 - **P040 COMPOSER-LLM (`shashikumar2025sepsis`) — deployed early-warning decision support.**
 
 ## Trustworthy AI
-- P018 Toward Trustworthy AI in Healthcare (`jimenez2023trustworthy`); explainable ML (`rasheed2022explainable`); fairness (`mehrabi2021survey`; `hardt2016equality`); calibration (`guo2017calibration`).
+- Explainable/trustworthy ML in healthcare (`rasheed2022explainable`); fairness (`mehrabi2021survey`; `hardt2016equality`); calibration (`guo2017calibration`). *(P018 slot retired 2026-08-13 — no trustworthy-AI paper was collected; see the Literature_Matrix corrections log.)*
 - **P035 TrustAgent Survey (`yu2025trustagent`) — intrinsic/extrinsic trust threat taxonomy.**
 - **P037 Medical Hallucinations (`kim2025hallucinations`) — hallucination taxonomy and clinician survey.**
 - **P038 Uncertainty Quantification (`atf2025uncertainty`) — calibrated confidence for medical LLMs.**
@@ -85,7 +85,7 @@ several categories. IDs refer to `Literature_Matrix.md`; citation keys refer to
 
 ## Human-in-the-Loop
 - P010 MedAgents (`tang2024medagents`) — expert-consensus stand-in for oversight.
-- P018 Trustworthy AI (`jimenez2023trustworthy`) — human oversight as a trust mechanism.
+- Human oversight as a trust mechanism (`rasheed2022explainable`; `wang2026collaboration`).
 - **P045 Human–LLM Collaboration Meta-Analysis (`wang2026collaboration`) — empirical evidence on clinician–AI teaming.**
 - **P044 UNDCS Regulation (`tan2026undcs`) — agent moderation and human accountability requirements.**
 - **P028 HealthBench (`arora2025healthbench`) — physician-rubric grading as structured human judgment.**

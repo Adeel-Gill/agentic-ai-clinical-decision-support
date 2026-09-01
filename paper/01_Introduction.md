@@ -51,7 +51,7 @@ and trail faithfulness; (3) an evaluation design on MIMIC-IV that scores longitu
 patient tracking rather than one-shot question answering, positioned against the exam-based
 and synthetic-EHR benchmarks that dominate current practice [jiang2025medagentbench;
 arora2025healthbench; lovon2025mimic]; (4) an analysis of how the framework's safeguards map
-onto emerging regulatory requirements for unconfined non-deterministic clinical software
+onto emerging regulatory requirements for "unconfined non-deterministic clinical software"
 [tan2026undcs]; and (5) a pilot feasibility study on the openly licensed MIMIC-IV demo that
 grounds the framework's distinguishing mechanisms in de-identified real-world ICU data: timelines for 140 stays
 build in under three seconds, timestamp-aware retrieval answers in roughly 12 ms without

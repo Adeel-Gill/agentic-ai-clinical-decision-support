@@ -79,6 +79,10 @@ systems and standard terminology; this is normal and should not be paraphrased a
 3. The MIMIC-IV dataset description (100 patients, module names) — Pilot 5.1/5.2.
 4. Regulatory terms of art: "unconfined non-deterministic clinical software", "medical-device
    criteria" — these are the cited papers' own coinages and must appear verbatim.
+   *(Author decision 2026-08-14, superseding the bare-verbatim ruling above: the UNDCS coinage
+   is now quote-marked at all three occurrences — still verbatim, but typographically
+   attributed — after a similarity scan matched it against the source's PMC page. No other
+   wording or any number changed; `_body_generated.tex` regenerated via `tools/md2tex.py`.)*
 
 An 8-gram overlap scan against all 45 paper notes and collection summaries found **zero
 overlap beyond the thesis title**; overlap with the author's own unpublished thesis text is

@@ -31,9 +31,10 @@ Do NOT touch `Research_Gap.md` or `Research_Gap_Analysis.md` — another agent o
 `Chapter_2.md` (the 2.1 intro) reads reasonably well already; a light pass to add one critical
 sentence and trim the "comprehensive review" throat-clearing would be enough.
 
-Reconciliation still pending (from the style guide, for whoever finishes the matrix):
-P016/P017 are the same paper (keep P016); P018 row must be remapped to `jimenez2023trustworthy`
-(the stored PDF), not the "monoids" text; MedAgents year = 2024 everywhere.
+Reconciliation *(resolved 2026-08-13)*: P016/P017 confirmed the same paper — P017 retired as a
+byte-identical duplicate. The P018 slot is retired: the stored PDF is the monoids paper under a
+misleading filename, and `jimenez2023trustworthy` (a phantom) was removed with its citations
+remapped to verified keys. MedAgents year = 2024 everywhere still applies.
 
 ## (c) Five before/after AI-tell fixes
 

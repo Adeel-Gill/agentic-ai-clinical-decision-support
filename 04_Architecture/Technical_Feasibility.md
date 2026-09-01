@@ -4,13 +4,13 @@ This document assesses whether the framework of Chapter 3 can be built and run a
 
 ## 1. Context Window
 
-The framework's most pervasive constraint is the context window. A single MIMIC-IV ICU stay can contain thousands of chart events and multi-page free-text notes [johnson2023mimic]. Concatenating a patient's history into one prompt is infeasible, and even where it technically fits, models attend unevenly across very long contexts, so relevant middle content is effectively lost. Because seven agents each need context, naive context assembly multiplies the problem.
+The framework's most pervasive constraint is the context window. A single MIMIC-IV ICU stay can contain thousands of chart events and multi-page free-text notes [johnson2023mimic]. Concatenating a patient's history into one prompt is infeasible, and even where it technically fits, models attend unevenly across very long contexts, so relevant middle content is effectively lost. Because eight agents each need context, naive context assembly multiplies the problem.
 
 *Mitigation.* The Memory-Manager (Chapter 3, Section 3.5) enforces retrieval windowing and summarization: each agent receives only the retrieved slices its query needs, bounded to a fixed token budget, while older history is compressed into structured summaries during the reflect stage. Provenance pointers let any summary be expanded back to source on demand, so compression does not lose auditability. This converts an unbounded history problem into a bounded retrieval problem.
 
-## 2. Seven-Agent Latency
+## 2. Eight-Agent Latency
 
-Latency is the risk most likely to undermine clinical usefulness. MedAgents reports on the order of forty seconds per examination question using a small number of collaborating agents [tang2024medagents]. A seven-agent pipeline run sequentially would plausibly reach several minutes per case, which is unacceptable for anything approaching real-time monitoring. The problem compounds because ReAct loops issue multiple LLM calls per agent [yao2023react].
+Latency is the risk most likely to undermine clinical usefulness. MedAgents reports on the order of forty seconds per examination question using a small number of collaborating agents [tang2024medagents]. An eight-agent pipeline run sequentially would plausibly reach several minutes per case, which is unacceptable for anything approaching real-time monitoring. The problem compounds because ReAct loops issue multiple LLM calls per agent [yao2023react].
 
 *Mitigation.* Three levers, all committed in the design. First, the Coordinator short-circuits stable cases to a two-call path rather than the full DAG (Section 3.4). Second, independent branches — Diagnosis and Risk — run in parallel, so their latencies overlap rather than add. Third, non-reasoning steps (Monitoring, interaction checks) are rule-based and cheap. The residual risk is that full-DAG deteriorating cases still exceed the 30-second target; this is flagged honestly rather than assumed away, and the Chapter 4 evaluation measures it.
 

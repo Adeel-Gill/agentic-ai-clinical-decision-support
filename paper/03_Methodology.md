@@ -81,7 +81,7 @@ a held-out calibration split (temperature scaling, with isotonic regression as a
 non-monotone miscalibration) and its quality will be evaluated by expected calibration error and
 reliability diagrams [guo2017calibration]; no output of the current pilot is calibrated.
 This combination is designed to align with
-emerging regulatory expectations for unconfined non-deterministic clinical software:
+emerging regulatory expectations for "unconfined non-deterministic clinical software":
 guardrails, moderation, retrieval grounding, and inspectability
 [tan2026undcs; weissman2025unregulated].
 

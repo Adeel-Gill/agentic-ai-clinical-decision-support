@@ -140,7 +140,7 @@ The envelope carries provenance (`evidence_refs`), causality (`depends_on`, `tra
 
 ## 5. Non-Functional Requirements
 
-**Latency budget.** The target is a full seven-agent case within a clinically tolerable window; the risk that this is not met is analyzed in `Technical_Feasibility.md`. Indicative per-stage budgets for the full DAG:
+**Latency budget.** The target is a full eight-agent case within a clinically tolerable window; the risk that this is not met is analyzed in `Technical_Feasibility.md`. Indicative per-stage budgets for the full DAG:
 
 | Stage | Budget (s) | Note |
 |---|---|---|

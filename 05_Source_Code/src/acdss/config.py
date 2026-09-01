@@ -24,8 +24,19 @@ class Settings(BaseSettings):
     )
 
     # ---- LLM provider ----
-    llm_provider: Literal["anthropic", "openai", "local"] = "anthropic"
+    # "mock" is offline and deterministic (development/tests, no key, no cost).
+    # "ollama" is local inference (no key, no egress) — the default choice for
+    # credentialed data. "groq"/"github" are free hosted tiers, suitable for the
+    # open demo only; check their data-retention terms before any credentialed
+    # use (see .ai/RULES.md R8).
+    llm_provider: Literal[
+        "mock", "anthropic", "openai", "ollama", "groq", "github", "local"
+    ] = "mock"
     llm_api_key: str = Field(default="", description="Provider API key; never commit a real value.")
+    llm_base_url: str = Field(
+        default="",
+        description="API root for OpenAI-compatible providers; blank uses the provider preset.",
+    )
     model_name: str = "claude-sonnet-5"
     llm_max_tokens: int = 4096
     llm_thinking: Literal["on", "off"] = "on"

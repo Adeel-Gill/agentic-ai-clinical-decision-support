@@ -1,10 +1,17 @@
 # Taxonomy of Large Language Model (LLM)-Based Agents
 
+> **SUPERSEDED.** The canonical taxonomy prose is
+> `07_Thesis/Chapter_2/Taxonomy_of_LLM_Based_Agents.md` (compiled into
+> `07_Thesis/Compiled/Chapter_2.md` §2.5). Do not cite or extend this file; it is retained
+> only as the home of the exported taxonomy diagram below. (Banner added 2026-08-13.)
+
 ---
 
-## Figure Title
+## Figure
 
-**Figure 2.X:** Taxonomy of Large Language Model (LLM)-Based Agents
+![Taxonomy of LLM-based agents across the six capability dimensions (diagram export, 2026-07-22)](image-1.png)
+
+*Figure 2.1.* Taxonomy of Large Language Model (LLM)-based agents. *(Number assigned 2026-08-13: the figure is now placed in `07_Thesis/Compiled/Chapter_2.md` §2.5 as Figure 2.1, rendered by `build_thesis_docx.py` from `07_Thesis/Images/taxonomy.png` — the same export as the image below.)*
 
 ---
 
@@ -264,10 +271,3 @@ The August 2026 literature update (P021–P045; see `02_Research/Literature_Matr
 
 The taxonomy itself required no structural change — evidence that the six-capability decomposition remains a sound organizing frame — but each capability now has 2025–2026 exemplars, and the gaps the framework targets (patient-timeline retrieval, longitudinal evaluation on real records, measured verification) remain visible precisely because the rest of the stack has matured around them.
 
----
-
-# Figure
-
-**Figure 2.X:** Taxonomy of Large Language Model (LLM)-Based Agents.
-
-![alt text](image-1.png)

@@ -157,6 +157,15 @@ models, docstrings, and `TODO` / `raise NotImplementedError` markers. Nothing he
 performs real inference or database work yet — it defines the shape the student
 implements against.
 
+**Exception (2026-08-25): the LLM seam is implemented.** `llm/mock_client.py` (deterministic,
+offline, token-accounting), `llm/openai_compatible.py` (one client for Ollama / Groq / GitHub
+Models / vLLM / OpenAI — stdlib transport, temperature pinned to 0), and `llm/factory.py`
+(provider selection from `Settings`, fails loudly rather than falling back). 17 unit tests in
+`tests/test_llm.py`; full suite 40 passed. **Status: `[IMPLEMENTED]` for the seam only** — no
+LLM-based clinical reasoning has been run or evaluated, and mock output is never evidence
+about model behavior (`.ai/RULES.md` R2). `anthropic_client.py` remains a documented stub;
+the agents above it are still scaffolds.
+
 **Exception (2026-08-07): `src/acdss/pilot/` is fully implemented and runnable.** It is the
 pilot feasibility study on the openly licensed MIMIC-IV Clinical Database Demo v2.2 —
 timeline construction, timestamp-aware retrieval, a first-24h mortality baseline, and the

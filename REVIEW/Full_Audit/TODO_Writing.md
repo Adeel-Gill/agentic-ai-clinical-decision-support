@@ -3,7 +3,7 @@
 Priority: **Critical / High / Medium / Low.** Source: `Writing_Quality_Report.md`.
 
 ## Critical
-- [ ] **Replace stub "sections"** (`Chapter_2/Literature_Review.md`, `Research_Gap.md`, `Taxonomy.md`, `Proposed_Framework.md`) with real prose or delete if duplicated elsewhere.
+- [x] **Replace stub "sections"** (`Chapter_2/Literature_Review.md`, `Research_Gap.md`, `Taxonomy.md`, `Proposed_Framework.md`) with real prose or delete if duplicated elsewhere. *(Resolved 2026-08-13: all four are duplicated by real, cited prose in `Compiled/Chapter_2.md` / `Chapter_3.md`; each stub now carries a SUPERSEDED banner naming its canonical replacement. Physical deletion remains the author's call.)*
 - [ ] **Write Chapter 5 in full** — it is currently an outline with `*(pending)*` markers and `*Stub:*` sentences.
 
 ## High

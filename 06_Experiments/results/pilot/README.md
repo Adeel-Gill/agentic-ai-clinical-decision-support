@@ -58,7 +58,8 @@ to generate a realistic alert stream for the gate experiment, not to claim predi
 | 6 | 0.14 | 0.05 | 26/28 |
 
 From ≥3 required signals onward the gate blocks false alerts at a higher rate than true
-alerts (at m = 4: 86% of false alerts blocked vs 57% of true alerts retained). Note the
+alerts (at m = 4: 86% of false alerts blocked, versus 43% of true alerts retained — that is,
+four of the seven true alerts were blocked). Note the
 honest caveat visible at m = 1: three of seven true alerts had *no* recent abnormal signal in
 the 6 h window, so evidence-gating imposes a sensitivity floor — the gate trades sensitivity
 for specificity, and the window length is a tunable safety parameter.
@@ -82,3 +83,30 @@ for specificity, and the window length is a tunable safety parameter.
 4. **Limits:** 100-patient demo cohort, single site, no clinical notes module, no LLM in the
    loop, mortality as a proxy endpoint. Nothing here supports deployment claims; the full
    credentialed MIMIC-IV evaluation (Chapter 4) remains the substantive test.
+
+---
+
+## Reproducibility and timing-variance note (D6 ruling, 2026-08-14)
+
+The pilot was independently re-run on 2026-08-14 against a **fresh download** of the demo
+(`mimic-iv-clinical-database-demo-2.2.zip` from PhysioNet, verified structure) on the same
+machine class. **Every deterministic figure reproduced exactly** — 140 stays, all event-count
+quantiles and event-type shares, 60 stays with prior admissions, the full verification-gate
+operating curve (m = 1…6), and trail resolvability 183/183 = 1.00.
+
+Wall-clock figures are run- and machine-state-dependent and differ across runs, as expected:
+
+| Quantity | Prose above / paper | Committed `pilot_metrics.json` | Fresh run 2026-08-14 |
+|---|---|---|---|
+| Timeline construction (total) | 2.9 s | 2.73 s | 2.56 s |
+| Retrieval latency (median) | 11.7 ms | 9.62 ms | 8.18 ms |
+| Retrieval latency (p95) | 17.9 ms | 15.01 ms | 13.8 ms |
+
+**Author ruling (2026-08-14):** published prose stays as written; the committed
+`pilot_metrics.json` is the canonical artifact; wall-clock values are reported as
+order-of-magnitude evidence ("interactive latency"), not as exact reproducible constants.
+All substantive (deterministic) claims are exactly reproducible.
+
+Reproduction command note: pass `--min-evidence` explicitly — the CLI default (2) differs
+from the `gate.py` function default (3); the recorded run used `--min-evidence 3`. The full
+operating curve is emitted regardless and is invocation-independent.

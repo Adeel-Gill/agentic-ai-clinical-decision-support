@@ -38,7 +38,7 @@ Prose, not a bare list. Tie each contribution back to the specific objective it 
   risk prediction, treatment recommendation, and explanation, under a coordinator.
 - **C5 — Trustworthy-AI layer (Obj. 5).** Explainability, safety verification, bias monitoring, audit
   logging, and human-in-the-loop validation embedded structurally, not appended
-  [rasheed2022explainable; jimenez2023trustworthy].
+  [rasheed2022explainable].
 - **C6 — MIMIC-IV grounding + bounded prototype and evaluation plan (Obj. 6, 7).** The design is
   instantiated on real critical-care data and paired with a concrete evaluation plan for future
   implementation [johnson2023mimic].

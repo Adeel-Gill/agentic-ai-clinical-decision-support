@@ -82,7 +82,7 @@ $$\text{ECE} = \sum_{m=1}^{M} \frac{|B_m|}{N}\,\bigl|\,\text{acc}(B_m) - \text{c
 
 Reported on risk tasks T1–T4. A reliability diagram accompanies each ECE value. Lower is better; a confidence score that does not track true probability is dangerous in a clinical setting regardless of AUROC.
 
-**Audit-log completeness.** Fraction of decisions for which the framework emitted a complete, replayable trace (retrieved evidence + agent actions + verification outcome + final decision) [jimenez2023trustworthy].
+**Audit-log completeness.** Fraction of decisions for which the framework emitted a complete, replayable trace (retrieved evidence + agent actions + verification outcome + final decision) [tan2026undcs].
 
 $$\text{Completeness} = \frac{\#\text{decisions with complete trace}}{\#\text{decisions}}$$
 

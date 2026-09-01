@@ -113,7 +113,7 @@ reasoning, memory, and tools [yu2025trustagent], and adversarial evidence that m
 topology determines how far a compromised agent's influence spreads [chen2025medsentry].
 Regulatory analysis converges from a third direction: general-purpose models already emit
 output meeting medical-device criteria [weissman2025unregulated], prompting proposed
-governance for unconfined non-deterministic clinical software built on guardrails,
+governance for "unconfined non-deterministic clinical software" built on guardrails,
 moderation, and inspectability [tan2026undcs]. Even the human backstop is less settled than
 assumed; the sole meta-analysis of clinician–LLM collaboration reports gains that are
 statistically fragile alongside non-trivial error rates in collaborative outputs

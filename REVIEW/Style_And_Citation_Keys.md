@@ -61,7 +61,6 @@ If a claim needs a source not listed here, write `[CITATION NEEDED]` — never i
 | schmidgall2024agentclinic | AgentClinic |
 | tu2025amie | AMIE |
 | rasheed2022explainable | Explainable/Trustworthy ML for Healthcare |
-| jimenez2023trustworthy | Toward Trustworthy AI in Healthcare (verify) |
 
 ### 2025–2026 literature update keys (P021–P045, added 2026-08-05)
 | Key | Short name |
@@ -101,10 +100,35 @@ If a claim needs a source not listed here, write `[CITATION NEEDED]` — never i
 | cui2025timer | TIMER (temporal instruction modeling, npj Digit Med) |
 | liang2025rgar | RGAR (recurrence generation-augmented retrieval, EMNLP-25 Findings) |
 
+### Post-P050 additions (2026-08-13, verified on addition)
+| Key | Short name |
+|---|---|
+| liang2026smartalert | SmartAlert (RCT of ML-CDS lab-utilization alert, NEJM AI) — corpus paper P051 |
+| black2026nonclinician | Non-clinician staff GenAI usage logs (npj Health Systems) — supporting citation only |
+| bedi2026medhelm | MedHELM (clinician-validated medical LLM evaluation taxonomy, Nat Med) — corpus paper P052 |
+
+### Methodology & statistics keys (back-ported from `References.bib` 2026-08-13)
+| Key | Short name |
+|---|---|
+| hevner2004design | Design Science in IS Research |
+| vincent1996sofa | SOFA score |
+| singer2016sepsis3 | Sepsis-3 consensus definitions |
+| es2024ragas | RAGAS (RAG evaluation) |
+| guo2017calibration | Calibration of modern neural networks (ECE) |
+| hardt2016equality | Equality of opportunity (fairness) |
+| mehrabi2021survey | Bias & fairness in ML (survey) |
+| delong1988comparing | DeLong AUROC comparison test |
+| dietterich1998approximate | Approximate statistical tests for classifiers |
+| benjamini1995controlling | Benjamini–Hochberg FDR control |
+| hayes2007krippendorff | Krippendorff's alpha reliability |
+
 ## Paper-ID reconciliation (fix in Literature_Matrix + Notes)
 - Use `Pnn` consistently (P001–P020); drop the stray `P003s`.
-- **P016 and P017 are the SAME paper** ("Towards Generalist Biomedical AI") → keep one (P016), delete/repurpose the other.
-- **P018 matrix row is WRONG**: it describes a category-theory "monoids" paper, but the stored
-  PDF is "Toward Trustworthy AI in Healthcare". Rewrite the P018 row to match the stored PDF
-  (map to `jimenez2023trustworthy`) OR remove it. Do NOT keep the monoids text.
+- **P016 and P017 are the SAME paper** ("Towards Generalist Biomedical AI") → keep one (P016), delete/repurpose the other. *(Resolved 2026-08-13: PDFs verified byte-identical; P017 matrix row retired as duplicate, note banner added, Taxonomy fixed. 49 distinct papers.)*
+- **P018 matrix row** *(resolved 2026-08-13, and the premise above was backwards)*: content
+  extraction proved the stored PDF **is** the monoids paper under a misleading healthcare
+  filename — no trustworthy-AI paper was ever collected. `jimenez2023trustworthy` was a
+  phantom: removed from both reference stores, its 9 citations remapped to verified keys
+  (`rasheed2022explainable`, `tan2026undcs`, `weissman2025unregulated`), and the P018 row
+  retired.
 - Reconcile years: MedAgents = 2024 (ACL Findings) everywhere.

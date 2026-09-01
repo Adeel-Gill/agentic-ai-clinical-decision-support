@@ -27,6 +27,7 @@ import os
 from docx import Document
 from docx.shared import Pt, Inches, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
@@ -69,7 +70,7 @@ LOGO_HEIGHT = Cm(7.43)
 IEEE = {
  "yao2023react": 'S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao, "ReAct: Synergizing reasoning and acting in language models," in Proc. Int. Conf. Learn. Represent. (ICLR), 2023.',
  "park2023generative": 'J. S. Park, J. C. O’Brien, C. J. Cai, M. R. Morris, P. Liang, and M. S. Bernstein, "Generative agents: Interactive simulacra of human behavior," in Proc. 36th ACM Symp. User Interface Softw. Technol. (UIST), 2023.',
- "xi2023rise": 'Z. Xi et al., "The rise and potential of large language model based agents: A survey," arXiv:2309.07864, 2023.',
+ "xi2023rise": 'Z. Xi et al., "The rise and potential of large language model based agents: A survey," Sci. China Inf. Sci., vol. 68, no. 2, 2025.',
  "schick2023toolformer": 'T. Schick et al., "Toolformer: Language models can teach themselves to use tools," in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), 2023.',
  "wang2023voyager": 'G. Wang et al., "Voyager: An open-ended embodied agent with large language models," Trans. Mach. Learn. Res. (TMLR), 2024.',
  "wu2024autogen": 'Q. Wu et al., "AutoGen: Enabling next-gen LLM applications via multi-agent conversation," in Proc. Conf. Lang. Model. (COLM), 2024.',
@@ -94,13 +95,12 @@ IEEE = {
  "li2024agenthospital": 'J. Li et al., "Agent hospital: A simulacrum of hospital with evolvable medical agents," arXiv:2405.02957, 2024.',
  "toma2023clinicalcamel": 'A. Toma, P. R. Lawler, J. Ba, R. G. Krishnan, B. B. Rubin, and B. Wang, "Clinical Camel: An open expert-level medical language model with dialogue-based knowledge encoding," arXiv:2305.12031, 2023.',
  "jin2021medqa": 'D. Jin, E. Pan, N. Oufattole, W.-H. Weng, H. Fang, and P. Szolovits, "What disease does this patient have? A large-scale open domain question answering dataset from medical exams," Appl. Sci., vol. 11, no. 14, p. 6421, 2021.',
- "shi2024ehragent": 'W. Shi et al., "EHRAgent: Code empowers large language models for few-shot complex tabular reasoning on electronic health records," in Proc. EMNLP, 2024.',
+ "shi2024ehragent": 'W. Shi et al., "EHRAgent: Code empowers large language models for few-shot complex tabular reasoning on electronic health records," in Proc. EMNLP, 2024, pp. 22315-22339.',
  "schmidgall2024agentclinic": 'S. Schmidgall, R. Ziaei, C. Harris, E. Reis, J. Jopling, and M. Moor, "AgentClinic: A multimodal agent benchmark to evaluate AI in simulated clinical environments," arXiv:2405.07960, 2024.',
- "tu2025amie": 'T. Tu et al., "Towards conversational diagnostic AI," Nature, 2025.',
+ "tu2025amie": 'T. Tu et al., "Towards conversational diagnostic artificial intelligence," Nature, vol. 642, no. 8067, pp. 442-450, 2025.',
  "johnson2023mimic": 'A. E. W. Johnson et al., "MIMIC-IV, a freely accessible electronic health record dataset," Sci. Data, vol. 10, no. 1, p. 1, 2023.',
  "goldberger2000physiobank": 'A. L. Goldberger et al., "PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals," Circulation, vol. 101, no. 23, pp. e215–e220, 2000.',
  "rasheed2022explainable": 'K. Rasheed, A. Qayyum, M. Ghaly, A. Al-Fuqaha, A. Razi, and J. Qadir, "Explainable, trustworthy, and ethical machine learning for healthcare: A survey," Comput. Biol. Med., vol. 149, p. 106043, 2022.',
- "jimenez2023trustworthy": 'Author(s), "Toward trustworthy AI in healthcare," 2023. [full citation to verify against stored P018 PDF]',
  "hevner2004design": 'A. R. Hevner, S. T. March, J. Park, and S. Ram, "Design science in information systems research," MIS Quart., vol. 28, no. 1, pp. 75–105, 2004.',
  "singer2016sepsis3": 'M. Singer et al., "The third international consensus definitions for sepsis and septic shock (Sepsis-3)," JAMA, vol. 315, no. 8, pp. 801–810, 2016.',
  "vincent1996sofa": 'J.-L. Vincent et al., "The SOFA score to describe organ dysfunction/failure," Intensive Care Med., vol. 22, no. 7, pp. 707–710, 1996.',
@@ -112,6 +112,43 @@ IEEE = {
  "dietterich1998approximate": 'T. G. Dietterich, "Approximate statistical tests for comparing supervised classification learning algorithms," Neural Comput., vol. 10, no. 7, pp. 1895–1923, 1998.',
  "benjamini1995controlling": 'Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," J. R. Stat. Soc. B, vol. 57, no. 1, pp. 289–300, 1995.',
  "hayes2007krippendorff": 'A. F. Hayes and K. Krippendorff, "Answering the call for a standard reliability measure for coding data," Commun. Methods Meas., vol. 1, no. 1, pp. 77–89, 2007.',
+
+ # --- 2025-2026 literature update (P021-P045), added for Chapter 2 Section 2.11 ---
+ "wang2025baymax": 'W. Wang, Z. Ma, Z. Wang et al., "A survey of LLM-based agents in medicine: How far are we from Baymax?" in Findings Assoc. Comput. Linguist. (ACL Findings), 2025.',
+ "jiang2025medagentbench": 'Y. Jiang, K. C. Black, G. Geng et al., "MedAgentBench: A virtual EHR environment to benchmark medical LLM agents," NEJM AI, vol. 2, no. 9, 2025.',
+ "gao2025txagent": 'S. Gao, R. Zhu, Z. Kong et al., "TxAgent: An AI agent for therapeutic reasoning across a universe of tools," arXiv:2503.10970, 2025.',
+ "feng2025doctoragent": 'Y. Feng, J. Wang, L. Zhou et al., "DoctorAgent-RL: Real-world doctor agent with proactive consultation through multi-agent reinforcement learning," arXiv:2505.19630, 2025.',
+ "palepu2025disease": 'A. Palepu, V. Lievin, W.-H. Weng et al., "Towards conversational AI for disease management," arXiv:2503.06074, 2025.',
+ "saab2025multimodal": 'K. Saab, J. Freyberg, C. Park et al., "Advancing conversational diagnostic AI with multimodal reasoning," arXiv:2505.04653, 2025.',
+ "liu2025riskagent": 'F. Liu, J. Wu, H. Zhou et al., "RiskAgent: Synergizing language models with validated tools for evidence-based risk prediction," arXiv:2503.03802, 2025.',
+ "arora2025healthbench": 'R. K. Arora, J. Wei, R. Soskin Hicks et al., "HealthBench: Evaluating large language models towards improved human health," arXiv:2505.08775, 2025.',
+ "wu2025memory": 'Y. Wu, S. Liang, C. Zhang et al., "From human memory to AI memory: A survey on memory mechanisms in the era of LLMs," arXiv:2504.15965, 2025.',
+ "ehtesham2025protocols": 'A. Ehtesham, A. Singh, G. K. Gupta et al., "A survey of agent interoperability protocols: Model Context Protocol (MCP), Agent Communication Protocol (ACP), Agent-to-Agent Protocol (A2A), and Agent Network Protocol (ANP)," arXiv:2505.02279, 2025.',
+ "singh2025agenticrag": 'A. Singh, A. Ehtesham, S. Kumar et al., "Agentic retrieval-augmented generation: A survey on agentic RAG," arXiv:2501.09136, 2025.',
+ "tran2025collaboration": 'K.-T. Tran, D. Dao, M.-D. Nguyen et al., "Multi-agent collaboration mechanisms: A survey of LLMs," arXiv:2501.06322, 2025.',
+ "liu2025foundationagents": 'B. Liu, X. Li, J. Zhang et al., "Advances and challenges in foundation agents: From brain-inspired intelligence to evolutionary, collaborative, and safe systems," arXiv:2504.01990, 2025.',
+ "yehudai2025evaluation": 'A. Yehudai, L. Eden, A. Li et al., "A survey on evaluation of LLM-based agents," in Findings Assoc. Comput. Linguist. (ACL Findings), 2026, pp. 26690-26714.',
+ "liang2026smartalert": 'A. S. Liang et al., "SmartAlert - Implementing machine learning-driven clinical decision support for inpatient laboratory utilization reduction," NEJM AI, vol. 3, no. 7, 2026.',
+ "black2026nonclinician": 'K. C. Black et al., "Uses of generative AI by non-clinician staff at an academic medical center," npj Health Syst., vol. 3, art. 13, 2026.',
+ "bedi2026medhelm": 'S. Bedi et al., "Holistic evaluation of large language models for medical tasks with MedHELM," Nat. Med., vol. 32, no. 3, pp. 943-951, 2026.',
+ "yu2025trustagent": 'M. Yu, F. Meng, X. Zhou et al., "A survey on trustworthy LLM agents: Threats and countermeasures," in Proc. 31st ACM SIGKDD Conf. Knowl. Discovery Data Mining (KDD), 2025, pp. 6216–6226.',
+ "fallahpour2025medrax": 'A. Fallahpour, J. Ma, A. Munim et al., "MedRAX: Medical reasoning agent for chest X-ray," in Proc. 42nd Int. Conf. Mach. Learn. (ICML), PMLR, vol. 267, 2025, pp. 15661–15676.',
+ "kim2025hallucinations": 'Y. Kim, H. Jeong, S. Chen et al., "Medical hallucinations in foundation models and their impact on healthcare," arXiv:2503.05777, 2025.',
+ "atf2025uncertainty": 'Z. Atf, S. A. A. Safavi-Naini, P. R. Lewis et al., "The challenge of uncertainty quantification of large language models in medicine," arXiv:2504.05278, 2025.',
+ "lovon2025mimic": 'J. Lovon, T. Ben-Haddi, J. Di Scala et al., "Revisiting the MIMIC-IV benchmark: Experiments using language models for electronic health records," in Proc. 1st Workshop Patient-Oriented Lang. Process. (CL4Health) @ LREC-COLING, Torino, Italy, 2024.',
+ "shashikumar2025sepsis": 'S. P. Shashikumar, S. Mohammadi, R. Krishnamoorthy et al., "Development and prospective implementation of a large language model based system for early sepsis prediction," npj Digit. Med., 2025.',
+ "ke2025ragfitness": 'Y. H. Ke, L. Jin, K. Elangovan et al., "Retrieval augmented generation for 10 large language models and its generalizability in assessing medical fitness," npj Digit. Med., 2025.',
+ "chen2025medsentry": 'K. Chen, T. Zhen, H. Wang et al., "MedSentry: Understanding and mitigating safety risks in medical LLM multi-agent systems," arXiv:2505.20824, 2025.',
+ "weissman2025unregulated": 'G. E. Weissman, T. Mankowitz, G. P. Kanter et al., "Unregulated large language models produce medical device-like output," npj Digit. Med., 2025.',
+ "tan2026undcs": 'C. Tan, D. V. Gunasekeran, C. O. Low et al., "Regulation of clinical artificial intelligence (AI) in the age of agents: Unconfined non-deterministic clinical software (UNDCS) systems for healthcare," npj Digit. Med., 2026.',
+ "wang2026collaboration": 'G. Wang, K. Zhang, J. Jiang et al., "Human-large language model collaboration in clinical medicine: A systematic review and meta-analysis," npj Digit. Med., 2026.',
+
+ # --- Longitudinal-EHR systems (P046-P050) ---
+ "li2026clicare": 'D. Li, J. Liang, W. Li et al., "CliCARE: Grounding large language models in clinical guidelines for decision support over longitudinal cancer electronic health records," in Proc. AAAI Conf. Artif. Intell., vol. 40, no. 37, 2026, pp. 31554–31562.',
+ "zeng2025trajcoa": 'S. Zeng, Y. Fu, S. Zhou et al., "Traj-CoA: Patient trajectory modeling via chain-of-agents for lung cancer risk prediction," in NeurIPS GenAI4Health Workshop, 2025. arXiv:2510.10454.',
+ "zeng2026trajonco": 'S. Zeng, Y. W. Kim, W. Lau et al., "TrajOnco: A multi-agent framework for temporal reasoning over longitudinal EHR for multi-cancer early detection," arXiv:2604.10386, 2026.',
+ "cui2025timer": 'H. Cui, A. Unell, B. Chen et al., "TIMER: Temporal instruction modeling and evaluation for longitudinal clinical records," npj Digit. Med., vol. 8, p. 577, 2025.',
+ "liang2025rgar": 'S. Liang, L. Zhang, H. Zhu et al., "RGAR: Recurrence generation-augmented retrieval for factual-aware medical question answering," in Findings Assoc. Comput. Linguist. (EMNLP Findings), Suzhou, China, 2025, pp. 4006–4033.',
 }
 
 ABSTRACT = (
@@ -122,9 +159,10 @@ ABSTRACT = (
  "verifiable grounding, and they are typically evaluated on static examination-style questions "
  "rather than on the longitudinal record of a real patient. This thesis designs an Agentic AI "
  "framework for intelligent patient monitoring and clinical decision support that addresses these "
- "limitations. The framework organizes specialized LLM agents for monitoring, diagnosis, risk "
- "prediction, treatment recommendation, explanation, and a verification gate under a coordinator "
- "that routes tasks by patient condition and resolves conflicting recommendations. It couples the "
+ "limitations. The framework organizes eight specialized LLM agents, for monitoring, planning, "
+ "data retrieval, diagnosis, risk prediction, treatment recommendation, explanation, and "
+ "verification, under a coordinator that routes tasks by patient condition and resolves "
+ "conflicting recommendations. It couples the "
  "ReAct reasoning paradigm with retrieval-augmented generation (RAG) that grounds every "
  "recommendation in both the patient’s own electronic health record timeline and external clinical "
  "guidelines, and it preserves longitudinal context through a layered memory model. A cross-cutting "
@@ -134,7 +172,12 @@ ABSTRACT = (
  "specifies a bounded prototype together with an evaluation protocol that compares the framework "
  "against single-LLM, guideline-only RAG, and multi-agent baselines using measures of diagnostic "
  "accuracy, factual grounding, risk-prediction discrimination, safety, explanation faithfulness, "
- "calibration, and runtime cost. The expected contribution is a coherent, verifiable architecture "
+ "calibration, and runtime cost. A pilot feasibility study on the openly licensed 100-patient "
+ "MIMIC-IV demo implemented and exercised the non-LLM slice of this design: timeline construction "
+ "across 140 ICU stays, timestamp-aware retrieval at interactive latency that returned no future "
+ "information, and a rule-based verification gate that blocked 86% of false alerts while retaining "
+ "43% of true alerts at its strictest useful setting, with every logged evidence reference "
+ "re-resolving exactly to its source record. The expected contribution is a coherent, verifiable architecture "
  "for longitudinal clinical decision support, an explicit account of how patient-timeline retrieval "
  "and a dedicated verification agent affect hallucination and safety, and a reproducible design that "
  "future work can implement and validate. The thesis is positioned as a design and methodology "
@@ -285,17 +328,22 @@ def add_tof(doc, label):
 # --------------------------------------------------------------------------
 # Citation handling + inline runs
 # --------------------------------------------------------------------------
-CITE_RE = re.compile(r"\[([A-Za-z]+\d{4}[a-z0-9]*)\]")
+# Matches [key] and the multi-key form [key; key; key] sanctioned by .ai/RULES.md R5.
+_CITE_KEY = r"[A-Za-z]+\d{4}[a-z0-9]*"
+CITE_RE = re.compile(r"\[(" + _CITE_KEY + r"(?:\s*;\s*" + _CITE_KEY + r")*)\]")
 
 def substitute_citations(text, cite_map, order):
     def repl(m):
-        key = m.group(1)
-        if key not in IEEE:
+        keys = [k.strip() for k in m.group(1).split(";")]
+        if any(k not in IEEE for k in keys):
             return m.group(0)  # leave unknown keys untouched (visible flag)
-        if key not in cite_map:
-            cite_map[key] = len(order) + 1
-            order.append(key)
-        return "[%d]" % cite_map[key]
+        nums = []
+        for key in keys:
+            if key not in cite_map:
+                cite_map[key] = len(order) + 1
+                order.append(key)
+            nums.append(cite_map[key])
+        return ", ".join("[%d]" % n for n in nums)
     return CITE_RE.sub(repl, text)
 
 def add_inline(p, text):
@@ -351,6 +399,103 @@ def table_placeholder(doc, text):
     return p
 
 # --------------------------------------------------------------------------
+# Real table rendering from the Literature_Matrix sources.
+# DOPS rules: caption ABOVE the table — number on the first line, italic
+# caption on the next line, both centered (Thesis_Formatting_Guide.md).
+# --------------------------------------------------------------------------
+TABLE_SOURCES = {
+    "Table 2.1": {
+        "file": os.path.join(ROOT, "02_Research", "Literature_Matrix", "Comparative_Analysis_Table.md"),
+        "panels": ["(a) General capabilities", "(b) Differentiating capabilities"],
+    },
+    "Table 2.2": {
+        "file": os.path.join(ROOT, "02_Research", "Literature_Matrix", "Research_Gap_Matrix.md"),
+        "panels": [None],
+    },
+}
+
+FIGURE_SOURCES = {
+    "Figure 2.1": os.path.join(HERE, "..", "Images", "taxonomy.png"),
+}
+
+def render_figure_marker(doc, inner, cite_map, order):
+    """Render '[FIGURE: Figure 2.1: caption]' — centered image with the DOPS caption
+    BELOW it: italic 'Figure 2.1.' + non-italic caption on one line, TNR 11 pt, centered
+    (Thesis_Formatting_Guide.md / ARCHITECTURE_RULES §10). Placeholder as fallback."""
+    m = re.match(r"(Figure\s+\d+\.\d+)\s*:\s*(.*)", inner)
+    path = FIGURE_SOURCES.get(m.group(1)) if m else None
+    if not path or not os.path.exists(path):
+        table_placeholder(doc, "[" + inner + " (insert figure here)]")
+        return
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(6)
+    p.add_run().add_picture(path, width=Inches(6.0))
+    cap = doc.add_paragraph()
+    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    cap.paragraph_format.space_after = Pt(12)
+    r1 = cap.add_run(m.group(1) + ". ")
+    _run_font(r1, size=11, italic=True)
+    r2 = cap.add_run(substitute_citations(m.group(2).strip(), cite_map, order))
+    _run_font(r2, size=11)
+
+def parse_md_tables(path):
+    """Every pipe table in a markdown file, as a list of row-of-cells lists."""
+    tables, current = [], []
+    for line in open(path, encoding="utf-8"):
+        s = line.strip()
+        if s.startswith("|"):
+            cells = [c.strip() for c in s.strip("|").split("|")]
+            if all(set(c) <= set(":- ") for c in cells):  # header separator row
+                continue
+            current.append(cells)
+        elif current:
+            tables.append(current)
+            current = []
+    if current:
+        tables.append(current)
+    return tables
+
+def render_md_table(doc, rows, cite_map, order, size=10):
+    ncols = max(len(r) for r in rows)
+    t = doc.add_table(rows=len(rows), cols=ncols)
+    t.style = "Table Grid"
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for i, row in enumerate(rows):
+        for j in range(ncols):
+            raw = row[j] if j < len(row) else ""
+            raw = raw.replace("✅", "✓").replace("❌", "✗")
+            bold = raw.startswith("**") and raw.endswith("**") and len(raw) > 4
+            if bold:
+                raw = raw[2:-2]
+            text = substitute_citations(raw, cite_map, order)
+            cell = t.cell(i, j)
+            cell.text = ""
+            p = cell.paragraphs[0]
+            p.alignment = (WD_ALIGN_PARAGRAPH.CENTER
+                           if (i == 0 or len(text) <= 3)
+                           else WD_ALIGN_PARAGRAPH.LEFT)
+            run = p.add_run(text)
+            _run_font(run, size=size, bold=bold or i == 0)
+    return t
+
+def render_table_marker(doc, inner, cite_map, order):
+    """Render '[TABLE: Table 2.1: caption]' as a real table; placeholder as fallback."""
+    m = re.match(r"(Table\s+\d+\.\d+)\s*:\s*(.*)", inner)
+    spec = TABLE_SOURCES.get(m.group(1)) if m else None
+    if not spec or not os.path.exists(spec["file"]):
+        table_placeholder(doc, "[" + inner + " (insert table here)]")
+        return
+    para(doc, m.group(1), align=WD_ALIGN_PARAGRAPH.CENTER, size=12, after=0)
+    para(doc, m.group(2).strip(), align=WD_ALIGN_PARAGRAPH.CENTER, size=12, italic=True, after=6)
+    tables = parse_md_tables(spec["file"])
+    for label, rows in zip(spec["panels"], tables):
+        if label:
+            para(doc, label, align=WD_ALIGN_PARAGRAPH.CENTER, size=11, bold=True, after=3)
+        render_md_table(doc, rows, cite_map, order)
+        para(doc, "", size=6, after=6)
+
+# --------------------------------------------------------------------------
 # Chapter markdown parser (contract defined in the compile step)
 # --------------------------------------------------------------------------
 def render_chapter(doc, path, cite_map, order):
@@ -390,7 +535,13 @@ def render_chapter(doc, path, cite_map, order):
             flush()
             inner = s[1:-1] if s.endswith("]") else s[1:]
             inner = inner.replace("TABLE:", "").strip()
-            table_placeholder(doc, "[" + inner + " (insert table here)]")
+            render_table_marker(doc, inner, cite_map, order)
+            continue
+        if s.startswith("[FIGURE:"):
+            flush()
+            inner = s[1:-1] if s.endswith("]") else s[1:]
+            inner = inner.replace("FIGURE:", "").strip()
+            render_figure_marker(doc, inner, cite_map, order)
             continue
         if s.startswith("- ") or s.startswith("* "):
             flush(); body_para(doc, s[2:].strip(), cite_map, order, bullet=True); continue
